@@ -1,0 +1,2 @@
+create table if not exists users (userid integer primary key autoincrement, username varchar(50) NOT NULL unique, password varchar(200) NOT NULL);
+insert into users (username, password) values ("crowned", "cuts")
