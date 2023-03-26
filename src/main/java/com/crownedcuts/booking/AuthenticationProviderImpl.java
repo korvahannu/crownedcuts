@@ -1,5 +1,6 @@
 package com.crownedcuts.booking;
 
+import com.crownedcuts.booking.records.UserDetails;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +23,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider
             roles.add(new SimpleGrantedAuthority("ADMIN"));
             roles.add(new SimpleGrantedAuthority("USER"));
 
-            return new UsernamePasswordAuthenticationToken("crowned", "cuts", roles);
+            var userDetails = new UserDetails(authentication.getName(), roles);
+
+            return new UsernamePasswordAuthenticationToken(userDetails, "cuts", roles);
         }
 
         return null;

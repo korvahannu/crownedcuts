@@ -17,8 +17,7 @@ public class WebSecurityConfig
     public WebSecurityConfig(AuthenticationManagerBuilder auth, AuthenticationProvider authenticationProvider) throws Exception
     {
         auth
-                .authenticationProvider(authenticationProvider)
-                .eraseCredentials(false);
+                .authenticationProvider(authenticationProvider);
     }
 
     @Bean
