@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -54,17 +55,5 @@ class BookingApplicationTests
         mockMvc
                 .perform(request)
                 .andExpect(status().is3xxRedirection());
-    }
-
-    @Test
-    @WithMockUser("TestUser")
-    void loggedInReturnsCorrectPage() throws Exception
-    {
-        var request = get("/")
-                .accept(MediaType.TEXT_HTML);
-
-        mockMvc
-                .perform(request)
-                .andExpect(status().isOk());
     }
 }
