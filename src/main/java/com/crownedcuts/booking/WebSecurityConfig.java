@@ -13,9 +13,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class WebSecurityConfig
+{
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
+    {
         http
                 .authorizeHttpRequests(requests -> requests
                         .anyRequest().authenticated()
@@ -31,8 +33,9 @@ public class WebSecurityConfig {
 
     @Bean
     @SuppressWarnings("deprecation")
-    public UserDetailsService userDetailsService() {
-		UserDetails user =
+    public UserDetailsService userDetailsService()
+    {
+        UserDetails user =
                 User.withDefaultPasswordEncoder()
                         .username("crowned")
                         .password("cuts")

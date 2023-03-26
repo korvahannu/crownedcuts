@@ -7,9 +7,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Configuration
 @Controller
-public class LoginController {
+public class LoginController
+{
     @GetMapping("/login")
-    public ModelAndView getLoginPage() {
+    public ModelAndView getLoginPage()
+    {
         ModelAndView mav = new ModelAndView("login");
         mav.addObject("message", "Hello from controller!");
         return mav;
