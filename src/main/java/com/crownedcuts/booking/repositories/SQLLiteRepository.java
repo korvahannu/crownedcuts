@@ -39,15 +39,15 @@ public class SQLLiteRepository implements DbRepository
         connectionString = "jdbc:sqlite:" + databaseFilepath;
         connection = DriverManager.getConnection(connectionString);
 
-        if (newDatabaseFileCreated && initializeDatabaseSQLFilepath != null && !initializeDatabaseSQLFilepath.isBlank())
+        if (newDatabaseFileCreated && initializeDatabaseSQLFilepath != null
+                && !initializeDatabaseSQLFilepath.isBlank())
         {
             initializeDatabase();
         }
     }
 
     /**
-     * {@inheritDoc}
-     * Please note, that by default the connection is opened post-construction
+     * {@inheritDoc} Please note, that by default the connection is opened post-construction
      */
     @Override
     public void openConnection() throws SQLException
@@ -70,25 +70,26 @@ public class SQLLiteRepository implements DbRepository
     /**
      * Helper function that initializes the SQLite database
      *
-     * @throws IOException  The SQL queries are run from an .sql file.
-     *                      If that file is not found or can't be read, throw IOException.
-     *                      Define the query file path at application.properties as initializeDatabaseSQLFilepath
-     * @throws SQLException If initializeDatabaseSQLFile contains invalid queries
-     *                      or the database file is inaccessible
+     * @throws IOException The SQL queries are run from an .sql file. If that file is not found or
+     *         can't be read, throw IOException. Define the query file path at
+     *         application.properties as initializeDatabaseSQLFilepath
+     * @throws SQLException If initializeDatabaseSQLFile contains invalid queries or the database
+     *         file is inaccessible
      */
     private void initializeDatabase() throws IOException, SQLException
     {
         var file = ResourceUtils.getFile("classpath:" + initializeDatabaseSQLFilepath);
 
-        var reader = new BufferedReader(new FileReader(file));
-
-        String line = reader.readLine();
-
-        while (line != null)
+        try (var reader = new BufferedReader(new FileReader(file)))
         {
-            var preparedStatement = getPreparedStatement(line);
-            preparedStatement.execute();
-            line = reader.readLine();
+            String line = reader.readLine();
+
+            while (line != null)
+            {
+                var preparedStatement = getPreparedStatement(line);
+                preparedStatement.execute();
+                line = reader.readLine();
+            }
         }
     }
 }
