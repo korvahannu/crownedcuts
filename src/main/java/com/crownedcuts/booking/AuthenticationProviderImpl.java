@@ -17,13 +17,16 @@ public class AuthenticationProviderImpl implements AuthenticationProvider
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException
     {
-        if (authentication.getName().equals("crowned") && authentication.getCredentials().toString().equals("cuts"))
+    	String username = authentication.getName();
+    	String password = authentication.getPrincipal().toString();
+    	
+        if (username.equals("crowned") && password.equals("cuts"))
         {
             List<SimpleGrantedAuthority> roles = new ArrayList<>();
             roles.add(new SimpleGrantedAuthority("ADMIN"));
             roles.add(new SimpleGrantedAuthority("USER"));
 
-            var userDetails = new UserDetails(authentication.getName(), roles);
+            var userDetails = new UserDetails(username, roles);
 
             return new UsernamePasswordAuthenticationToken(userDetails, "cuts", roles);
         }

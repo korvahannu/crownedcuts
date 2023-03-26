@@ -7,14 +7,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig
 {
-    public WebSecurityConfig(AuthenticationManagerBuilder auth, AuthenticationProvider authenticationProvider) throws Exception
+    public WebSecurityConfig(AuthenticationManagerBuilder auth, AuthenticationProvider authenticationProvider)
     {
         auth
                 .authenticationProvider(authenticationProvider);
@@ -24,7 +23,7 @@ public class WebSecurityConfig
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
         http
-                .authorizeRequests(requests -> requests
+                .authorizeHttpRequests(requests -> requests
                         .anyRequest()
                         .hasAuthority("USER")
                 )
