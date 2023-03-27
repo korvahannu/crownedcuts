@@ -4,6 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-public record UserDetails(String username, Collection<? extends GrantedAuthority> authorities)
+public record UserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities)
 {
 }

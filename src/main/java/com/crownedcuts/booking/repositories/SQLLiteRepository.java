@@ -70,11 +70,11 @@ public class SQLLiteRepository implements DbRepository
     /**
      * Helper function that initializes the SQLite database
      *
-     * @throws IOException The SQL queries are run from an .sql file. If that file is not found or
-     *         can't be read, throw IOException. Define the query file path at
-     *         application.properties as initializeDatabaseSQLFilepath
+     * @throws IOException  The SQL queries are run from an .sql file. If that file is not found or
+     *                      can't be read, throw IOException. Define the query file path at
+     *                      application.properties as initializeDatabaseSQLFilepath
      * @throws SQLException If initializeDatabaseSQLFile contains invalid queries or the database
-     *         file is inaccessible
+     *                      file is inaccessible
      */
     private void initializeDatabase() throws IOException, SQLException
     {

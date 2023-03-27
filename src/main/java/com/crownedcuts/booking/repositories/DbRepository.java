@@ -1,7 +1,11 @@
 package com.crownedcuts.booking.repositories;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Repository;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collection;
 
 /**
  * Repository interface used to communicate with the underlying database
