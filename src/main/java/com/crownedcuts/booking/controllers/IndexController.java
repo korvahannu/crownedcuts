@@ -12,7 +12,18 @@ public class IndexController
     public ModelAndView onGet()
     {
         ModelAndView mav = new ModelAndView("index");
-        mav.addObject("userDetails", SecurityContextHolder.getContext().getAuthentication().getPrincipal() + " : " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        try
+        {
+        	mav.addObject("userDetails", auth.getPrincipal() + " : " + auth.getAuthorities());
+        }
+        catch(Exception exception)
+        {
+        	mav.addObject("userdetails", "anonymous user");
+        }
+        
         return mav;
     }
 }

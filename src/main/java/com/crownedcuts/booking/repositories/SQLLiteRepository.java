@@ -30,9 +30,8 @@ public class SQLLiteRepository implements DbRepository
         final File databaseFile = new File(databaseFilepath);
         boolean newDatabaseFileCreated = false;
 
-        if (!databaseFile.exists() || databaseFile.isDirectory())
+        if (!databaseFile.exists() || databaseFile.isDirectory() && (databaseFile.createNewFile()))
         {
-            databaseFile.createNewFile();
             newDatabaseFileCreated = true;
         }
 

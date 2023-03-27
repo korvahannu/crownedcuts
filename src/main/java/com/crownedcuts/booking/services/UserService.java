@@ -41,5 +41,5 @@ public interface UserService
      *
      * @return List of roles
      */
-    Collection<? extends GrantedAuthority> getUserRoles(String username);
+    Collection<GrantedAuthority> getUserRoles(String username);
 }

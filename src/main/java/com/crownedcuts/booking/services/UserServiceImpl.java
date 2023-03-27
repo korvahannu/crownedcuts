@@ -2,7 +2,6 @@ package com.crownedcuts.booking.services;
 
 import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.repositories.DbRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -76,7 +75,6 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    @Transactional
     public boolean addUser(UserDetails user)
     {
         try
@@ -93,6 +91,7 @@ public class UserServiceImpl implements UserService
             return false;
         }
 
+        // Todo: If adding the roles fails, we should delete the added user and roles
         for (GrantedAuthority authority : user.authorities())
         {
             String query = "insert into roles (username, userRole) values (?, ?)";
@@ -114,10 +113,10 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public ArrayList<SimpleGrantedAuthority> getUserRoles(String username)
+    public ArrayList<GrantedAuthority> getUserRoles(String username)
     {
         String query = "select * from roles where username=?";
-        ArrayList<SimpleGrantedAuthority> roles = null;
+        ArrayList<GrantedAuthority> roles = null;
 
         try
         {
