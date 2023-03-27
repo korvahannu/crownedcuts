@@ -1,13 +1,9 @@
 package com.crownedcuts.booking.controllers;
 
-import com.crownedcuts.booking.records.UserDetails;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-@Configuration
 @Controller
 public class LoginController
 {
