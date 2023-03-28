@@ -16,5 +16,18 @@
     <div><label> Password: <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="Sign In"/></div>
 </form>
+<p id="loggingIn" style="display: none">
+    Logging in...
+</p>
 </body>
+<script>
+    const form = document.getElementsByTagName("form").item(0);
+
+    function onSubmit() {
+        form.style.display = 'none'
+        document.getElementById('loggingIn').style.display = 'block';
+    }
+
+    form.addEventListener('submit', onSubmit);
+</script>
 </html>
