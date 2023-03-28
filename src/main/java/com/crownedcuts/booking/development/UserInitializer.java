@@ -10,6 +10,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
+/**
+ * Helper method for development environments
+ * Adds two users to the database: admin and a regular user
+ */
 @Component
 @Profile("!prod")
 public class UserInitializer

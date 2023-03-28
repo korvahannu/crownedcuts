@@ -9,7 +9,6 @@ import java.util.Collection;
 /**
  * UserService is responsible for getting user related information
  */
-@Service
 public interface UserService
 {
     /**

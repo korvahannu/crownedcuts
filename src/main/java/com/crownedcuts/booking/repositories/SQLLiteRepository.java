@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 @Repository
 public class SQLLiteRepository implements DbRepository
@@ -24,6 +25,8 @@ public class SQLLiteRepository implements DbRepository
 
     private Connection connection;
 
+    private final Logger logger = Logger.getLogger("RepositoryLogger");
+
     @PostConstruct
     public void setupDatabase() throws IOException, SQLException
     {
@@ -33,6 +36,7 @@ public class SQLLiteRepository implements DbRepository
         if (!databaseFile.exists() || databaseFile.isDirectory() && (databaseFile.createNewFile()))
         {
             newDatabaseFileCreated = true;
+            logger.info("Created new database file " + databaseFilepath);
         }
 
         connectionString = "jdbc:sqlite:" + databaseFilepath;
@@ -42,6 +46,7 @@ public class SQLLiteRepository implements DbRepository
                 && !initializeDatabaseSQLFilepath.isBlank())
         {
             initializeDatabase();
+            logger.info("Initialized database according to " + initializeDatabaseSQLFilepath);
         }
     }
 

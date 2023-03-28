@@ -16,14 +16,13 @@ import java.util.logging.Logger;
 public class UserServiceImpl implements UserService
 {
     private final DbRepository repository;
-    private final Logger logger;
+    private final Logger logger = Logger.getLogger("UserServiceLogger");
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(DbRepository repository, Logger logger, PasswordEncoder passwordEncoder)
+    public UserServiceImpl(DbRepository repository, PasswordEncoder passwordEncoder)
     {
         this.repository = repository;
-        this.logger = logger;
         this.passwordEncoder = passwordEncoder;
     }
 

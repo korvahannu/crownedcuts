@@ -7,8 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.logging.Logger;
-
 @Configuration
 public class MvcConfig implements WebMvcConfigurer
 {
@@ -17,12 +15,6 @@ public class MvcConfig implements WebMvcConfigurer
     {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/login").setViewName("login");
-    }
-
-    @Bean
-    public Logger getLogger()
-    {
-        return Logger.getLogger("defaultLogger");
     }
 
     @Bean
