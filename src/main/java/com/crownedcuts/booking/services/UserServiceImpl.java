@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public UserDetails getUser(String username)
+    public Optional<UserDetails> getUser(String username)
     {
         String query = "select * from users where username=?";
 
@@ -43,14 +44,15 @@ public class UserServiceImpl implements UserService
 
                 if (roles == null)
                 {
-                    return null;
+                    logger.warning("Corrupted user with no roles found: " + username);
+                    return Optional.empty();
                 }
 
-                return new UserDetails(
+                return Optional.of(new UserDetails(
                         result.getString("username"),
                         result.getString("password"),
                         roles
-                );
+                ));
             }
         }
         catch (Exception ex)
@@ -58,20 +60,15 @@ public class UserServiceImpl implements UserService
             logger.info("User not found: " + username);
         }
 
-        return null;
+        return Optional.empty();
     }
 
     @Override
     public boolean checkUserPassword(UserDetails user)
     {
-        var userToCheck = getUser(user.username());
-
-        if (userToCheck == null)
-        {
-            return false;
-        }
-
-        return passwordEncoder.matches(user.password(), userToCheck.password());
+        return getUser(user.username())
+                .filter(userDetails -> passwordEncoder.matches(user.password(), userDetails.password()))
+                .isPresent();
     }
 
     @Override

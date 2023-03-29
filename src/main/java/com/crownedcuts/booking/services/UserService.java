@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * UserService is responsible for getting user related information
@@ -15,9 +16,9 @@ public interface UserService
      * Returns user information with a given username
      *
      * @param username Username to search for
-     * @return Returns UserDetails that contains wanted information or null if user does not exist
+     * @return Returns an optional UserDetails that contains wanted information
      */
-    UserDetails getUser(String username);
+    Optional<UserDetails> getUser(String username);
 
     /**
      * Checks if UserDetails instance has correct password stored

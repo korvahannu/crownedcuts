@@ -35,13 +35,14 @@ public class AuthenticationProviderImpl implements AuthenticationProvider
 
         if (userService.checkUserPassword(userToCheck))
         {
-            var user = userService.getUser(username);
-            return new UsernamePasswordAuthenticationToken(user.username(), null, user.authorities());
+            return userService.getUser(username)
+                    .map(userDetails -> new UsernamePasswordAuthenticationToken(userDetails.username(), null, userDetails.authorities()))
+                    .orElse(null);
         }
 
         return null;
     }
-    
+
     @Override
     public boolean supports(Class<?> authentication)
     {
