@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class UserServiceImpl implements UserService
 {
     private final DbRepository repository;
-    private final Logger logger = Logger.getLogger("UserServiceLogger");
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final PasswordEncoder passwordEncoder;
 
     @Autowired

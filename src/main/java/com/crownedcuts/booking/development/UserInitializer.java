@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Adds two users to the database: admin and a regular user
  */
 @Component
-@Profile("!prod")
+@Profile("dev")
 public class UserInitializer
 {
     private final UserService userService;
@@ -37,7 +37,7 @@ public class UserInitializer
 
         var userRoles = new ArrayList<SimpleGrantedAuthority>();
         userRoles.add(new SimpleGrantedAuthority("USER"));
-        user = new UserDetails("user@crownedcuts.fi", "user", adminRoles);
+        user = new UserDetails("user@crownedcuts.fi", "user", userRoles);
         userService.addUser(user);
     }
 }

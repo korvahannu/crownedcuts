@@ -25,7 +25,7 @@ public class SQLLiteRepository implements DbRepository
 
     private Connection connection;
 
-    private final Logger logger = Logger.getLogger("RepositoryLogger");
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @PostConstruct
     public void setupDatabase() throws IOException, SQLException
