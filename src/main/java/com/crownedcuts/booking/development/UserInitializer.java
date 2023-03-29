@@ -29,15 +29,19 @@ public class UserInitializer
     @PostConstruct
     public void initializeUsers()
     {
-        var adminRoles = new ArrayList<SimpleGrantedAuthority>();
-        adminRoles.add(new SimpleGrantedAuthority("USER"));
-        adminRoles.add(new SimpleGrantedAuthority("ADMIN"));
-        var user = new UserDetails("admin@crownedcuts.fi", "admin", adminRoles);
-        userService.addUser(user);
+        initializerUser("admin@crownedcuts.fi", "admin", "USER", "ADMIN");
+        initializerUser("user@crownedcuts.fi", "user", "USER");
+    }
 
+    private void initializerUser(String username, String password, String... roles)
+    {
         var userRoles = new ArrayList<SimpleGrantedAuthority>();
-        userRoles.add(new SimpleGrantedAuthority("USER"));
-        user = new UserDetails("user@crownedcuts.fi", "user", userRoles);
-        userService.addUser(user);
+
+        for (String role : roles)
+        {
+            userRoles.add(new SimpleGrantedAuthority(role));
+        }
+
+        userService.addUser(new UserDetails(username, password, userRoles));
     }
 }

@@ -2,6 +2,7 @@ package com.crownedcuts.booking.repositories;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -28,6 +29,7 @@ public class SQLLiteRepository implements DbRepository
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @PostConstruct
+    @Profile("dev")
     public void setupDatabase() throws IOException, SQLException
     {
         final File databaseFile = new File(databaseFilepath);
