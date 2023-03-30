@@ -2,7 +2,9 @@ package com.crownedcuts.booking.records;
 
 import com.crownedcuts.booking.Regex;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -31,5 +33,23 @@ public record UserDetails(String username, String password, Collection<? extends
                 }
             }
         }
+    }
+
+    /**
+     * Static method that creates a UserDetails instance.
+     *
+     * @param username Username for UserDetails
+     * @param password Password for UserDetails
+     * @param roles    An array of Strings that represent the roles
+     * @return UserDetails with the roles type being a SimpleGrantedAuthority
+     */
+    public static UserDetails of(String username, String password, String... roles)
+    {
+        var userRoles = new ArrayList<SimpleGrantedAuthority>();
+        for (String role : roles)
+        {
+            userRoles.add(new SimpleGrantedAuthority(role));
+        }
+        return new UserDetails(username, password, userRoles);
     }
 }
