@@ -18,20 +18,16 @@ public record UserDetails(String username, String password, Collection<? extends
 {
     public UserDetails
     {
+        // Username can be null, but if it is not null it must be in email form
         if (username != null && !Regex.isEmail(username))
         {
             throw new IllegalArgumentException("Username must be in the form of an email");
         }
 
-        if (authorities != null && authorities.size() > 0)
+        // User may have no roles. If user has roles, all roles must be validated
+        if (authorities != null && authorities.size() > 0 && validateUserRoles())
         {
-            for (GrantedAuthority a : authorities)
-            {
-                if (!a.getAuthority().chars().allMatch(Character::isUpperCase))
-                {
-                    throw new IllegalArgumentException("Roles can only be marked with all caps");
-                }
-            }
+            throw new IllegalArgumentException("Roles can only be marked with all caps");
         }
     }
 
@@ -51,5 +47,23 @@ public record UserDetails(String username, String password, Collection<? extends
             userRoles.add(new SimpleGrantedAuthority(role));
         }
         return new UserDetails(username, password, userRoles);
+    }
+
+    /**
+     * Helper method to check if user roles are compliant with specifications
+     *
+     * @return True if roles are OK, otherwise false
+     */
+    private boolean validateUserRoles()
+    {
+        for (GrantedAuthority a : authorities)
+        {
+            if (!a.getAuthority().chars().allMatch(Character::isUpperCase))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

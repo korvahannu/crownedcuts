@@ -31,7 +31,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        var userToCheck = new UserDetails(username, password, null);
+        var userToCheck = UserDetails.of(username, password, null);
 
         if (userService.checkUserPassword(userToCheck))
         {
