@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -74,27 +75,14 @@ public class UserServiceImpl implements UserService
     @Transactional
     public boolean addUser(UserDetails user)
     {
-        String query = "insert into users (username, password) values (?, ?)";
-        try (var statement = repository.getPreparedStatement(query))
+        try (var connection = repository.getIsolatedConnection())
         {
-            statement.setString(1, user.username());
-            statement.setString(2, passwordEncoder.encode(user.password()));
-            statement.execute();
-        }
-        catch (Exception ex)
-        {
-            logger.warning("Failed to add user " + new UserDetails(user.username(), null, user.authorities()));
-            return false;
-        }
-
-        // Todo: If adding the roles fails, we should delete the added user and roles
-        query = "insert into roles (username, userRole) values (?, ?)";
-        for (GrantedAuthority authority : user.authorities())
-        {
-            try (var statement = repository.getPreparedStatement(query))
+            connection.setAutoCommit(false);
+            String query = "insert into users (username, password) values (?, ?)";
+            try (var statement = connection.prepareStatement(query))
             {
                 statement.setString(1, user.username());
-                statement.setString(2, authority.getAuthority());
+                statement.setString(2, passwordEncoder.encode(user.password()));
                 statement.execute();
             }
             catch (Exception ex)
@@ -102,9 +90,33 @@ public class UserServiceImpl implements UserService
                 logger.warning("Failed to add user " + new UserDetails(user.username(), null, user.authorities()));
                 return false;
             }
-        }
 
-        return true;
+            query = "insert into roles (username, userRole) values (?, ?)";
+            try (var statement = connection.prepareStatement(query))
+            {
+                for (GrantedAuthority authority : user.authorities())
+                {
+
+                    statement.setString(1, user.username());
+                    statement.setString(2, authority.getAuthority());
+                    statement.execute();
+                }
+                connection.commit();
+            }
+            catch (Exception ex)
+            {
+                logger.warning("Failed to add user " + new UserDetails(user.username(), null, user.authorities()));
+                connection.rollback();
+                return false;
+            }
+
+            return true;
+        }
+        catch (SQLException ex)
+        {
+            logger.warning("Failed to get isolated connection.");
+            return false;
+        }
     }
 
     @Override

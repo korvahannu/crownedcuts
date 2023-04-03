@@ -73,6 +73,19 @@ public class SQLLiteRepository implements DbRepository
         return connection.prepareStatement(query);
     }
 
+    @Override
+    public Connection getIsolatedConnection()
+    {
+        try
+        {
+            return DriverManager.getConnection(connectionString);
+        }
+        catch (SQLException exception)
+        {
+            return null;
+        }
+    }
+
     /**
      * Helper function that initializes the SQLite database
      *

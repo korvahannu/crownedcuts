@@ -1,5 +1,6 @@
 package com.crownedcuts.booking.repositories;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -30,4 +31,11 @@ public interface DbRepository
      * @throws SQLException If forming a PreparedStatement fails
      */
     PreparedStatement getPreparedStatement(String query) throws SQLException;
+
+    /**
+     * Returns a new connection to the database. Handling of resources is up to the caller
+     *
+     * @return Connection or null
+     */
+    Connection getIsolatedConnection();
 }
