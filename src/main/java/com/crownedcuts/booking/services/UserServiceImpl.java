@@ -32,9 +32,8 @@ public class UserServiceImpl implements UserService
     {
         String query = "select * from users where username=?";
 
-        try
+        try (var statement = repository.getPreparedStatement(query))
         {
-            var statement = repository.getPreparedStatement(query);
             statement.setString(1, username);
             var result = statement.executeQuery();
 
@@ -75,10 +74,9 @@ public class UserServiceImpl implements UserService
     @Transactional
     public boolean addUser(UserDetails user)
     {
-        try
+        String query = "insert into users (username, password) values (?, ?)";
+        try (var statement = repository.getPreparedStatement(query))
         {
-            String query = "insert into users (username, password) values (?, ?)";
-            var statement = repository.getPreparedStatement(query);
             statement.setString(1, user.username());
             statement.setString(2, passwordEncoder.encode(user.password()));
             statement.execute();
@@ -90,12 +88,11 @@ public class UserServiceImpl implements UserService
         }
 
         // Todo: If adding the roles fails, we should delete the added user and roles
+        query = "insert into roles (username, userRole) values (?, ?)";
         for (GrantedAuthority authority : user.authorities())
         {
-            String query = "insert into roles (username, userRole) values (?, ?)";
-            try
+            try (var statement = repository.getPreparedStatement(query))
             {
-                var statement = repository.getPreparedStatement(query);
                 statement.setString(1, user.username());
                 statement.setString(2, authority.getAuthority());
                 statement.execute();
@@ -116,9 +113,8 @@ public class UserServiceImpl implements UserService
         String query = "select * from roles where username=?";
         ArrayList<GrantedAuthority> roles = null;
 
-        try
+        try (var statement = repository.getPreparedStatement(query))
         {
-            var statement = repository.getPreparedStatement(query);
             statement.setString(1, username);
             var result = statement.executeQuery();
             roles = new ArrayList<>();
