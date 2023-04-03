@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService
     @Override
     public Optional<UserDetails> getUser(String username)
     {
-        String query = "select * from users where username=?";
+        var query = "select * from users where username=?";
 
         try (var statement = repository.getPreparedStatement(query))
         {
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService
         try (var connection = repository.getIsolatedConnection())
         {
             connection.setAutoCommit(false);
-            String query = "insert into users (username, password) values (?, ?)";
+            var query = "insert into users (username, password) values (?, ?)";
             try (var statement = connection.prepareStatement(query))
             {
                 statement.setString(1, user.username());
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService
     @Override
     public ArrayList<GrantedAuthority> getUserRoles(String username)
     {
-        String query = "select * from roles where username=?";
+        var query = "select * from roles where username=?";
         ArrayList<GrantedAuthority> roles = null;
 
         try (var statement = repository.getPreparedStatement(query))

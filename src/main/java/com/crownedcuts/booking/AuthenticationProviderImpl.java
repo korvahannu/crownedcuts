@@ -28,19 +28,20 @@ public class AuthenticationProviderImpl implements AuthenticationProvider
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException
     {
-        String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
+        var username = authentication.getName();
+        var password = authentication.getCredentials().toString();
 
-        var userToCheck = UserDetails.of(username, password, null);
+        var userToCheck = UserDetails.of(username, password);
 
-        if (userService.checkUserPassword(userToCheck))
+        if (!userService.checkUserPassword(userToCheck))
         {
-            return userService.getUser(username)
-                    .map(userDetails -> new UsernamePasswordAuthenticationToken(userDetails.username(), null, userDetails.authorities()))
-                    .orElse(null);
+            return null;
+
         }
 
-        return null;
+        return userService.getUser(username)
+                .map(u -> new UsernamePasswordAuthenticationToken(u.username(), null, u.authorities()))
+                .orElse(null);
     }
 
     @Override
