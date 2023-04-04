@@ -12,6 +12,7 @@ import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -33,7 +34,7 @@ public class ReservationServiceImpl implements ReservationService
     @Override
     public List<AvailableTime> getAllFreeTimes(ZonedDateTime startDate, ZonedDateTime endDate)
     {
-        if(startDate.plusWeeks(1).isAfter(endDate))
+        if(startDate.plusWeeks(1).isBefore(endDate))
         {
             throw new IllegalArgumentException("To save resources, you can only fetch free times up to one week at a time");
         }
@@ -47,7 +48,7 @@ public class ReservationServiceImpl implements ReservationService
         do
         {
 
-            if(currentTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || currentTime.getDayOfWeek().equals(DayOfWeek.SUNDAY))
+            if(isWeekend(currentTime.getDayOfWeek()))
             {
                 currentTime = currentTime.plusDays(1);
                 continue;
@@ -86,7 +87,7 @@ public class ReservationServiceImpl implements ReservationService
                     {
                         currentBarbers = currentBarbers
                                 .stream()
-                                .filter(ba -> ba.id() == b.id())
+                                .filter(ba -> ba.id() != b.id())
                                 .toList();
                     }
                 }
@@ -101,68 +102,15 @@ public class ReservationServiceImpl implements ReservationService
     }
 
     @Override
-    public List<AvailableTime> getAllFreeTimes(BarberHairdresser barberHairdresser, ZonedDateTime startDate, ZonedDateTime endDate)
-    {
-        if(startDate.plusWeeks(1).isAfter(endDate))
-        {
-            throw new IllegalArgumentException("To save resources, you can only fetch free times up to one week at a time");
-        }
-
-        var reservations = getAllReservations(startDate, endDate);
-        List<AvailableTime> result = new ArrayList<>();
-
-        var currentTime = startDate.plusHours(1);
-        var barbers = barberHairdresserService.getAllBarbers();
-
-        do
-        {
-
-            if(currentTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || currentTime.getDayOfWeek().equals(DayOfWeek.SUNDAY))
-            {
-                currentTime = currentTime.plusDays(1);
-                continue;
-            }
-
-            if(currentTime.getHour() >= 16)
-            {
-                currentTime = currentTime.plusDays(1);
-                currentTime = currentTime.minusHours(8);
-                continue;
-            }
-
-            if(currentTime.getHour() < 8)
-            {
-                currentTime = currentTime.plusHours(1);
-                continue;
-            }
-
-            boolean isBarberAvailable = true;
-            for(Reservation r : reservations)
-            {
-                if(r.time().getHour() == currentTime.getHour() && r.time().getDayOfYear() == currentTime.getDayOfYear())
-                {
-                    if(r.barberId() == barberHairdresser.id())
-                    {
-                        isBarberAvailable = false;
-                    }
-                }
-            }
-
-            if(isBarberAvailable)
-            {
-                result.add(new AvailableTime(currentTime, List.of(barberHairdresser)));
-            }
-
-            currentTime = currentTime.plusHours(1);
-        } while (currentTime.isBefore(endDate));
-
-        return result;
-    }
-
-    @Override
     public boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, ZonedDateTime time)
     {
+        if(isWeekend(time.getDayOfWeek()) || time.getHour() < 8 || time.getHour() > 15)
+        {
+            throw new IllegalArgumentException("You may only reserve for weekends between 8-16 o'clock");
+        }
+
         String query = "INSERT INTO reservations (username, dateAndTime, barberId) VALUES (?, ?, ?)";
+        time = time.truncatedTo(ChronoUnit.HOURS);
 
         try(var statement = repository.getPreparedStatement(query))
         {
@@ -187,7 +135,7 @@ public class ReservationServiceImpl implements ReservationService
         long startDateEpoch = start.toInstant().toEpochMilli();
         long endDateEpoch = end.toInstant().toEpochMilli();
 
-        String query = "SELECT * FROM reservations WHERE dateAndTime >= ? AND dateAndTime < ?";
+        String query = "SELECT * FROM reservations WHERE dateAndTime >= ? AND dateAndTime <= ?";
         List<Reservation> result = new ArrayList<>();
 
         try(var statement = repository.getPreparedStatement(query))
@@ -220,14 +168,14 @@ public class ReservationServiceImpl implements ReservationService
         long startDateEpoch = start.toInstant().toEpochMilli();
         long endDateEpoch = end.toInstant().toEpochMilli();
 
-        String query = "SELECT * FROM reservations WHERE dateAndTime >= ? AND dateAndTime < ? AND barberId == ?";
+        String query = "SELECT * FROM reservations WHERE dateAndTime >= ? AND dateAndTime <= ? AND barberId == ?";
         List<Reservation> result = new ArrayList<>();
 
         try(var statement = repository.getPreparedStatement(query))
         {
             statement.setLong(1, startDateEpoch);
             statement.setLong(2, endDateEpoch);
-            statement.setLong(2, barberHairdresser.id());
+            statement.setLong(3, barberHairdresser.id());
 
             var reservationsResult = statement.executeQuery();
 
@@ -246,5 +194,10 @@ public class ReservationServiceImpl implements ReservationService
         }
 
         return result;
+    }
+
+    private boolean isWeekend(DayOfWeek dayOfWeek)
+    {
+        return dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY);
     }
 }

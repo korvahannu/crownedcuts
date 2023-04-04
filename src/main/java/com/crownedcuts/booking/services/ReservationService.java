@@ -22,15 +22,6 @@ public interface ReservationService
     List<AvailableTime> getAllFreeTimes (ZonedDateTime startDate, ZonedDateTime endDate);
 
     /**
-     * Returns a list of free times
-     * @param barberHairdresser We can use this to specify that we want free times of a specific barber only
-     * @param startDate Start date to start looking free times for
-     * @param endDate End date to start looking free times for
-     * @return List of available times
-     */
-    List<AvailableTime> getAllFreeTimes(BarberHairdresser barberHairdresser, ZonedDateTime startDate, ZonedDateTime endDate);
-
-    /**
      * Reserves a barber/hairdresser for a user at a given date and time
      * @param barberHairdresser who does the hairdressing
      * @param user who the reservation is for
