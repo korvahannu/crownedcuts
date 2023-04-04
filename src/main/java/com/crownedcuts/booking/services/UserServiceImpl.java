@@ -1,5 +1,6 @@
 package com.crownedcuts.booking.services;
 
+import com.crownedcuts.booking.records.Reservation;
 import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.repositories.DbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -142,5 +147,33 @@ public class UserServiceImpl implements UserService
         }
 
         return roles;
+    }
+
+    @Override
+    public List<Reservation> getReservations(String username)
+    {
+        String query = "SELECT * FROM reservations WHERE username = ?";
+        List<Reservation> result = new ArrayList<>();
+
+        try(var statement = repository.getPreparedStatement(query))
+        {
+            statement.setString(1, username);
+            var resultSet = statement.executeQuery();
+
+            while(resultSet.next())
+            {
+                result.add(new Reservation(
+                        username,
+                        ZonedDateTime.ofInstant(Instant.ofEpochMilli(resultSet.getLong("dateAndTime")), ZoneId.systemDefault()),
+                        resultSet.getLong("barberId")
+                ));
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.info("Failed to retrieve roles for user " + username);
+        }
+
+        return  result;
     }
 }

@@ -1,10 +1,12 @@
 package com.crownedcuts.booking.services;
 
+import com.crownedcuts.booking.records.Reservation;
 import com.crownedcuts.booking.records.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,4 +44,11 @@ public interface UserService
      * @return List of roles
      */
     Collection<GrantedAuthority> getUserRoles(String username);
+
+    /**
+     * Gets the list of reservations the user has made
+     * @param username to search for
+     * @return List of reservations
+     */
+    List<Reservation> getReservations(String username);
 }
