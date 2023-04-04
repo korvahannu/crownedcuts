@@ -67,7 +67,7 @@ public class ReservationServiceImpl implements ReservationService
                 continue;
             }
 
-            // current reservations for this hour
+            // First step of this algorithm is to get all current reservations for this time
             var currentReservations = new ArrayList<Reservation>();
             for(Reservation r : reservations)
             {
@@ -77,7 +77,8 @@ public class ReservationServiceImpl implements ReservationService
                 }
             }
 
-            // current available barbers for this hour
+            // The second step of this algorithm is to use the previously gotten reservations
+            // and filter the barbers handling them out
             List<BarberHairdresser> currentBarbers = new ArrayList<>(barbers);
             for(Reservation r : currentReservations)
             {
@@ -93,7 +94,10 @@ public class ReservationServiceImpl implements ReservationService
                 }
             }
 
-            result.add(new AvailableTime(currentTime, currentBarbers));
+            if(currentBarbers.size() > 0)
+            {
+                result.add(new AvailableTime(currentTime, currentBarbers));
+            }
 
             currentTime = currentTime.plusHours(1);
         } while (currentTime.isBefore(endDate));
