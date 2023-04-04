@@ -25,7 +25,7 @@ public record UserDetails(String username, String password, Collection<? extends
         }
 
         // User may have no roles. If user has roles, all roles must be validated
-        if (authorities.size() > 0 && !isValidUserRoles(authorities))
+        if (!authorities.isEmpty() && !isValidUserRoles(authorities))
         {
             throw new IllegalArgumentException("Roles can only be marked with all caps");
         }

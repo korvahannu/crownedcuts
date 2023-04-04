@@ -39,7 +39,7 @@ public interface ReservationService
     List<Reservation> getAllReservations(ZonedDateTime start, ZonedDateTime end);
 
     /**
-     * Gets all reservations between two ZonedDateTimes that a barber/haidresses has
+     * Gets all reservations between two ZonedDateTimes that a barber/haidresser has
      * @param start where to start checking
      * @param end where to end checking
      * @return List of reservations

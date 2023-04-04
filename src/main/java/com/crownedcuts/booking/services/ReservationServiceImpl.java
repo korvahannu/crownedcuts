@@ -15,6 +15,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -36,7 +37,7 @@ public class ReservationServiceImpl implements ReservationService
     {
         if(startDate.plusWeeks(1).isBefore(endDate))
         {
-            throw new IllegalArgumentException("To save resources, you can only fetch free times up to one week at a time");
+            throw new IllegalArgumentException("You can only fetch free times up to one week at a time");
         }
 
         var reservations = getAllReservations(startDate, endDate);
@@ -47,57 +48,16 @@ public class ReservationServiceImpl implements ReservationService
 
         do
         {
+            var advancedTime = advanceIfOutsideWorkingHours(currentTime);
 
-            if(isWeekend(currentTime.getDayOfWeek()))
+            if(!advancedTime.equals(currentTime))
             {
-                currentTime = currentTime.plusDays(1);
+                currentTime = advancedTime;
                 continue;
             }
 
-            if(currentTime.getHour() >= 16)
-            {
-                currentTime = currentTime.plusDays(1);
-                currentTime = currentTime.minusHours(8);
-                continue;
-            }
-
-            if(currentTime.getHour() < 8)
-            {
-                currentTime = currentTime.plusHours(1);
-                continue;
-            }
-
-            // First step of this algorithm is to get all current reservations for this time
-            var currentReservations = new ArrayList<Reservation>();
-            for(Reservation r : reservations)
-            {
-                if(r.time().getHour() == currentTime.getHour() && r.time().getDayOfYear() == currentTime.getDayOfYear())
-                {
-                    currentReservations.add(r);
-                }
-            }
-
-            // The second step of this algorithm is to use the previously gotten reservations
-            // and filter the barbers handling them out
-            List<BarberHairdresser> currentBarbers = new ArrayList<>(barbers);
-            for(Reservation r : currentReservations)
-            {
-                for(BarberHairdresser b : currentBarbers)
-                {
-                    if(b.id() == r.barberId())
-                    {
-                        currentBarbers = currentBarbers
-                                .stream()
-                                .filter(ba -> ba.id() != b.id())
-                                .toList();
-                    }
-                }
-            }
-
-            if(currentBarbers.size() > 0)
-            {
-                result.add(new AvailableTime(currentTime, currentBarbers));
-            }
+            getAvailableTime(currentTime, reservations, barbers)
+                    .ifPresent(result::add);
 
             currentTime = currentTime.plusHours(1);
         } while (currentTime.isBefore(endDate));
@@ -200,8 +160,84 @@ public class ReservationServiceImpl implements ReservationService
         return result;
     }
 
+    /**
+     * Helper function that determines if the dayOfWeek is a weekend day
+     *
+     * @param dayOfWeek to check
+     * @return true if weekend, false otherwise
+     */
     private boolean isWeekend(DayOfWeek dayOfWeek)
     {
         return dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY);
+    }
+
+    /**
+     * Helper function that checks if a given time is outside working hours or at a weekend
+     * If the given time is a weekend, the time is advanced +1 day
+     * If the given time is past 16 o'clock, the time is advanced +1 day -8 hours
+     * If the given time is before 8, the time is advanced +1 hour
+     *
+     * @param zonedDateTime Time to advance
+     * @return A copy of the given time with the proper advancements made
+     */
+    private ZonedDateTime advanceIfOutsideWorkingHours(ZonedDateTime zonedDateTime)
+    {
+        if(isWeekend(zonedDateTime.getDayOfWeek()))
+        {
+            zonedDateTime = zonedDateTime.plusDays(1);
+        }
+        else if(zonedDateTime.getHour() >= 16)
+        {
+            zonedDateTime = zonedDateTime.plusDays(1).minusHours(8);
+        }
+        else if(zonedDateTime.getHour() < 8)
+        {
+            zonedDateTime = zonedDateTime.plusHours(1);
+        }
+
+        return zonedDateTime;
+    }
+
+    /**
+     * A helper function that gets the available time at an hour (if any)
+     *
+     * @param time to check the reservations at. Only the year, month, day and hour are taken into consideration
+     * @param reservations List of ALL current reservations
+     * @param barbers List of all barbers
+     * @return Available time or empty
+     */
+    private Optional<AvailableTime> getAvailableTime(ZonedDateTime time, List<Reservation> reservations, List<BarberHairdresser> barbers)
+    {
+        var currentReservations = new ArrayList<Reservation>();
+
+        for(Reservation r : reservations)
+        {
+            if(r.time().getHour() == time.getHour() && r.time().getDayOfYear() == time.getDayOfYear())
+            {
+                currentReservations.add(r);
+            }
+        }
+
+        List<BarberHairdresser> currentBarbers = new ArrayList<>(barbers);
+        for(Reservation r : currentReservations)
+        {
+            for(BarberHairdresser b : currentBarbers)
+            {
+                if(b.id() == r.barberId())
+                {
+                    currentBarbers = currentBarbers
+                            .stream()
+                            .filter(ba -> ba.id() != b.id())
+                            .toList();
+                }
+            }
+        }
+
+        if(currentBarbers.isEmpty())
+        {
+            return Optional.empty();
+        }
+
+        return Optional.of(new AvailableTime(time, currentBarbers));
     }
 }

@@ -13,14 +13,14 @@ public interface BarberHairdresserService
     /**
      * Gets barber/hairdresser information from the database and returns it
      * @param id to search the barber/hairdresser with
-     * @return Optional
+     * @return Optional that may or may not contain a BarberHairdresser instance
      */
     Optional<BarberHairdresser> getBarber(long id);
 
     /**
      * Gets barber/hairdresser information from the database and returns it
      * @param name to search the barber/hairdresser with
-     * @return Optional
+     * @return Optional that may or may not contain a BarberHairdresser instance
      */
     Optional<BarberHairdresser> getBarber(String name);
 

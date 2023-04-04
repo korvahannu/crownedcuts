@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestPropertySource(locations="classpath:test.reservationservicetests.properties")
-public class ReservationServiceTests
+class ReservationServiceTests
 {
     private final ReservationService reservationService;
     private  final BarberHairdresserService barberHairdresserService;
@@ -65,28 +65,28 @@ public class ReservationServiceTests
 
     @Test
     @Order(1)
-    public void gettingFreeTimeForOneHourWorks()
+    void gettingFreeTimeForOneHourWorks()
     {
         var result = reservationService.getAllFreeTimes(getTestableTime(),
                 getTestableTime().plusHours(1));
 
-        Assertions.assertTrue(result.size() == 1);
-        Assertions.assertTrue(result.get(0).barbersAvailable().size() == testBarbersCount);
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(testBarbersCount, result.get(0).barbersAvailable().size());
     }
 
     @Test
     @Order(1)
-    public void getFreeTimeForOneDayWorks()
+    void getFreeTimeForOneDayWorks()
     {
         var result = reservationService.getAllFreeTimes(getTestableTime(),
                 getTestableTime().plusHours(8));
 
-        Assertions.assertTrue(result.size() == 7);
+        Assertions.assertEquals(7, result.size());
     }
 
     @Test
     @Order(1)
-    public void gettingFreeTimeForOverAWeekThrows()
+    void gettingFreeTimeForOverAWeekThrows()
     {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             reservationService.getAllFreeTimes(getTestableTime(),
@@ -96,17 +96,17 @@ public class ReservationServiceTests
 
     @Test
     @Order(1)
-    public void gettingFreeTimeForAWeekWorks()
+    void gettingFreeTimeForAWeekWorks()
     {
         var result = reservationService.getAllFreeTimes(getTestableTime(),
                 getTestableTime().plusWeeks(1));
 
-        Assertions.assertTrue(result.size() == 39);
+        Assertions.assertEquals(39, result.size());
     }
 
     @Test
     @Order(2)
-    public void reservingATimeWorks()
+    void reservingATimeWorks()
     {
         var barber = barberHairdresserService.getAllBarbers().get(0);
         var user = userService.getUser("user@crownedcuts.fi").get();
@@ -119,12 +119,12 @@ public class ReservationServiceTests
                 getTestableTime().plusHours(1));
 
         Assertions.assertEquals(1, result.size());
-        Assertions.assertTrue(result.get(0).barbersAvailable().size() == testBarbersCount - 1);
+        Assertions.assertEquals(testBarbersCount - 1, result.get(0).barbersAvailable().size());
         Assertions.assertFalse(result.get(0).barbersAvailable().contains(barber));
 
         var reservations = userService.getReservations(user.username());
-        Assertions.assertTrue(reservations.size() == 1);
-        Assertions.assertTrue(reservations.get(0).username().equals(user.username()));
+        Assertions.assertEquals(1, reservations.size());
+        Assertions.assertEquals(user.username(), reservations.get(0).username());
 
         Assertions.assertTrue(reservationService.reserveTime(barber, user, getTestableTime().plusHours(2)));
         Assertions.assertTrue(reservationService.reserveTime(barber, user, getTestableTime().plusHours(3)));
@@ -152,12 +152,12 @@ public class ReservationServiceTests
 
         for(var time : targetBarberTimes)
         {
-            Assertions.assertTrue(time.barberId() == barber.id());
+            Assertions.assertEquals(barber.id(), time.barberId());
         }
     }
 
     @AfterAll
-    public static void cleanup()
+    static void cleanup()
     {
 
         try

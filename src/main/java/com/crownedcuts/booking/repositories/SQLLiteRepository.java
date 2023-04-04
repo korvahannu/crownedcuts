@@ -38,7 +38,7 @@ public class SQLLiteRepository implements DbRepository
         if (!databaseFile.exists() || databaseFile.isDirectory() && (databaseFile.createNewFile()))
         {
             newDatabaseFileCreated = true;
-            logger.info("Created new database file " + databaseFilepath);
+            logger.info("Created new database file.");
         }
 
         connectionString = "jdbc:sqlite:" + databaseFilepath;
@@ -48,7 +48,7 @@ public class SQLLiteRepository implements DbRepository
                 && !initializeDatabaseSQLFilepath.isBlank())
         {
             initializeDatabase();
-            logger.info("Initialized database according to " + initializeDatabaseSQLFilepath);
+            logger.info("Initialized database.");
         }
     }
 

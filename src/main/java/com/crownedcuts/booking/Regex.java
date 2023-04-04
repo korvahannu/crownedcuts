@@ -4,12 +4,16 @@ import java.util.regex.Pattern;
 
 public final class Regex
 {
-    public final static String emailPattern = "^\\w*?[a-zA-Z]\\w+@[a-z\\d\\-]+(\\.[a-z\\d\\-]+)*\\.[a-z]+\\z";
+    public static final String REGEX_EMAIL = "^\\w*?[a-zA-Z]\\w+@[a-z\\d\\-]+(\\.[a-z\\d\\-]+)*\\.[a-z]+\\z";
 
+    private Regex()
+    {
+    }
+    
     public static boolean isEmail(String email)
     {
         return Pattern
-                .compile(emailPattern)
+                .compile(REGEX_EMAIL)
                 .matcher(email)
                 .matches();
     }

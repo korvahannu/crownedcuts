@@ -9,19 +9,22 @@ class UserDetailsTests
     @Test
     void worksWithManyRoles()
     {
-        UserDetails.of("admin@crownedcuts.fi", "admin", "ADMIN", "USER");
+        var user = UserDetails.of("admin@crownedcuts.fi", "admin", "ADMIN", "USER");
+        Assertions.assertEquals("admin@crownedcuts.fi", user.username());
     }
 
     @Test
     void worksWithNoRoles()
     {
-        UserDetails.of("admin@crownedcuts.fi", "admin");
+        var user = UserDetails.of("admin@crownedcuts.fi", "admin");
+        Assertions.assertEquals("admin@crownedcuts.fi", user.username());
     }
 
     @Test
     void nullInformationShouldNotThrow()
     {
-        UserDetails.of(null, null);
+        var user = UserDetails.of(null, null);
+        Assertions.assertEquals(null, user.username());
     }
 
     @Test

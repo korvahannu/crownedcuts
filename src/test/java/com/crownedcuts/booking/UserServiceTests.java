@@ -2,6 +2,8 @@ package com.crownedcuts.booking;
 
 import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.services.UserService;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +28,21 @@ class UserServiceTests
     void gettingUserWorks()
     {
         var user = userService.getUser("admin@crownedcuts.fi");
-        Assert.isTrue(user.isPresent(), "UserService did not find user");
-        Assert.isTrue(user.get().username().equals("admin@crownedcuts.fi"), "UserService returned wrong user (username)");
-        Assert.isTrue(user.get().authorities().contains(new SimpleGrantedAuthority("ADMIN")), "UserService did not return correct roles");
-        Assert.isTrue(user.get().authorities().contains(new SimpleGrantedAuthority("USER")), "UserService did not return correct roles");
+        Assertions.assertTrue(user.isPresent(), "UserService did not find user");
+        Assertions.assertEquals("admin@crownedcuts.fi", user.get().username(), "UserService returned wrong user (username)");
+        Assertions.assertTrue(user.get().authorities().contains(new SimpleGrantedAuthority("ADMIN")), "UserService did not return correct roles");
+        Assertions.assertTrue(user.get().authorities().contains(new SimpleGrantedAuthority("USER")), "UserService did not return correct roles");
 
         user = userService.getUser("nonexistinguser");
-        Assert.isTrue(user.isEmpty(), "UserService returned something when it shouldn't have");
+        Assertions.assertTrue(user.isEmpty(), "UserService returned something when it shouldn't have");
     }
 
     @Test
     void checkPasswordWorks()
     {
         var user = UserDetails.of("admin@crownedcuts.fi", "admin");
-        Assert.isTrue(userService.checkUserPassword(user), "UserService did not correctly return true for correct password");
+        Assertions.assertTrue(userService.checkUserPassword(user), "UserService did not correctly return true for correct password");
         user = UserDetails.of("admin@crownedcuts.fi", "user");
-        Assert.isTrue(!userService.checkUserPassword(user), "UserService did not correctly return false for wrong password");
+        Assertions.assertTrue(!userService.checkUserPassword(user), "UserService did not correctly return false for wrong password");
     }
 }

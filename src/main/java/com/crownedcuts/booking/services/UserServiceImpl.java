@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService
             var roles = getUserRoles(username);
             String password = result.getString("password");
 
-            return roles == null
+            return roles.isEmpty()
                     ? Optional.empty()
                     : Optional.of(new UserDetails(username, password, roles));
         }
@@ -102,13 +102,12 @@ public class UserServiceImpl implements UserService
     public ArrayList<GrantedAuthority> getUserRoles(String username)
     {
         var query = "select * from roles where username=?";
-        ArrayList<GrantedAuthority> roles = null;
+        ArrayList<GrantedAuthority> roles = new ArrayList<>();
 
         try (var statement = repository.getPreparedStatement(query))
         {
             statement.setString(1, username);
             var result = statement.executeQuery();
-            roles = new ArrayList<>();
 
             while (result.next())
             {
