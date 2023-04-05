@@ -1,8 +1,7 @@
 package com.crownedcuts.booking.records;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
-public record AvailableTime(ZonedDateTime time, List<BarberHairdresser> barbersAvailable)
+public record AvailableTime(int year, int month, int day, int hour, List<BarberHairdresser> barbersAvailable)
 {
 }

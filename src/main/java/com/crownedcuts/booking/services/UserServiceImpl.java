@@ -1,6 +1,7 @@
 package com.crownedcuts.booking.services;
 
 import com.crownedcuts.booking.records.Reservation;
+import com.crownedcuts.booking.records.TimeDetails;
 import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.repositories.DbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -135,10 +133,15 @@ public class UserServiceImpl implements UserService
 
             while (resultSet.next())
             {
+                var timeDetails = new TimeDetails(
+                        resultSet.getInt("year"),
+                        resultSet.getInt("month"),
+                        resultSet.getInt("day"),
+                        resultSet.getInt("hour")
+                );
+
                 result.add(new Reservation(username,
-                        ZonedDateTime.ofInstant(
-                                Instant.ofEpochMilli(resultSet.getLong("dateAndTime")),
-                                ZoneId.systemDefault()),
+                        timeDetails,
                         resultSet.getLong("barberId")));
             }
         }

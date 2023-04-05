@@ -1,10 +1,7 @@
 package com.crownedcuts.booking.services;
 
-import com.crownedcuts.booking.records.AvailableTime;
-import com.crownedcuts.booking.records.BarberHairdresser;
-import com.crownedcuts.booking.records.Reservation;
-import com.crownedcuts.booking.records.UserDetails;
-import java.time.ZonedDateTime;
+import com.crownedcuts.booking.records.*;
+
 import java.util.List;
 
 /**
@@ -14,35 +11,39 @@ import java.util.List;
 public interface ReservationService
 {
     /**
-     * Returns a list of free times
-     * @param startDate Start date to start looking free times for
-     * @param endDate End date to start looking free times for
-     * @return List of available times
+     * Returns a list of available times that can be reserved on a given date.
+     * @param year in which we want to inspect free times
+     * @param month in which we want to inspect free times
+     * @param day in which we want to inspect free times
+     * @return a list of AvailableTimes, length of 0 if there are none
      */
-    List<AvailableTime> getAllFreeTimes (ZonedDateTime startDate, ZonedDateTime endDate);
+    List<AvailableTime> getAllFreeTimesOnDay (int year, int month, int day);
 
     /**
-     * Reserves a barber/hairdresser for a user at a given date and time
-     * @param barberHairdresser who does the hairdressing
-     * @param user who the reservation is for
-     * @param time when is the time
-     * @return true if reservation was successful, otherwise false
+     * Reserves a time for a user and a barber/haidresser
+     * @param barberHairdresser barber/haidresser that does the job
+     * @param user that comes to the saloon
+     * @param timeDetails details of the time (year, month, day, hour)
+     * @return true if time was successfully reserved
      */
-    boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, ZonedDateTime time);
+    boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails);
 
     /**
-     * Gets all reservations between two ZonedDateTimes
-     * @param start where to start checking
-     * @param end where to end checking
-     * @return List of reservations
+     * Gets list of all reservations for a given day
+     * @param year at which the reservations should be looked up at
+     * @param month at which the reservations should be looked up at
+     * @param day at which the reservations should be looked up at
+     * @return
      */
-    List<Reservation> getAllReservations(ZonedDateTime start, ZonedDateTime end);
+    List<Reservation> getReservationsOfDay(int year, int month, int day);
 
     /**
-     * Gets all reservations between two ZonedDateTimes that a barber/haidresser has
-     * @param start where to start checking
-     * @param end where to end checking
-     * @return List of reservations
+     * Gets list of all reservations for a given day of a specific barber
+     * @param barberHairdresser Whose reservations we want
+     * @param year at which the reservations should be looked up at
+     * @param month at which the reservations should be looked up at
+     * @param day at which the reservations should be looked up at
+     * @return
      */
-    List<Reservation> getAllReservations(BarberHairdresser barberHairdresser, ZonedDateTime start, ZonedDateTime end);
+    List<Reservation> getReservationsOfDay(BarberHairdresser barberHairdresser, int year, int month, int day);
 }

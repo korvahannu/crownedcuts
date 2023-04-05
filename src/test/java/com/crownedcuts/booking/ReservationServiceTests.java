@@ -1,5 +1,6 @@
 package com.crownedcuts.booking;
 
+import com.crownedcuts.booking.records.TimeDetails;
 import com.crownedcuts.booking.services.BarberHairdresserService;
 import com.crownedcuts.booking.services.ReservationService;
 import com.crownedcuts.booking.services.UserService;
@@ -47,61 +48,13 @@ class ReservationServiceTests
         this.userService = userService;
     }
 
-    /**
-     * Helper function that returns a testable time that is 8 o'clock at the next monday
-     * @return ZoneDateTime
-     */
-    private ZonedDateTime getTestableTime()
-    {
-        var time = ZonedDateTime.of(LocalDate.now(), LocalTime.of(8, 0), TimeZone.getDefault().toZoneId());
-
-        while (!time.getDayOfWeek().equals(DayOfWeek.MONDAY))
-        {
-            time = time.plusDays(1);
-        }
-
-        return time;
-    }
-
     @Test
     @Order(1)
-    void gettingFreeTimeForOneHourWorks()
+    void gettingFreeTimeForADayWorks()
     {
-        var result = reservationService.getAllFreeTimes(getTestableTime(),
-                getTestableTime().plusHours(1));
+        var result = reservationService.getAllFreeTimesOnDay(2023, 1, 20);
 
-        Assertions.assertEquals(1, result.size());
-        Assertions.assertEquals(testBarbersCount, result.get(0).barbersAvailable().size());
-    }
-
-    @Test
-    @Order(1)
-    void getFreeTimeForOneDayWorks()
-    {
-        var result = reservationService.getAllFreeTimes(getTestableTime(),
-                getTestableTime().plusHours(8));
-
-        Assertions.assertEquals(7, result.size());
-    }
-
-    @Test
-    @Order(1)
-    void gettingFreeTimeForOverAWeekThrows()
-    {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            reservationService.getAllFreeTimes(getTestableTime(),
-                    getTestableTime().plusWeeks(1).plusHours(1));
-        });
-    }
-
-    @Test
-    @Order(1)
-    void gettingFreeTimeForAWeekWorks()
-    {
-        var result = reservationService.getAllFreeTimes(getTestableTime(),
-                getTestableTime().plusWeeks(1));
-
-        Assertions.assertEquals(39, result.size());
+        Assertions.assertEquals(8, result.size());
     }
 
     @Test
@@ -110,15 +63,15 @@ class ReservationServiceTests
     {
         var barber = barberHairdresserService.getAllBarbers().get(0);
         var user = userService.getUser("user@crownedcuts.fi").get();
+        var timeDetails = new TimeDetails(2023, 5, 5, 8);
 
-        var didReservationWork = reservationService.reserveTime(barber, user, getTestableTime().plusHours(1));
+        var didReservationWork = reservationService.reserveTime(barber, user, timeDetails);
 
         Assertions.assertTrue(didReservationWork);
 
-        var result = reservationService.getAllFreeTimes(getTestableTime(),
-                getTestableTime().plusHours(1));
+        var result = reservationService.getAllFreeTimesOnDay(2023, 5, 5);
 
-        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(8, result.size());
         Assertions.assertEquals(testBarbersCount - 1, result.get(0).barbersAvailable().size());
         Assertions.assertFalse(result.get(0).barbersAvailable().contains(barber));
 
@@ -126,29 +79,37 @@ class ReservationServiceTests
         Assertions.assertEquals(1, reservations.size());
         Assertions.assertEquals(user.username(), reservations.get(0).username());
 
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, getTestableTime().plusHours(2)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, getTestableTime().plusHours(3)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, getTestableTime().plusHours(4)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, getTestableTime().plusHours(5)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, getTestableTime().plusHours(6)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, getTestableTime().plusHours(7)));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 9)));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 10)));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 11)));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 12)));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 13)));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 14)));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 15)));
+        Assertions.assertFalse(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 15)));
 
+        var invalidReservationTimeTooLate = new TimeDetails(2023, 5, 5, 16);
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            reservationService.reserveTime(barber, user, getTestableTime().plusHours(8));
+            reservationService.reserveTime(barber, user, invalidReservationTimeTooLate);
         });
 
-        Assertions.assertEquals(7, userService.getReservations(user.username()).size());
+        var invalidReservationTimeTooEarly = new TimeDetails(2023, 5, 5, 16);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            reservationService.reserveTime(barber, user, invalidReservationTimeTooEarly);
+        });
 
-        var barberTimes = reservationService.getAllFreeTimes(getTestableTime(), getTestableTime().plusHours(8));
+        Assertions.assertEquals(8, userService.getReservations(user.username()).size());
+
+        var barberTimes = reservationService.getAllFreeTimesOnDay(2023, 5, 5);
 
         for(var time : barberTimes)
         {
-            Assertions.assertTrue(!time.barbersAvailable().contains(barber));
+            Assertions.assertFalse(time.barbersAvailable().contains(barber));
         }
 
-        var targetBarberTimes = reservationService.getAllReservations(barber, getTestableTime(), getTestableTime().plusHours(8));
+        var targetBarberTimes = reservationService.getReservationsOfDay(barber, 2023, 5, 5);
 
-        Assertions.assertEquals(7, targetBarberTimes.size());
+        Assertions.assertEquals(8, targetBarberTimes.size());
 
         for(var time : targetBarberTimes)
         {
