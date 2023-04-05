@@ -30,10 +30,19 @@ public class AuthenticationProviderImpl implements AuthenticationProvider
     {
         var username = authentication.getName();
         var password = authentication.getCredentials().toString();
+        UserDetails userDetails;
 
-        var userToCheck = UserDetails.of(username, password);
+        try
+        {
+            userDetails = UserDetails.of(username, password);
+        }
+        catch(IllegalArgumentException ex)
+        {
+            return null;
+        }
 
-        if (!userService.checkUserPassword(userToCheck))
+
+        if (!userService.checkUserPassword(userDetails))
         {
             return null;
 
