@@ -30,6 +30,11 @@
             .getElementById('service-list-hairdresser')
         pageItems.serviceListingsBarbers = document
             .getElementById('service-list-barber')
+        pageItems.abortButton = document.getElementById('abort-reservation');
+        pageItems.shadow = document.getElementById('page-shadow');
+        pageItems.messageBox = document.getElementById('messageBox');
+        pageItems.cancelAbortButton = document.getElementById('cancelAbortButton');
+        pageItems.confirmAbortButton = document.getElementById('confirmAbortButton');
 
         maxCountOfSlides = pageItems.slides.length - 1;
 
@@ -39,7 +44,7 @@
         }
 
         // on first render, hide the button that takes the user to the next page
-        pageItems.previousSlideButton.style.display = 'none'
+        pageItems.previousSlideButton.style.visibility = 'hidden'
 
         pageItems.nextSlideButton.addEventListener('click', onNextSlideButtonClick);
         pageItems.previousSlideButton.addEventListener('click', onPreviousSlideButtonClick)
@@ -48,6 +53,10 @@
         pageItems.hairLengthShortButton.addEventListener('click', onHairLengthShortButtonClick);
         pageItems.serviceTypeHairdresserButton.addEventListener('click', onServiceTypeHairdresserButtonClick);
         pageItems.serviceTypeBarberButton.addEventListener('click', onServiceTypeBarberButtonClick);
+        pageItems.abortButton.addEventListener('click', onAbortButtonClick);
+        pageItems.shadow.addEventListener('click', cancelAbort);
+        pageItems.cancelAbortButton.addEventListener('click', cancelAbort);
+        pageItems.confirmAbortButton.addEventListener('click', confirmAbort);
     }
 
     reservationView.toggleService = function toggleService(button, price) {
@@ -91,7 +100,7 @@
         } else {
             currentSlide++;
         }
-        pageItems.previousSlideButton.style.display = "block"
+        pageItems.previousSlideButton.style.visibility = 'visible'
 
         if (currentSlide === 1 && !payload.hairLength) {
             pageItems.nextSlideButton.disabled = true
@@ -116,7 +125,7 @@
         event.preventDefault();
         window.scrollTo(0, 0)
         if (currentSlide <= 1) {
-            pageItems.previousSlideButton.style.display = "none"
+            pageItems.previousSlideButton.style.visibility = 'hidden'
         }
 
         if (currentSlide === 0) {
@@ -193,6 +202,25 @@
         pageItems.hairLengthShortButton.nextElementSibling.style.display = "block"
         payload.hairLength = "short"
         pageItems.nextSlideButton.disabled = false
+    }
+
+    function onAbortButtonClick(event) {
+        event.preventDefault();
+        pageItems.shadow.style.display = 'block';
+        pageItems.messageBox.style.display = 'block';
+    }
+
+    function cancelAbort(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        pageItems.shadow.style.display = 'none';
+        pageItems.messageBox.style.display = 'none';
+    }
+
+    function confirmAbort(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        window.location.href = "/"
     }
 
     function hideAllHairLengthCheckmarks() {

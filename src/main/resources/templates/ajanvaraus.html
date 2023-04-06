@@ -6,6 +6,16 @@
     <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
+<div id="page-shadow">
+</div>
+<div id="messageBox">
+    <h2>Haluatko varmasti keskeyttää varauksen?</h2>
+    <p>Keskeyttämisen jälkeen näkymä palaa etusivulle.</p>
+    <div id="messageBoxButtonContainer">
+        <button id="cancelAbortButton">Peruuta</button>
+        <button id="confirmAbortButton">Keskeytä ajanvaraus</button>
+    </div>
+</div>
 <div id="reservation-wrapper">
     <h1>Ajanvaraus</h1>
     <section class="slider-wrapper">
@@ -63,59 +73,59 @@
                         <div class="service-listing">
                             <span class="service-title">Leikkaus, pesu ja kuivaus</span>
                             <span class="price">45.00€</span>
-                            <button class="reservation-toggable-service-button" type="button" value="haidresser-cut" onclick="toggleService(this, 45); return false">+</button>
+                            <button class="reservation-toggable-service-button" type="button" value="hairdressingCut" onclick="toggleService(this, 45); return false">+</button>
                         </div>
                         <div class="service-listing">
                             <span class="service-title">Mallinmuutosleikkaus</span>
                             <span class="price">70.00€</span>
-                            <button class="reservation-toggable-service-button" type="button" value="haidresser-new-style" onclick="toggleService(this, 70); return false">+</button>
+                            <button class="reservation-toggable-service-button" type="button" value="hairdressingNewStyle" onclick="toggleService(this, 70); return false">+</button>
                         </div>
                         <div class="service-listing">
                             <span class="service-title">Otsahiusten leikkaus</span>
                             <span class="price">15.00€</span>
-                            <button class="reservation-toggable-service-button"  type="button" value="haidresser-cut-forehead" onclick="toggleService(this, 15); return false">+</button>
+                            <button class="reservation-toggable-service-button"  type="button" value="hairdressingCutForehead" onclick="toggleService(this, 15); return false">+</button>
                         </div>
                         <div class="service-listing">
                             <span class="service-title">Hiusten värjäys</span>
                             <span class="price">100.00€</span>
-                            <button class="reservation-toggable-service-button" type="button" value="haidresser-color-all" onclick="toggleService(this, 100); return false">+</button>
+                            <button class="reservation-toggable-service-button" type="button" value="hairdressingColor" onclick="toggleService(this, 100); return false">+</button>
                         </div>
                         <div class="service-listing">
                             <span class="service-title">Juurikasvun värjäys</span>
                             <span class="price">50.00€</span>
-                            <button class="reservation-toggable-service-button" type="button" value="haidresser-color-root-growth" onclick="toggleService(this, 50); return false">+</button>
+                            <button class="reservation-toggable-service-button" type="button" value="hairdressingColorRootGrowth" onclick="toggleService(this, 50); return false">+</button>
                         </div>
                     </div>
                     <div id="service-list-barber">
                         <div class="service-listing">
                             <span class="service-title">Leikkaus, pesu ja kuivaus</span>
                             <span class="price">25.00€</span>
-                            <button class="reservation-toggable-service-button" type="button" value="barber-cut" onclick="toggleService(this, 25); return false">+</button>
+                            <button class="reservation-toggable-service-button" type="button" value="barberCut" onclick="toggleService(this, 25); return false">+</button>
                         </div>
                         <div class="service-listing">
                             <span class="service-title">Mallinmuutosleikkaus</span>
                             <span class="price">40.00€</span>
-                            <button class="reservation-toggable-service-button" type="button" value="barber-new-style" onclick="toggleService(this, 40); return false">+</button>
+                            <button class="reservation-toggable-service-button" type="button" value="barberNewStyle" onclick="toggleService(this, 40); return false">+</button>
                         </div>
                         <div class="service-listing">
                             <span class="service-title">Parturi konetyö</span>
                             <span class="price">15.00€</span>
-                            <button class="reservation-toggable-service-button"  type="button" value="barber-machine-cut" onclick="toggleService(this, 15); return false">+</button>
+                            <button class="reservation-toggable-service-button"  type="button" value="barberMachineCut" onclick="toggleService(this, 15); return false">+</button>
                         </div>
                         <div class="service-listing">
                             <span class="service-title">Hiusten värjäys</span>
                             <span class="price">75.00€</span>
-                            <button class="reservation-toggable-service-button" type="button" value="barber-color-all" onclick="toggleService(this, 75); return false">+</button>
+                            <button class="reservation-toggable-service-button" type="button" value="barberColor" onclick="toggleService(this, 75); return false">+</button>
                         </div>
                         <div class="service-listing">
                             <span class="service-title">Juurikasvun värjäys</span>
                             <span class="price">35.00€</span>
-                            <button class="reservation-toggable-service-button" type="button" value="barber-color-root-growth" onclick="toggleService(this, 35); return false">+</button>
+                            <button class="reservation-toggable-service-button" type="button" value="barberColorRootGrowth" onclick="toggleService(this, 35); return false">+</button>
                         </div>
                         <div class="service-listing">
                             <span class="service-title">Parran muotoilu</span>
                             <span class="price">10.00€</span>
-                            <button class="reservation-toggable-service-button" type="button" value="barber-beard-mold" onclick="toggleService(this, 10); return false">+</button>
+                            <button class="reservation-toggable-service-button" type="button" value="barberBeard" onclick="toggleService(this, 10); return false">+</button>
                         </div>
                     </div>
                 </div>
@@ -125,21 +135,29 @@
             </div>
             <div class="slide">
                 <h2>Valitse aika ja työntekijä</h2>
+                <select>
+                    <option>Kuka tahansa</option>
+                    <option>Hannu Korvala</option>
+                    <option>Milla Pyrrö</option>
+                    <option>Antti Juustila</option>
+                    <option>Jouni Lappalainen</option>
+                    <option>Mikko Rajanen</option>
+                </select>
             </div>
             <div class="slide">
                 <h2>Yhteenveto</h2>
             </div>
         </form>
         <div class="reservation-navigation-button-container">
-            <button class="reservation-navigation-button slide-arrow slide-arrow-prev" id="slide-arrow-prev">
+            <button type="button" class="reservation-navigation-button slide-arrow slide-arrow-prev" id="slide-arrow-prev">
                 &#8249; Edellinen
             </button>
 
-            <button class="reservation-navigation-button" id="abort-reservation">
+            <button type="button" class="reservation-navigation-button" id="abort-reservation">
                 Keskeytä ajanvaraus
             </button>
 
-            <button class="reservation-navigation-button slide-arrow slide-arrow-next" id="slide-arrow-next" disabled>
+            <button type="button" class="reservation-navigation-button slide-arrow slide-arrow-next" id="slide-arrow-next" disabled>
                 Seuraava &#8250;
             </button>
         </div>
