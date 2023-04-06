@@ -66,9 +66,7 @@ public class ReservationServiceImpl implements ReservationService
     @Override
     public boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails)
     {
-        var localDateTime = LocalDateTime.of(timeDetails.year(), timeDetails.month(), timeDetails.day(), timeDetails.hour(), 0);
-
-        if(timeDetails.hour() < 8 || timeDetails.hour() >= 16 || localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY) || localDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY))
+        if(timeDetails.isOutsideWorkingHoursAndDays())
         {
             throw new IllegalArgumentException("You may only reserve for weekends between 8-16 o'clock");
         }
