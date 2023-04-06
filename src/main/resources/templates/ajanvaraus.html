@@ -59,34 +59,68 @@
                 <h2>Valitse palvelut</h2>
                 <p>Huomaa, että voit valita ajanvaraukseesi useamman kuin yhden palvelun</p>
                 <div id="service-list">
-                    <div>
-                        <span class="service-title">Leikkaus, pesu ja kuivaus</span>
-                        <span class="price">45.00€</span>
-                        <button class="reservation-toggable-service-button" type="button" value="haidresser-cut" onclick="toggleService(this, 45); return false">+</button>
+                    <div id="service-list-hairdresser">
+                        <div class="service-listing">
+                            <span class="service-title">Leikkaus, pesu ja kuivaus</span>
+                            <span class="price">45.00€</span>
+                            <button class="reservation-toggable-service-button" type="button" value="haidresser-cut" onclick="toggleService(this, 45); return false">+</button>
+                        </div>
+                        <div class="service-listing">
+                            <span class="service-title">Mallinmuutosleikkaus</span>
+                            <span class="price">70.00€</span>
+                            <button class="reservation-toggable-service-button" type="button" value="haidresser-new-style" onclick="toggleService(this, 70); return false">+</button>
+                        </div>
+                        <div class="service-listing">
+                            <span class="service-title">Otsahiusten leikkaus</span>
+                            <span class="price">15.00€</span>
+                            <button class="reservation-toggable-service-button"  type="button" value="haidresser-cut-forehead" onclick="toggleService(this, 15); return false">+</button>
+                        </div>
+                        <div class="service-listing">
+                            <span class="service-title">Hiusten värjäys</span>
+                            <span class="price">100.00€</span>
+                            <button class="reservation-toggable-service-button" type="button" value="haidresser-color-all" onclick="toggleService(this, 100); return false">+</button>
+                        </div>
+                        <div class="service-listing">
+                            <span class="service-title">Juurikasvun värjäys</span>
+                            <span class="price">50.00€</span>
+                            <button class="reservation-toggable-service-button" type="button" value="haidresser-color-root-growth" onclick="toggleService(this, 50); return false">+</button>
+                        </div>
                     </div>
-                    <div>
-                        <span class="service-title">Mallinmuutosleikkaus</span>
-                        <span class="price">70.00€</span>
-                        <button class="reservation-toggable-service-button" type="button" value="haidresser-new-style" onclick="toggleService(this, 70); return false">+</button>
-                    </div>
-                    <div>
-                        <span class="service-title">Otsahiusten leikkaus</span>
-                        <span class="price">15.00€</span>
-                        <button class="reservation-toggable-service-button"  type="button" value="haidresser-cut-forehead" onclick="toggleService(this, 15); return false">+</button>
-                    </div>
-                    <div>
-                        <span class="service-title">Hiusten värjäys</span>
-                        <span class="price">100.00€</span>
-                        <button class="reservation-toggable-service-button" type="button" value="haidresser-color-all" onclick="toggleService(this, 100); return false">+</button>
-                    </div>
-                    <div>
-                        <span class="service-title">Juurikasvun värjäys</span>
-                        <span class="price">50.00€</span>
-                        <button class="reservation-toggable-service-button" type="button" value="haidresser-color-root-growth" onclick="toggleService(this, 50); return false">+</button>
+                    <div id="service-list-barber">
+                        <div class="service-listing">
+                            <span class="service-title">Leikkaus, pesu ja kuivaus</span>
+                            <span class="price">25.00€</span>
+                            <button class="reservation-toggable-service-button" type="button" value="barber-cut" onclick="toggleService(this, 25); return false">+</button>
+                        </div>
+                        <div class="service-listing">
+                            <span class="service-title">Mallinmuutosleikkaus</span>
+                            <span class="price">40.00€</span>
+                            <button class="reservation-toggable-service-button" type="button" value="barber-new-style" onclick="toggleService(this, 40); return false">+</button>
+                        </div>
+                        <div class="service-listing">
+                            <span class="service-title">Parturi konetyö</span>
+                            <span class="price">15.00€</span>
+                            <button class="reservation-toggable-service-button"  type="button" value="barber-machine-cut" onclick="toggleService(this, 15); return false">+</button>
+                        </div>
+                        <div class="service-listing">
+                            <span class="service-title">Hiusten värjäys</span>
+                            <span class="price">75.00€</span>
+                            <button class="reservation-toggable-service-button" type="button" value="barber-color-all" onclick="toggleService(this, 75); return false">+</button>
+                        </div>
+                        <div class="service-listing">
+                            <span class="service-title">Juurikasvun värjäys</span>
+                            <span class="price">35.00€</span>
+                            <button class="reservation-toggable-service-button" type="button" value="barber-color-root-growth" onclick="toggleService(this, 35); return false">+</button>
+                        </div>
+                        <div class="service-listing">
+                            <span class="service-title">Parran muotoilu</span>
+                            <span class="price">10.00€</span>
+                            <button class="reservation-toggable-service-button" type="button" value="barber-beard-mold" onclick="toggleService(this, 10); return false">+</button>
+                        </div>
                     </div>
                 </div>
                 <div id="service-price">
-                    Kokonaissumma: 00.00€
+                    Kokonaissumma: <span id="service-price-amount">0</span>.00€
                 </div>
             </div>
             <div class="slide">

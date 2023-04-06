@@ -28,6 +28,10 @@ h1 {
     text-decoration: underline;
 }
 
+h2 {
+    padding-top: 2rem;
+}
+
 #reservation-wrapper {
     border-radius: 8px;
     z-index: -2;
@@ -36,11 +40,12 @@ h1 {
     margin-right: auto;
     background-color: white;
     padding: 2rem;
-    height: 85vh;
+    min-height: 400px;
 }
 .slides-container {
     scrollbar-width: none;
     -ms-overflow-style: none;
+    height: 400px;
 }
 
 .slides-container::-webkit-scrollbar {
@@ -148,7 +153,7 @@ h1 {
     position: relative;
 }
 
-#service-list > div {
+.service-listing {
     width: 100%;
     border: 1px solid black;
     border-bottom: none;
@@ -159,7 +164,7 @@ h1 {
     align-items: center;
 }
 
-#service-list > div:last-of-type {
+.service-listing:last-child {
     border-bottom: 1px solid black;
 }
 
@@ -172,7 +177,6 @@ h1 {
     color: var(--gray);
     font-size: 1.5rem;
     cursor: pointer;
-    margin-top: 5px;
     margin-left: auto;
 }
 
@@ -240,7 +244,7 @@ h1 {
         width: 100%;
         max-width: 100%;
     }
-    #service-list > div {
+    .service-listing {
         box-sizing: border-box;
     }
     #service-price {
@@ -286,7 +290,7 @@ h1 {
         width: 100%;
         max-width: 100%;
     }
-    #service-list > div {
+    .service-listing {
         box-sizing: border-box;
     }
     #service-price {

@@ -1,110 +1,56 @@
 (function (reservationView) {
     'use strict'
-    // Select all slides
-    const slides = document.querySelectorAll(".slide");
 
-    // loop through slides and set each slides translateX
-    for (let i = 1; i < slides.length; i++) {
-        slides[i].style.display = 'none'
-    }
-    // select next slide button
-    const nextSlide = document.querySelector(".slide-arrow-next");
-
-    // current slide counter
-    let curSlide = 0;
-    // maximum number of slides
-    let maxSlide = slides.length - 1;
+    let currentSlide = 0;
+    let maxCountOfSlides;
 
     const payload = {};
     let currentPrice = 0
 
-    reservationView.start = function () {
-        console.log('Jello, world')
+    const pageItems = {}
+
+    reservationView.init = function () {
+        pageItems.slides = document.querySelectorAll('.slide');
+        pageItems.nextSlideButton = document.querySelector('.slide-arrow-next');
+        pageItems.previousSlideButton = document.querySelector(".slide-arrow-prev");
+        pageItems.serviceTypeBarberButton = document.getElementById('button-service-type-barber')
+        pageItems.serviceTypeHairdresserButton = document.getElementById('button-service-type-haidresser')
+        pageItems.hairLengthLongButton = document.getElementById('button-hair-length-long')
+        pageItems.hairLengthMediumButton = document.getElementById('button-hair-length-medium')
+        pageItems.hairLengthShortButton = document.getElementById('button-hair-length-short')
+        pageItems.priceText = document.getElementById('service-price-amount')
+        pageItems.pageIndicatorNodes = document
+            .getElementById('pageIndicatorList')
+            .children;
+        pageItems.serviceTypeCheckmarks = document.getElementsByClassName('checkmark-service-type');
+        pageItems.hairLengthCheckmarks = document.getElementsByClassName('checkmark-hair-length');
+        pageItems.serviceListButtons = document.getElementById('service-list')
+            .getElementsByTagName('button');
+        pageItems.serviceListingsHairdressers = document
+            .getElementById('service-list-hairdresser')
+        pageItems.serviceListingsBarbers = document
+            .getElementById('service-list-barber')
+
+        maxCountOfSlides = pageItems.slides.length - 1;
+
+        // Hide all slides except for the first one
+        for (let i = 1; i < pageItems.slides.length; i++) {
+            pageItems.slides[i].style.display = 'none'
+        }
+
+        // on first render, hide the button that takes the user to the next page
+        pageItems.previousSlideButton.style.display = 'none'
+
+        pageItems.nextSlideButton.addEventListener('click', onNextSlideButtonClick);
+        pageItems.previousSlideButton.addEventListener('click', onPreviousSlideButtonClick)
+        pageItems.hairLengthLongButton.addEventListener('click', onHairLengthLongButtonClick);
+        pageItems.hairLengthMediumButton.addEventListener('click', onHairLengthMediumButtonClick);
+        pageItems.hairLengthShortButton.addEventListener('click', onHairLengthShortButtonClick);
+        pageItems.serviceTypeHairdresserButton.addEventListener('click', onServiceTypeHairdresserButtonClick);
+        pageItems.serviceTypeBarberButton.addEventListener('click', onServiceTypeBarberButtonClick);
     }
 
-    const updatePageIndicator = () => {
-        const items =
-            document
-                .getElementById('pageIndicatorList')
-                .children;
-
-        for (let i = 0; i < items.length; i++) {
-            if (i <= curSlide) {
-                items[i].classList.add('selected')
-            } else {
-                items[i].classList.remove('selected')
-            }
-        }
-    }
-
-    // add event listener and navigation functionality
-    nextSlide.addEventListener("click", function (event) {
-        event.preventDefault();
-        // check if current slide is the last and reset current slide
-        if (curSlide === maxSlide) {
-            return;
-        } else {
-            curSlide++;
-        }
-        prevSlide.style.display = "block"
-
-        if (curSlide === 1 && !payload.hairLength) {
-            nextSlide.disabled = true
-        }
-
-        if (curSlide === 2 && !payload.services) {
-            nextSlide.disabled = true
-        }
-
-        for (let i = 0; i < slides.length; i++) {
-            if (i === curSlide) {
-                slides[i].style.display = 'block'
-            } else {
-                slides[i].style.display = 'none'
-            }
-        }
-        updatePageIndicator()
-    });
-
-    // select next slide button
-    const prevSlide = document.querySelector(".slide-arrow-prev");
-    prevSlide.style.display = "none"
-
-    // add event listener and navigation functionality
-    prevSlide.addEventListener("click", function (event) {
-        event.preventDefault();
-        if (curSlide <= 1) {
-            prevSlide.style.display = "none"
-        }
-
-        // check if current slide is the first and reset current slide to last
-        if (curSlide === 0) {
-            return;
-        } else {
-            curSlide--;
-        }
-
-        nextSlide.disabled = false
-
-        for (let i = 0; i < slides.length; i++) {
-            if (i === curSlide) {
-                slides[i].style.display = 'block'
-            } else {
-                slides[i].style.display = 'none'
-            }
-        }
-
-        updatePageIndicator()
-    });
-
-    const serviceTypeBarberButton = document.getElementById('button-service-type-barber')
-    const serviceTypeHaidresserButton = document.getElementById('button-service-type-haidresser')
-    const hairLengthLongButton = document.getElementById('button-hair-length-long')
-    const hairLengthMediumButton = document.getElementById('button-hair-length-medium')
-    const hairLengthShortButton = document.getElementById('button-hair-length-short')
-
-    function toggleService(button, price) {
-        const priceText = document.getElementById('service-price')
+    reservationView.toggleService = function toggleService(button, price) {
         if (!payload.services) {
             payload.services = []
         }
@@ -123,86 +69,144 @@
             currentPrice += price
         }
 
-        nextSlide.disabled = payload.services.length === 0;
-
-        priceText.innerText = `Kokonaissumma: ${currentPrice}.00€`
+        pageItems.nextSlideButton.disabled = payload.services.length === 0;
+        pageItems.priceText.innerText = currentPrice;
     }
 
-    serviceTypeBarberButton.addEventListener('click', (event) => {
+    const updatePageIndicator = () => {
+        for (let i = 0; i < pageItems.pageIndicatorNodes.length; i++) {
+            if (i <= currentSlide) {
+                pageItems.pageIndicatorNodes[i].classList.add('selected')
+            } else {
+                pageItems.pageIndicatorNodes[i].classList.remove('selected')
+            }
+        }
+    }
+
+    function onNextSlideButtonClick(event) {
+        event.preventDefault();
+        window.scrollTo(0, 0)
+        if (currentSlide === maxCountOfSlides) {
+            return;
+        } else {
+            currentSlide++;
+        }
+        pageItems.previousSlideButton.style.display = "block"
+
+        if (currentSlide === 1 && !payload.hairLength) {
+            pageItems.nextSlideButton.disabled = true
+        }
+
+        if (currentSlide === 2 && !payload.services) {
+            pageItems.nextSlideButton.disabled = true
+        }
+
+        for (let i = 0; i < pageItems.slides.length; i++) {
+            if (i === currentSlide) {
+                pageItems.slides[i].style.display = 'block'
+            } else {
+                pageItems.slides[i].style.display = 'none'
+            }
+        }
+        updatePageIndicator()
+    }
+
+
+    function onPreviousSlideButtonClick(event) {
+        event.preventDefault();
+        window.scrollTo(0, 0)
+        if (currentSlide <= 1) {
+            pageItems.previousSlideButton.style.display = "none"
+        }
+
+        if (currentSlide === 0) {
+            return;
+        } else {
+            currentSlide--;
+        }
+
+        pageItems.nextSlideButton.disabled = false
+
+        for (let i = 0; i < pageItems.slides.length; i++) {
+            if (i === currentSlide) {
+                pageItems.slides[i].style.display = 'block'
+            } else {
+                pageItems.slides[i].style.display = 'none'
+            }
+        }
+
+        updatePageIndicator()
+    }
+
+    function resetSelectedServices() {
+        delete payload.services
+        currentPrice = 0
+
+        for (let i = 0; i < pageItems.serviceListButtons.length; i++) {
+            pageItems.serviceListButtons[i].innerText = "+"
+            pageItems.serviceListButtons[i].classList.remove('reservation-toggable-service-button-selected')
+        }
+        pageItems.priceText.innerText = 0
+    }
+
+    function onServiceTypeBarberButtonClick(event) {
         event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-service-type')
-        Array.from(checkmarks).forEach((el) => {
-            el.style.display = 'none'
-        });
-        serviceTypeBarberButton.nextElementSibling.style.display = "block"
-        nextSlide.disabled = false
+        hideAllServiceTypeCheckmarks();
+        pageItems.serviceTypeBarberButton.nextElementSibling.style.display = "block"
+        pageItems.serviceListingsHairdressers.style.display = "none"
+        pageItems.serviceListingsBarbers.style.display = "block"
+        pageItems.nextSlideButton.disabled = false
         payload.serviceType = "barber"
-        delete payload.services
-        currentPrice = 0
+        resetSelectedServices();
+    }
 
-        const leea = document.getElementById('service-list')
-            .getElementsByTagName('button')
-
-        for (let i = 0; i < leea.length; i++) {
-            leea[i].innerText = "+"
-            leea[i].classList.remove('reservation-toggable-service-button-selected')
-        }
-        document.getElementById('service-price').innerText = 'Kokonaissumma: 00.00€'
-    })
-
-    serviceTypeHaidresserButton.addEventListener('click', (event) => {
+    function onServiceTypeHairdresserButtonClick(event) {
         event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-service-type')
-        Array.from(checkmarks).forEach((el) => {
-            el.style.display = 'none'
-        });
-        serviceTypeHaidresserButton.nextElementSibling.style.display = "block"
-        nextSlide.disabled = false
+        hideAllServiceTypeCheckmarks();
+        pageItems.serviceTypeHairdresserButton.nextElementSibling.style.display = "block"
+        pageItems.serviceListingsHairdressers.style.display = "block"
+        pageItems.serviceListingsBarbers.style.display = "none"
+        pageItems.nextSlideButton.disabled = false
         payload.serviceType = "hairdresser"
-        delete payload.services
-        currentPrice = 0
-        const leea = document.getElementById('service-list')
-            .getElementsByTagName('button')
+        resetSelectedServices();
+    }
 
-        for (let i = 0; i < leea.length; i++) {
-            leea[i].innerText = "+"
-            leea[i].classList.remove('reservation-toggable-service-button-selected')
-        }
-        document.getElementById('service-price').innerText = 'Kokonaissumma: 00.00€'
-    })
-
-    hairLengthLongButton.addEventListener('click', (event) => {
+    function onHairLengthLongButtonClick(event) {
         event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-hair-length')
-        Array.from(checkmarks).forEach((el) => {
-            el.style.display = 'none'
-        });
-        hairLengthLongButton.nextElementSibling.style.display = "block"
+        hideAllHairLengthCheckmarks()
+        pageItems.hairLengthLongButton.nextElementSibling.style.display = "block"
         payload.hairLength = "long"
-        nextSlide.disabled = false
-    })
+        pageItems.nextSlideButton.disabled = false
+    }
 
-    hairLengthMediumButton.addEventListener('click', (event) => {
+    function onHairLengthMediumButtonClick(event) {
         event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-hair-length')
-        Array.from(checkmarks).forEach((el) => {
-            el.style.display = 'none'
-        });
-        hairLengthMediumButton.nextElementSibling.style.display = "block"
+        hideAllHairLengthCheckmarks()
+        pageItems.hairLengthMediumButton.nextElementSibling.style.display = "block"
         payload.hairLength = "medium"
-        nextSlide.disabled = false
-    })
+        pageItems.nextSlideButton.disabled = false
+    }
 
-    hairLengthShortButton.addEventListener('click', (event) => {
+    function onHairLengthShortButtonClick(event) {
         event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-hair-length')
-        Array.from(checkmarks).forEach((el) => {
+        hideAllHairLengthCheckmarks()
+        pageItems.hairLengthShortButton.nextElementSibling.style.display = "block"
+        payload.hairLength = "short"
+        pageItems.nextSlideButton.disabled = false
+    }
+
+    function hideAllHairLengthCheckmarks() {
+        Array.from(pageItems.hairLengthCheckmarks).forEach((el) => {
             el.style.display = 'none'
         });
-        hairLengthShortButton.nextElementSibling.style.display = "block"
-        payload.hairLength = "short"
-        nextSlide.disabled = false
-    })
+    }
+
+    function hideAllServiceTypeCheckmarks() {
+        Array.from(pageItems.serviceTypeCheckmarks).forEach((el) => {
+            el.style.display = 'none'
+        });
+    }
 })(window.reservationView = window.reservationView || {})
 
-reservationView.start();
+reservationView.init();
+const toggleService = reservationView.toggleService
