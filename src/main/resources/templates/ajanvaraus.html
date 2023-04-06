@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajanvaraus</title>
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div id="reservation-wrapper">
+    <h1>Ajanvaraus</h1>
+    <section class="slider-wrapper">
+        <div id="pageIndicator">
+            <div id="pageIndicatorLine"></div>
+            <ul id="pageIndicatorList">
+                <li class="selected">1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+            </ul>
+        </div>
+        <form class="slides-container" id="slides-container">
+            <div class="slide">
+                <h2>Valitse palvelun tyyppi</h2>
+                <div class="big-square-buttons-wrapper">
+                    <div class="big-square-button-container">
+                        <button id="button-service-type-barber" class="big-square-button">
+                            PARTURI<br/>HIUSTENLEIKKUU<br/>+MUUT PARTURIPALVELUT
+                        </button>
+                        <span class="checkmark checkmark-service-type">&#10004;</span>
+                    </div>
+                    <div class="big-square-button-container">
+                        <button id="button-service-type-haidresser" class="big-square-button">KAMPAAMO<br/>HIUSTENLEIKKUU<br/>+MUUT
+                            KAMPAAMOPALVELUT
+                        </button>
+                        <span class="checkmark checkmark-service-type">&#10004;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <h2>Valitse hiusten pituus</h2>
+                <div class="big-square-buttons-wrapper">
+                    <div class="big-square-button-container">
+                        <button id="button-hair-length-long" class="big-square-button">PITKÄT</button>
+                        <span class="checkmark checkmark-hair-length">&#10004;</span>
+                    </div>
+                    <div class="big-square-button-container">
+                        <button id="button-hair-length-medium" class="big-square-button">KESKIPITKÄT</button>
+                        <span class="checkmark checkmark-hair-length">&#10004;</span>
+                    </div>
+                    <div class="big-square-button-container">
+                        <button id="button-hair-length-short" class="big-square-button">LYHYET</button>
+                        <span class="checkmark checkmark-hair-length">&#10004;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <h2>Valitse palvelut</h2>
+                <p>Huomaa, että voit valita ajanvaraukseesi useamman kuin yhden palvelun</p>
+                <div id="service-list">
+                    <div>
+                        <span class="service-title">Leikkaus, pesu ja kuivaus</span>
+                        <span class="price">45.00€</span>
+                        <button class="reservation-toggable-service-button" type="button" value="haidresser-cut" onclick="toggleService(this, 45); return false">+</button>
+                    </div>
+                    <div>
+                        <span class="service-title">Mallinmuutosleikkaus</span>
+                        <span class="price">70.00€</span>
+                        <button class="reservation-toggable-service-button" type="button" value="haidresser-new-style" onclick="toggleService(this, 70); return false">+</button>
+                    </div>
+                    <div>
+                        <span class="service-title">Otsahiusten leikkaus</span>
+                        <span class="price">15.00€</span>
+                        <button class="reservation-toggable-service-button"  type="button" value="haidresser-cut-forehead" onclick="toggleService(this, 15); return false">+</button>
+                    </div>
+                    <div>
+                        <span class="service-title">Hiusten värjäys</span>
+                        <span class="price">100.00€</span>
+                        <button class="reservation-toggable-service-button" type="button" value="haidresser-color-all" onclick="toggleService(this, 100); return false">+</button>
+                    </div>
+                    <div>
+                        <span class="service-title">Juurikasvun värjäys</span>
+                        <span class="price">50.00€</span>
+                        <button class="reservation-toggable-service-button" type="button" value="haidresser-color-root-growth" onclick="toggleService(this, 50); return false">+</button>
+                    </div>
+                </div>
+                <div id="service-price">
+                    Kokonaissumma: 00.00€
+                </div>
+            </div>
+            <div class="slide">
+                <h2>Valitse aika ja työntekijä</h2>
+            </div>
+            <div class="slide">
+                <h2>Yhteenveto</h2>
+            </div>
+            <div class="reservation-navigation-button-container">
+                <button class="reservation-navigation-button slide-arrow slide-arrow-prev" id="slide-arrow-prev">
+                    &#8249; Edellinen
+                </button>
+
+                <button class="reservation-navigation-button" id="abort-reservation">
+                    Keskeytä ajanvaraus
+                </button>
+
+                <button class="reservation-navigation-button slide-arrow slide-arrow-next" id="slide-arrow-next" disabled>
+                    Seuraava &#8250;
+                </button>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+<script>
+    'use strict'
+    // Select all slides
+    const slides = document.querySelectorAll(".slide");
+
+    // loop through slides and set each slides translateX
+    slides.forEach((slide, indx) => {
+        slide.style.transform = `translateX(${indx * 100}%)`;
+    });
+
+    // select next slide button
+    const nextSlide = document.querySelector(".slide-arrow-next");
+
+    // current slide counter
+    let curSlide = 0;
+    // maximum number of slides
+    let maxSlide = slides.length - 1;
+
+    const payload = {};
+    let currentPrice = 0
+
+    const updatePageIndicator = () => {
+        const items =
+            document
+                .getElementById('pageIndicatorList')
+                .children;
+
+        for(let i = 0; i < items.length; i++) {
+            if ( i <= curSlide) {
+                items[i].classList.add('selected')
+            } else {
+                items[i].classList.remove('selected')
+            }
+        }
+    }
+
+    // add event listener and navigation functionality
+    nextSlide.addEventListener("click", function (event) {
+        event.preventDefault();
+        // check if current slide is the last and reset current slide
+        if (curSlide === maxSlide) {
+            return;
+        } else {
+            curSlide++;
+        }
+        prevSlide.style.display = "block"
+
+        if(curSlide === 1 && !payload.hairLength) {
+            nextSlide.disabled = true
+        }
+
+        if(curSlide === 2 && !payload.services) {
+            nextSlide.disabled = true
+        }
+
+        //   move slide by -100%
+        slides.forEach((slide, indx) => {
+            slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
+        });
+        updatePageIndicator()
+    });
+
+    // select next slide button
+    const prevSlide = document.querySelector(".slide-arrow-prev");
+    prevSlide.style.display = "none"
+
+    // add event listener and navigation functionality
+    prevSlide.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (curSlide <= 1) {
+            prevSlide.style.display = "none"
+        }
+
+        // check if current slide is the first and reset current slide to last
+        if (curSlide === 0) {
+            return;
+        } else {
+            curSlide--;
+        }
+
+        nextSlide.disabled = false
+
+        //   move slide by 100%
+        slides.forEach((slide, indx) => {
+            slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
+        });
+        updatePageIndicator()
+    });
+
+    const serviceTypeBarberButton = document.getElementById('button-service-type-barber')
+    const serviceTypeHaidresserButton = document.getElementById('button-service-type-haidresser')
+    const hairLengthLongButton = document.getElementById('button-hair-length-long')
+    const hairLengthMediumButton = document.getElementById('button-hair-length-medium')
+    const hairLengthShortButton = document.getElementById('button-hair-length-short')
+
+    function toggleService(button, price) {
+        const priceText = document.getElementById('service-price')
+        if(!payload.services) {
+            payload.services = []
+        }
+
+        if(payload.services.includes(button.value)) {
+            payload.services = payload.services
+                .filter(val => val !== button.value)
+
+            button.innerText = "+"
+            button.classList.remove('reservation-toggable-service-button-selected')
+            currentPrice -= price
+        } else {
+            payload.services.push(button.value)
+            button.innerText = "-"
+            button.classList.add('reservation-toggable-service-button-selected')
+            currentPrice += price
+        }
+
+        nextSlide.disabled = payload.services.length === 0;
+
+        priceText.innerText = `Kokonaissumma: ${currentPrice}.00€`
+    }
+
+    serviceTypeBarberButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        let checkmarks = document.getElementsByClassName('checkmark-service-type')
+        Array.from(checkmarks).forEach((el) => {
+            el.style.display = 'none'
+        });
+        serviceTypeBarberButton.nextElementSibling.style.display = "block"
+        nextSlide.disabled = false
+        payload.serviceType = "barber"
+        delete payload.services
+        currentPrice = 0
+
+        const leea =  document.getElementById('service-list')
+            .getElementsByTagName('button')
+
+        for(let i = 0; i < leea.length; i++) {
+            leea[i].innerText = "+"
+            leea[i].classList.remove('reservation-toggable-service-button-selected')
+        }
+        document.getElementById('service-price').innerText = 'Kokonaissumma: 00.00€'
+    })
+
+    serviceTypeHaidresserButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        let checkmarks = document.getElementsByClassName('checkmark-service-type')
+        Array.from(checkmarks).forEach((el) => {
+            el.style.display = 'none'
+        });
+        serviceTypeHaidresserButton.nextElementSibling.style.display = "block"
+        nextSlide.disabled = false
+        payload.serviceType = "hairdresser"
+        delete payload.services
+        currentPrice = 0
+        const leea =  document.getElementById('service-list')
+            .getElementsByTagName('button')
+
+        for(let i = 0; i < leea.length; i++) {
+            leea[i].innerText = "+"
+            leea[i].classList.remove('reservation-toggable-service-button-selected')
+        }
+        document.getElementById('service-price').innerText = 'Kokonaissumma: 00.00€'
+    })
+
+    hairLengthLongButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        let checkmarks = document.getElementsByClassName('checkmark-hair-length')
+        Array.from(checkmarks).forEach((el) => {
+            el.style.display = 'none'
+        });
+        hairLengthLongButton.nextElementSibling.style.display = "block"
+        payload.hairLength = "long"
+        nextSlide.disabled = false
+    })
+
+    hairLengthMediumButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        let checkmarks = document.getElementsByClassName('checkmark-hair-length')
+        Array.from(checkmarks).forEach((el) => {
+            el.style.display = 'none'
+        });
+        hairLengthMediumButton.nextElementSibling.style.display = "block"
+        payload.hairLength = "medium"
+        nextSlide.disabled = false
+    })
+
+    hairLengthShortButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        let checkmarks = document.getElementsByClassName('checkmark-hair-length')
+        Array.from(checkmarks).forEach((el) => {
+            el.style.display = 'none'
+        });
+        hairLengthShortButton.nextElementSibling.style.display = "block"
+        payload.hairLength = "short"
+        nextSlide.disabled = false
+    })
+</script>
+</html>

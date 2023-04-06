@@ -1,0 +1,329 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+:root {
+    --blue: #3498db;
+    --dark-blue: #2980b9;
+    --yellow: #f1c40f;
+    --dark-yellow: #f39c12;
+    --gray: #ecf0f1;
+    --darker-gray: #bdc3c7;
+    --dark-gray: #95a5a6;
+    --black: #34495e;
+    --blacker-black: #2c3e50;
+    --green: #2ecc71;
+    --dark-green: #27ae60;
+    --red: #e74c3c;
+    --dark-red: #c0392b;
+    --purple: #9b59b6;
+    --dark-purple: #8e44ad;
+}
+
+html {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+h1 {
+    text-decoration: underline;
+}
+
+#reservation-wrapper {
+    border-radius: 8px;
+    padding: 2rem;
+    position: absolute;
+    z-index: -2;
+    left: 10%;
+    right: 10%;
+}
+
+.slider-wrapper {
+    position: relative;
+    overflow: hidden;
+    max-width: 1024px;
+}
+
+.slides-container {
+    min-height: 550px;
+}
+
+.slide {
+    width: 100%;
+    max-width: 1024px;
+    position: absolute;
+}
+
+.slides-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.slides-container::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.slide-arrow {
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+#slide-arrow-prev {
+    left: 0;
+}
+
+#slide-arrow-next {
+    right: 0;
+}
+
+#abort-reservation {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    cursor: pointer;
+    z-index: 10;
+}
+
+.big-square-button {
+    width: 250px;
+    height: 250px;
+    text-align: left;
+    padding: 1rem;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    border: 1px solid var(--blacker-black);
+    border-radius: 0;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.big-square-button:hover {
+    background-color: var(--gray);
+}
+
+.big-square-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.big-square-buttons-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkmark {
+    font-size: 2rem;
+    color: green;
+    display: none;
+}
+
+#pageIndicator {
+    width: 60%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#pageIndicatorList {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    padding: 0;
+}
+
+#pageIndicatorList > li {
+    border: 2px solid var(--dark-blue);
+    padding: 0.7rem;
+    height: 0.8rem;
+    width: 0.8rem;
+    border-radius: 100%;
+    color: var(--blacker-black);
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: white;
+}
+
+.selected {
+    background-color: var(--dark-blue) !important;
+    color: var(--gray) !important;
+}
+
+#pageIndicatorLine {
+    border-top: 1px solid var(--blue);
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    z-index: -1;
+}
+
+#service-list {
+    max-width: 60%;
+    position: relative;
+}
+
+#service-list > div {
+    width: 100%;
+    border: 1px solid black;
+    border-bottom: none;
+    height: 50px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+#service-list > div:last-of-type {
+    border-bottom: 1px solid black;
+}
+
+.reservation-toggable-service-button {
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    border: 0;
+    background-color: var(--blue);
+    color: var(--gray);
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-left: auto;
+}
+
+.reservation-toggable-service-button:hover {
+    background-color: var(--dark-blue);
+}
+
+.reservation-toggable-service-button-selected {
+    background-color: var(--red);
+}
+
+.reservation-toggable-service-button-selected:hover {
+    background-color: var(--dark-red);
+}
+
+.price {
+    display: inline-block;
+}
+
+.service-title {
+    width: 160px;
+    padding-right: 1rem;
+    display: inline-block;
+}
+
+#service-price {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+}
+
+.reservation-navigation-button {
+    font-size: 1.2rem;
+    padding: 1rem;
+    max-width: 256px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--blue);
+    color: var(--gray);
+}
+
+.reservation-navigation-button:hover {
+    background-color: var(--dark-blue);
+}
+
+.reservation-navigation-button:disabled {
+    background-color: var(--blue);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+@media only screen and (max-width: 800px) {
+    #service-list {
+        width: 100%;
+        max-width: 100%;
+    }
+    #service-list > div {
+        box-sizing: border-box;
+    }
+    #service-price {
+        text-align: right;
+        margin-top: 1rem;
+    }
+    #pageIndicator {
+        width: 100%;
+        position: relative;
+    }
+}
+
+@media only screen and (max-width: 1060px) {
+    .big-square-button {
+        width: 175px;
+        height: 175px;
+        font-size: 1rem;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .big-square-button {
+        width: 150px;
+        height: 150px;
+        font-size: 0.9rem;
+    }
+}
+
+@media only screen and (max-width: 690px) {
+    #reservation-wrapper {
+        padding: 1rem;
+        left: 0;
+        right: 0;
+    }
+    #pageIndicator {
+        width: 100%;
+        position: relative;
+    }
+    .big-square-button-container {
+        flex-direction: row;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    .big-square-button {
+        height: 100px;
+        width: 80%;
+        font-size: 1rem;
+    }
+    .reservation-navigation-button,
+    #abort-reservation {
+        position: static;
+        width: 100%;
+        max-width: 100%;
+        transform: none;
+        margin-bottom: 1rem;
+    }
+    .reservation-navigation-button-container {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .slides-container {
+        height: 700px;
+    }
+    #service-list {
+        width: 100%;
+        max-width: 100%;
+    }
+    #service-list > div {
+        box-sizing: border-box;
+    }
+    #service-price {
+        text-align: right;
+        margin-top: 1rem;
+    }
+}
