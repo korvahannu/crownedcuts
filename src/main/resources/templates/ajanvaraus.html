@@ -95,217 +95,23 @@
             <div class="slide">
                 <h2>Yhteenveto</h2>
             </div>
-            <div class="reservation-navigation-button-container">
-                <button class="reservation-navigation-button slide-arrow slide-arrow-prev" id="slide-arrow-prev">
-                    &#8249; Edellinen
-                </button>
-
-                <button class="reservation-navigation-button" id="abort-reservation">
-                    Keskeytä ajanvaraus
-                </button>
-
-                <button class="reservation-navigation-button slide-arrow slide-arrow-next" id="slide-arrow-next" disabled>
-                    Seuraava &#8250;
-                </button>
-            </div>
         </form>
+        <div class="reservation-navigation-button-container">
+            <button class="reservation-navigation-button slide-arrow slide-arrow-prev" id="slide-arrow-prev">
+                &#8249; Edellinen
+            </button>
+
+            <button class="reservation-navigation-button" id="abort-reservation">
+                Keskeytä ajanvaraus
+            </button>
+
+            <button class="reservation-navigation-button slide-arrow slide-arrow-next" id="slide-arrow-next" disabled>
+                Seuraava &#8250;
+            </button>
+        </div>
     </section>
 </div>
 </body>
-<script>
-    'use strict'
-    // Select all slides
-    const slides = document.querySelectorAll(".slide");
-
-    // loop through slides and set each slides translateX
-    slides.forEach((slide, indx) => {
-        slide.style.transform = `translateX(${indx * 100}%)`;
-    });
-
-    // select next slide button
-    const nextSlide = document.querySelector(".slide-arrow-next");
-
-    // current slide counter
-    let curSlide = 0;
-    // maximum number of slides
-    let maxSlide = slides.length - 1;
-
-    const payload = {};
-    let currentPrice = 0
-
-    const updatePageIndicator = () => {
-        const items =
-            document
-                .getElementById('pageIndicatorList')
-                .children;
-
-        for(let i = 0; i < items.length; i++) {
-            if ( i <= curSlide) {
-                items[i].classList.add('selected')
-            } else {
-                items[i].classList.remove('selected')
-            }
-        }
-    }
-
-    // add event listener and navigation functionality
-    nextSlide.addEventListener("click", function (event) {
-        event.preventDefault();
-        // check if current slide is the last and reset current slide
-        if (curSlide === maxSlide) {
-            return;
-        } else {
-            curSlide++;
-        }
-        prevSlide.style.display = "block"
-
-        if(curSlide === 1 && !payload.hairLength) {
-            nextSlide.disabled = true
-        }
-
-        if(curSlide === 2 && !payload.services) {
-            nextSlide.disabled = true
-        }
-
-        //   move slide by -100%
-        slides.forEach((slide, indx) => {
-            slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
-        });
-        updatePageIndicator()
-    });
-
-    // select next slide button
-    const prevSlide = document.querySelector(".slide-arrow-prev");
-    prevSlide.style.display = "none"
-
-    // add event listener and navigation functionality
-    prevSlide.addEventListener("click", function (event) {
-        event.preventDefault();
-        if (curSlide <= 1) {
-            prevSlide.style.display = "none"
-        }
-
-        // check if current slide is the first and reset current slide to last
-        if (curSlide === 0) {
-            return;
-        } else {
-            curSlide--;
-        }
-
-        nextSlide.disabled = false
-
-        //   move slide by 100%
-        slides.forEach((slide, indx) => {
-            slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
-        });
-        updatePageIndicator()
-    });
-
-    const serviceTypeBarberButton = document.getElementById('button-service-type-barber')
-    const serviceTypeHaidresserButton = document.getElementById('button-service-type-haidresser')
-    const hairLengthLongButton = document.getElementById('button-hair-length-long')
-    const hairLengthMediumButton = document.getElementById('button-hair-length-medium')
-    const hairLengthShortButton = document.getElementById('button-hair-length-short')
-
-    function toggleService(button, price) {
-        const priceText = document.getElementById('service-price')
-        if(!payload.services) {
-            payload.services = []
-        }
-
-        if(payload.services.includes(button.value)) {
-            payload.services = payload.services
-                .filter(val => val !== button.value)
-
-            button.innerText = "+"
-            button.classList.remove('reservation-toggable-service-button-selected')
-            currentPrice -= price
-        } else {
-            payload.services.push(button.value)
-            button.innerText = "-"
-            button.classList.add('reservation-toggable-service-button-selected')
-            currentPrice += price
-        }
-
-        nextSlide.disabled = payload.services.length === 0;
-
-        priceText.innerText = `Kokonaissumma: ${currentPrice}.00€`
-    }
-
-    serviceTypeBarberButton.addEventListener('click', (event) => {
-        event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-service-type')
-        Array.from(checkmarks).forEach((el) => {
-            el.style.display = 'none'
-        });
-        serviceTypeBarberButton.nextElementSibling.style.display = "block"
-        nextSlide.disabled = false
-        payload.serviceType = "barber"
-        delete payload.services
-        currentPrice = 0
-
-        const leea =  document.getElementById('service-list')
-            .getElementsByTagName('button')
-
-        for(let i = 0; i < leea.length; i++) {
-            leea[i].innerText = "+"
-            leea[i].classList.remove('reservation-toggable-service-button-selected')
-        }
-        document.getElementById('service-price').innerText = 'Kokonaissumma: 00.00€'
-    })
-
-    serviceTypeHaidresserButton.addEventListener('click', (event) => {
-        event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-service-type')
-        Array.from(checkmarks).forEach((el) => {
-            el.style.display = 'none'
-        });
-        serviceTypeHaidresserButton.nextElementSibling.style.display = "block"
-        nextSlide.disabled = false
-        payload.serviceType = "hairdresser"
-        delete payload.services
-        currentPrice = 0
-        const leea =  document.getElementById('service-list')
-            .getElementsByTagName('button')
-
-        for(let i = 0; i < leea.length; i++) {
-            leea[i].innerText = "+"
-            leea[i].classList.remove('reservation-toggable-service-button-selected')
-        }
-        document.getElementById('service-price').innerText = 'Kokonaissumma: 00.00€'
-    })
-
-    hairLengthLongButton.addEventListener('click', (event) => {
-        event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-hair-length')
-        Array.from(checkmarks).forEach((el) => {
-            el.style.display = 'none'
-        });
-        hairLengthLongButton.nextElementSibling.style.display = "block"
-        payload.hairLength = "long"
-        nextSlide.disabled = false
-    })
-
-    hairLengthMediumButton.addEventListener('click', (event) => {
-        event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-hair-length')
-        Array.from(checkmarks).forEach((el) => {
-            el.style.display = 'none'
-        });
-        hairLengthMediumButton.nextElementSibling.style.display = "block"
-        payload.hairLength = "medium"
-        nextSlide.disabled = false
-    })
-
-    hairLengthShortButton.addEventListener('click', (event) => {
-        event.preventDefault()
-        let checkmarks = document.getElementsByClassName('checkmark-hair-length')
-        Array.from(checkmarks).forEach((el) => {
-            el.style.display = 'none'
-        });
-        hairLengthShortButton.nextElementSibling.style.display = "block"
-        payload.hairLength = "short"
-        nextSlide.disabled = false
-    })
+<script src="js/reservation.js">
 </script>
 </html>
