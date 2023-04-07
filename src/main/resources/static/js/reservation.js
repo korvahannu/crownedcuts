@@ -342,6 +342,7 @@
     }
 
     function onAbortButtonClick(event) {
+        window.scrollTo(0, 0);
         event.preventDefault();
         pageItems.shadow.style.display = 'block';
         pageItems.messageBox.style.display = 'block';

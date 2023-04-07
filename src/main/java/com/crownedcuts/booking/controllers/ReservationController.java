@@ -12,4 +12,10 @@ public class ReservationController
     {
         return new ModelAndView("ajanvaraus");
     }
+
+    @GetMapping("/ajanvarausonnistui")
+    public ModelAndView onGetSuccess()
+    {
+        return new ModelAndView("ajanvarausonnistui");
+    }
 }

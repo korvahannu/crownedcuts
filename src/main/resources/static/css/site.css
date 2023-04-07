@@ -142,7 +142,7 @@ h2 {
 
 .checkmark {
     font-size: 2rem;
-    color: green;
+    color: var(--dark-green);
     display: none;
     height: 40px;
 }
@@ -450,5 +450,9 @@ h2 {
     }
     #available-times-nav-buttons > button {
         font-size: 3rem;
+    }
+    .checkmark {
+        position: absolute;
+        right: 64px;
     }
 }

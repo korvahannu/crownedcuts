@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajanvaraus onnistui!</title>
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div id="reservation-wrapper">
+    <h1>Ajanvaraus</h1>
+    <section class="slider-wrapper">
+        <div id="pageIndicator">
+            <div id="pageIndicatorLine"></div>
+            <ul id="pageIndicatorList">
+                <li class="selected">1</li>
+                <li class="selected">2</li>
+                <li class="selected">3</li>
+                <li class="selected">4</li>
+                <li class="selected">5</li>
+                <li class="selected">6</li>
+            </ul>
+        </div>
+        <div id="summary-container">
+            <center>
+                <h2>Varaus vahvistettu onnistuneesti!</h2>
+                <button id="return-to-frontpage-button" type="button" class="reservation-navigation-button slide-arrow">Siirry etusivulle</button>
+            </center>
+        </div>
+    </section>
+</div>
+<script>
+    const button = document.getElementById('return-to-frontpage-button');
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        window.location.href = "/";
+    });
+</script>
+</body>
+</html>
