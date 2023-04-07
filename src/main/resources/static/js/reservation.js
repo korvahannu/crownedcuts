@@ -17,6 +17,20 @@
 
     let currentAvailableTimesOffset = 0;
 
+    const serviceDictionary = {
+        "hairdressingCut": "Leikkaus, pesu ja kuivaus",
+        "hairdressingNewStyle": "Mallinmuutosleikkaus",
+        "hairdressingCutForehead": "Otsahiusten leikkaus",
+        "hairdressingColor": "Hiusten värjäys",
+        "hairdressingColorRootGrowth": "Juurikasvun värjäys",
+        "barberBeard": "Leikkaus, pesu ja kuivaus",
+        "barberColorRootGrowth": "Mallinmuutosleikkaus",
+        "barberColor": "Parturi konetyö",
+        "barberMachineCut": "Hiusten värjäys",
+        "barberNewStyle": "Juurikasvun värjäys",
+        "barberCut": "Parran muotoilu",
+    }
+
     reservationView.init = function () {
         getPageItems();
 
@@ -69,6 +83,7 @@
         pageItems.barbersSelectBox = document.getElementById('form-select-barber');
         pageItems.availableTimesNavButtonNext = document.getElementById('available-times-nav-button-next');
         pageItems.availableTimesNavButtonPrevious = document.getElementById('available-times-nav-button-previous');
+        pageItems.confirmOrderButton = document.getElementById('confirm-order-button');
     }
 
     function addPageItemEventListeners() {
@@ -140,6 +155,30 @@
                     .style.visibility = "hidden";
             }
         });
+
+        pageItems.confirmOrderButton.addEventListener('click', onOrderConfirm);
+    }
+
+    function onOrderConfirm(event) {
+        event.preventDefault();
+
+        fetch('/rest/sendReservation', {
+            method: "POST",
+            body: JSON.stringify(payload),
+            credentials: 'include',
+            headers: new Headers({'content-type': 'application/json'})
+        }).then(response => {
+
+            if(!response.ok) {
+                throw new Error();
+            }
+
+            window.location.href = "/ajanvarausonnistui";
+        })
+        .catch(() => {
+            window.alert("Ajan varaaminen epäonnistui");
+            window.location.href = "/";
+        })
     }
 
     reservationView.toggleService = function toggleService(button, price) {
@@ -197,6 +236,15 @@
             pageItems.nextSlideButton.disabled = true
         }
 
+        if(currentSlide === 4) {
+            buildSummaryPage();
+            pageItems.nextSlideButton.style.display = 'none'
+            pageItems.confirmOrderButton.style.display = 'block'
+        } else {
+            pageItems.confirmOrderButton.style.display = 'none'
+            pageItems.nextSlideButton.style.display = 'block'
+        }
+
         for (let i = 0; i < pageItems.slides.length; i++) {
             if (i === currentSlide) {
                 pageItems.slides[i].style.display = 'block'
@@ -222,6 +270,8 @@
         }
 
         pageItems.nextSlideButton.disabled = false
+        pageItems.nextSlideButton.style.display = 'block'
+        pageItems.confirmOrderButton.style.display = 'none'
 
         for (let i = 0; i < pageItems.slides.length; i++) {
             if (i === currentSlide) {
@@ -441,6 +491,55 @@
         });
     }
 
+    function buildSummaryPage() {
+        const s = document.getElementById('summary-details-container');
+        s.innerHTML = "";
+
+        const typeText = document.createElement('p');
+        typeText.innerText = payload.serviceType === "hairdresser" ? "Kampaaja" : "Parturi"
+        s.appendChild(typeText);
+
+        payload.services.forEach(service => {
+            const serviceText = document.createElement('p');
+            serviceText.innerText = serviceDictionary[service]
+            s.appendChild(serviceText);
+        })
+
+        const hairLengthText = document.createElement('p');
+        if(payload.hairLength === "short") {
+            hairLengthText.innerText = "Lyhyet hiukset";
+        } else if(payload.hairLength === "medium") {
+            hairLengthText.innerText = "Keskipitkät hiukset";
+        } else if(payload.hairLength === "short") {
+            hairLengthText.innerText = "Pitkät hiukset";
+        }
+        s.appendChild(hairLengthText);
+
+        const date = new Date(payload.year, payload.month - 1, payload.day);
+
+        const dateText = document.createElement('p');
+        dateText.innerText = `${getDayOfWeekText(date)} ${payload.day}.${payload.month}. klo ${payload.hour}.00`
+        s.appendChild(dateText);
+
+        if(payload.barberId === -1) {
+            const barberText = document.createElement('p');
+            barberText.innerText = 'Parturi-kampaaja: Kuka tahansa'
+            s.appendChild(barberText);
+        } else {
+            barbers
+                .filter(b => b.id == payload.barberId) // don't change == to === TODO
+                .forEach(b => {
+                    const barberText = document.createElement('p');
+                    barberText.innerText = `Parturi-kampaaja: ${b.name}`
+                    s.appendChild(barberText);
+                });
+        }
+
+        const priceText = document.createElement('p');
+        priceText.innerText = `Hinta: ${currentPrice}.00€`;
+        s.appendChild(priceText);
+    }
+
     function onBarberChange(event) {
         delete payload.year;
         delete payload.month;
@@ -486,23 +585,25 @@
                     .filter(t => {
                         let barberFound = false;
                         for (let barber of t.barbersAvailable) {
-                            if (barber.id === barberId) {
+                            console.log("Testing barber id " + barber.id + " against " + barberId)
+                            if (barber.id == barberId) {
                                 barberFound = true;
                             }
                         }
-                        return true;
+                        return barberFound;
                     })
+            console.log(relevantAvailableTimes);
             relevantAvailableTimes.today =
                 availableTimes
                     .today
                     .filter(t => {
                         let barberFound = false;
                         for (let barber of t.barbersAvailable) {
-                            if (barber.id === barberId) {
+                            if (barber.id == barberId) {
                                 barberFound = true;
                             }
                         }
-                        return true;
+                        return barberFound;
                     })
             relevantAvailableTimes.tomorrow =
                 availableTimes
@@ -510,11 +611,11 @@
                     .filter(t => {
                         let barberFound = false;
                         for (let barber of t.barbersAvailable) {
-                            if (barber.id === barberId) {
+                            if (barber.id == barberId) {
                                 barberFound = true;
                             }
                         }
-                        return true;
+                        return barberFound;
                     })
             relevantAvailableTimes.theDayAfter =
                 availableTimes
@@ -522,11 +623,11 @@
                     .filter(t => {
                         let barberFound = false;
                         for (let barber of t.barbersAvailable) {
-                            if (barber.id === barberId) {
+                            if (barber.id == barberId) {
                                 barberFound = true;
                             }
                         }
-                        return true;
+                        return barberFound;
                     })
         }
 

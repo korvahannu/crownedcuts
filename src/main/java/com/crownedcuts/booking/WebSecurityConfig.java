@@ -23,6 +23,8 @@ public class WebSecurityConfig
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
         return http
+                .csrf()
+                .disable()
                 .authorizeHttpRequests(requests -> requests
                         .anyRequest()
                         .hasAuthority("USER")

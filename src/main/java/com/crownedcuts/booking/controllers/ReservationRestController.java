@@ -1,13 +1,13 @@
 package com.crownedcuts.booking.controllers;
 
-import com.crownedcuts.booking.records.AvailableTime;
-import com.crownedcuts.booking.records.BarberHairdresser;
+import com.crownedcuts.booking.records.*;
 import com.crownedcuts.booking.services.BarberHairdresserService;
 import com.crownedcuts.booking.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -28,8 +28,31 @@ public class ReservationRestController
     }
 
     @GetMapping("/rest/getAvailableTimes")
-    public List<AvailableTime> getAvailableTimes(@RequestParam int year, @RequestParam int month, @RequestParam int day)
+    public ResponseEntity<List<AvailableTime>> getAvailableTimes(@RequestParam int year, @RequestParam int month, @RequestParam int day)
     {
-        return reservationService.getAllFreeTimesOnDay(year, month, day);
+        try {
+            var result= reservationService.getAllFreeTimesOnDay(year, month, day);
+            return ResponseEntity.ok(result);
+        }
+        catch(IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/rest/sendReservation")
+    public ResponseEntity<Object> sendReservation(@RequestBody ReservationPayload payload) {
+
+        // TODO: Payload can have barberId of -1, in that case, fetch any available barber
+
+        var barber = barberHairdresserService.getBarber(payload.barberId()).orElseThrow();
+        var timeDetails = new TimeDetails(payload.year(), payload.month(), payload.day(), payload.hour());
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        var user = UserDetails.of(username, null, null);
+
+        if(reservationService.reserveTime(barber, user, timeDetails)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
