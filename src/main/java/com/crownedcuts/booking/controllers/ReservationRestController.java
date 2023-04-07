@@ -77,7 +77,7 @@ public class ReservationRestController
         var barber = barberHairdresserService.getBarber(payload.barberId()).orElseThrow();
         var timeDetails = new TimeDetails(payload.year(), payload.month(), payload.day(), payload.hour());
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        var user = UserDetails.of(username, null, null);
+        var user = UserDetails.of(username, null);
 
         if(reservationService.reserveTime(barber, user, timeDetails)) {
             return ResponseEntity.ok().build();
