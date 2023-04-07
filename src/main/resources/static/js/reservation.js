@@ -574,10 +574,9 @@
     }
 
     function populateAvailableTimesListing(barberId) {
-
         let relevantAvailableTimes = {};
 
-        if (barberId === -1) {
+        if (barberId == -1) {
             relevantAvailableTimes = availableTimes;
         } else {
             relevantAvailableTimes.today =
@@ -586,14 +585,12 @@
                     .filter(t => {
                         let barberFound = false;
                         for (let barber of t.barbersAvailable) {
-                            console.log("Testing barber id " + barber.id + " against " + barberId)
                             if (barber.id == barberId) {
                                 barberFound = true;
                             }
                         }
                         return barberFound;
                     })
-            console.log(relevantAvailableTimes);
             relevantAvailableTimes.today =
                 availableTimes
                     .today
@@ -640,6 +637,13 @@
         tom.innerHTML = "";
         da.innerHTML = "";
 
+        if(!relevantAvailableTimes.today || relevantAvailableTimes.today.length < 1) {
+            const non = document.createElement('p');
+            non.innerText = "Kyseisellä parturi-kampaajalla ei ole vapaita aikoja tälle päivälle."
+            non.classList.add('no-available-times-text');
+            to.appendChild(non)
+        }
+
         relevantAvailableTimes.today.forEach(a => {
             const btn = document.createElement('button');
             btn.type = "button";
@@ -664,6 +668,13 @@
             to.appendChild(btn)
         })
 
+        if(!relevantAvailableTimes.tomorrow || relevantAvailableTimes.tomorrow.length < 1) {
+            const non = document.createElement('p');
+            non.innerText = "Kyseisellä parturi-kampaajalla ei ole vapaita aikoja tälle päivälle."
+            non.classList.add('no-available-times-text');
+            tom.appendChild(non)
+        }
+
         relevantAvailableTimes.tomorrow.forEach(a => {
             const btn = document.createElement('button');
             btn.type = "button";
@@ -686,6 +697,13 @@
             });
             tom.appendChild(btn)
         })
+
+        if(!relevantAvailableTimes.theDayAfter || relevantAvailableTimes.theDayAfter.length < 1) {
+            const non = document.createElement('p');
+            non.innerText = "Kyseisellä parturi-kampaajalla ei ole vapaita aikoja tälle päivälle."
+            non.classList.add('no-available-times-text');
+            da.appendChild(non)
+        }
 
         relevantAvailableTimes.theDayAfter.forEach(a => {
             const btn = document.createElement('button');

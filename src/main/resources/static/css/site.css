@@ -1,21 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
 :root {
-    --blue: #3498db;
-    --dark-blue: #2980b9;
+    --lighter-blue: #2980b9;
     --yellow: #f1c40f;
     --dark-yellow: #f39c12;
-    --gray: #ecf0f1;
     --darker-gray: #bdc3c7;
     --dark-gray: #95a5a6;
-    --black: #34495e;
     --blacker-black: #2c3e50;
-    --green: #2ecc71;
-    --dark-green: #27ae60;
-    --red: #e74c3c;
+    --darkish-green: #1E8549;
     --dark-red: #c0392b;
     --purple: #9b59b6;
     --dark-purple: #8e44ad;
+    --blue: #185D8C;
+    --gray: #ecf0f1;
+    --black: #2c3e50;
+    --green: #156034;
+    --red: #A82315;
+    --darkest-green: #156034;
 }
 
 html {
@@ -142,7 +143,7 @@ h2 {
 
 .checkmark {
     font-size: 2rem;
-    color: var(--dark-green);
+    color: var(--darkest-green);
     display: none;
     height: 40px;
 }
@@ -162,7 +163,7 @@ h2 {
 }
 
 #pageIndicatorList > li {
-    border: 2px solid var(--dark-blue);
+    border: 2px solid var(--blue);
     padding: 0.7rem;
     height: 0.8rem;
     width: 0.8rem;
@@ -176,7 +177,7 @@ h2 {
 }
 
 .selected {
-    background-color: var(--dark-blue) !important;
+    background-color: var(--blue) !important;
     color: var(--gray) !important;
 }
 
@@ -221,7 +222,7 @@ h2 {
 }
 
 .reservation-toggable-service-button:hover {
-    background-color: var(--dark-blue);
+    background-color: var(--lighter-blue);
 }
 
 .reservation-toggable-service-button-selected {
@@ -272,7 +273,7 @@ h2 {
 
 
 .reservation-navigation-button:hover {
-    background-color: var(--dark-blue);
+    background-color: var(--lighter-blue);
 }
 
 .reservation-navigation-button:disabled {
@@ -314,7 +315,7 @@ h2 {
 }
 
 .available-time-button:hover {
-    background-color: var(--dark-blue);
+    background-color: var(--lighter-blue);
 }
 
 .available-times-day-header {
@@ -322,11 +323,12 @@ h2 {
 }
 
 .available-time-button-selected {
-    background-color: var(--dark-green);
+    background-color: var(--darkest-green);
+    font-weight: bold;
 }
 
 .available-time-button-selected:hover {
-    background-color: var(--green);
+    background-color: var(--darkish-green);
 }
 
 #available-times-nav-buttons {
@@ -358,6 +360,10 @@ h2 {
     display: none;
 }
 
+.no-available-times-text {
+    font-style: italic;
+    text-align: center;
+}
 
 @media only screen and (max-width: 864px) {
     .big-square-button {
