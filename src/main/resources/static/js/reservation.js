@@ -9,7 +9,38 @@
 
     const pageItems = {}
 
+    const availableTimes = {}
+
+    const barbers = [];
+
+    let currentBarber = -1;
+
+    let currentAvailableTimesOffset = 0;
+
     reservationView.init = function () {
+        getPageItems();
+
+        maxCountOfSlides = pageItems.slides.length - 1;
+
+        // Hide all slides except for the first one
+        for (let i = 1; i < pageItems.slides.length; i++) {
+            pageItems.slides[i].style.display = 'none'
+        }
+
+        // on first render, hide the button that takes the user to the next page
+        pageItems.previousSlideButton.style.visibility = 'hidden'
+
+        addPageItemEventListeners();
+
+        populateAvailableTimes(0).then(() => {
+            populateBarbers()
+                .then(() => {
+                    populateAvailableTimesListing(-1);
+                })
+        })
+    }
+
+    function getPageItems() {
         pageItems.slides = document.querySelectorAll('.slide');
         pageItems.nextSlideButton = document.querySelector('.slide-arrow-next');
         pageItems.previousSlideButton = document.querySelector(".slide-arrow-prev");
@@ -35,17 +66,12 @@
         pageItems.messageBox = document.getElementById('messageBox');
         pageItems.cancelAbortButton = document.getElementById('cancelAbortButton');
         pageItems.confirmAbortButton = document.getElementById('confirmAbortButton');
+        pageItems.barbersSelectBox = document.getElementById('form-select-barber');
+        pageItems.availableTimesNavButtonNext = document.getElementById('available-times-nav-button-next');
+        pageItems.availableTimesNavButtonPrevious = document.getElementById('available-times-nav-button-previous');
+    }
 
-        maxCountOfSlides = pageItems.slides.length - 1;
-
-        // Hide all slides except for the first one
-        for (let i = 1; i < pageItems.slides.length; i++) {
-            pageItems.slides[i].style.display = 'none'
-        }
-
-        // on first render, hide the button that takes the user to the next page
-        pageItems.previousSlideButton.style.visibility = 'hidden'
-
+    function addPageItemEventListeners() {
         pageItems.nextSlideButton.addEventListener('click', onNextSlideButtonClick);
         pageItems.previousSlideButton.addEventListener('click', onPreviousSlideButtonClick)
         pageItems.hairLengthLongButton.addEventListener('click', onHairLengthLongButtonClick);
@@ -57,6 +83,63 @@
         pageItems.shadow.addEventListener('click', cancelAbort);
         pageItems.cancelAbortButton.addEventListener('click', cancelAbort);
         pageItems.confirmAbortButton.addEventListener('click', confirmAbort);
+        pageItems.barbersSelectBox.addEventListener('change', onBarberChange);
+
+        pageItems.availableTimesNavButtonNext.addEventListener('click', () => {
+            document.getElementById('available-times-list-container')
+                .style.opacity = 0.4;
+            pageItems.availableTimesNavButtonPrevious.disabled = true;
+            pageItems.availableTimesNavButtonNext.disabled = true;
+            delete payload.year;
+            delete payload.month;
+            delete payload.day;
+            delete payload.hour;
+            delete payload.barberId;
+            pageItems.nextSlideButton.disabled = true;
+            currentAvailableTimesOffset += 4;
+            populateAvailableTimes(currentAvailableTimesOffset)
+                .then(() => {
+                    populateAvailableTimesListing(currentBarber)
+                    pageItems.availableTimesNavButtonPrevious.disabled = false;
+                    pageItems.availableTimesNavButtonNext.disabled = false;
+                    document.getElementById('available-times-list-container')
+                        .style.opacity = 1;
+                })
+
+            if(currentAvailableTimesOffset > 0) {
+                pageItems.availableTimesNavButtonPrevious
+                    .style.visibility = "visible";
+            }
+        });
+
+        pageItems.availableTimesNavButtonPrevious.addEventListener('click', () => {
+            if (currentAvailableTimesOffset - 4 >= 0) {
+                document.getElementById('available-times-list-container')
+                    .style.opacity = 0.4;
+                pageItems.availableTimesNavButtonPrevious.disabled = true;
+                pageItems.availableTimesNavButtonNext.disabled = true;
+                delete payload.year;
+                delete payload.month;
+                delete payload.day;
+                delete payload.hour;
+                delete payload.barberId;
+                pageItems.nextSlideButton.disabled = true;
+                currentAvailableTimesOffset -= 4;
+                populateAvailableTimes(currentAvailableTimesOffset)
+                    .then(() => {
+                        populateAvailableTimesListing(currentBarber)
+                        pageItems.availableTimesNavButtonPrevious.disabled = false;
+                        pageItems.availableTimesNavButtonNext.disabled = false;
+                        document.getElementById('available-times-list-container')
+                            .style.opacity = 1;
+                    })
+            }
+
+            if(currentAvailableTimesOffset === 0) {
+                pageItems.availableTimesNavButtonPrevious
+                    .style.visibility = "hidden";
+            }
+        });
     }
 
     reservationView.toggleService = function toggleService(button, price) {
@@ -107,6 +190,10 @@
         }
 
         if (currentSlide === 2 && !payload.services) {
+            pageItems.nextSlideButton.disabled = true
+        }
+
+        if (currentSlide === 3 && !payload.barberId) {
             pageItems.nextSlideButton.disabled = true
         }
 
@@ -233,6 +320,293 @@
         Array.from(pageItems.serviceTypeCheckmarks).forEach((el) => {
             el.style.display = 'none'
         });
+    }
+
+    async function populateBarbers() {
+        const data = await (await fetch('/rest/getBarbers')).json();
+        data.forEach(d => barbers.push(d));
+
+        pageItems.barbersSelectBox.innerHTML = '';
+
+        const el = document.createElement('option');
+        el.value = -1;
+        el.innerText = 'Kuka tahansa';
+        pageItems.barbersSelectBox.appendChild(el);
+
+        barbers.forEach(barber => {
+            const el = document.createElement('option');
+            el.value = barber.id;
+            el.innerText = barber.name;
+            pageItems.barbersSelectBox.appendChild(el);
+        });
+    }
+
+    async function populateAvailableTimes(offset) {
+
+        delete availableTimes.theDayAfter;
+        delete availableTimes.tomorrow;
+        delete availableTimes.today;
+
+        while (!availableTimes.theDayAfter) {
+            try {
+                if (!availableTimes.today) {
+                    const requestParams = getTimedURLSearchParams(offset)
+                    const data = await (await fetch('/rest/getAvailableTimes?' + requestParams)).json();
+
+                    if (!Array.isArray(data) || data.length < 1) {
+                        offset++;
+                        continue;
+                    }
+
+                    availableTimes.today = [];
+                    data.forEach(a => {
+                        availableTimes.today.push(a)
+                    });
+
+                    if (data.length > 0) {
+
+                        const d = new Date(data[0].year, data[0].month - 1, data[0].day);
+                        const el = document.getElementById('available-times-today');
+                        el.innerText = `${getDayOfWeekText(d)} ${data[0].day}.${data[0].month}`
+                    }
+
+                    offset++;
+                }
+
+                if (!availableTimes.tomorrow) {
+                    const requestParams = getTimedURLSearchParams(offset)
+                    const data = await (await fetch('/rest/getAvailableTimes?' + requestParams)).json();
+
+                    if (!Array.isArray(data) || data.length < 1) {
+                        offset++;
+                        continue;
+                    }
+
+                    availableTimes.tomorrow = [];
+                    data.forEach(a => {
+                        availableTimes.tomorrow.push(a)
+                    });
+
+                    if (data.length > 0) {
+
+                        const d = new Date(data[0].year, data[0].month - 1, data[0].day);
+                        const el = document.getElementById('available-times-tomorrow');
+                        el.innerText = `${getDayOfWeekText(d)} ${data[0].day}.${data[0].month}`
+                    }
+
+                    offset++;
+                }
+
+                if (!availableTimes.theDayAfter) {
+                    const requestParams = getTimedURLSearchParams(offset)
+                    const data = await (await fetch('/rest/getAvailableTimes?' + requestParams)).json();
+
+                    if (!Array.isArray(data) || data.length < 1) {
+                        offset++;
+                        continue;
+                    }
+
+                    availableTimes.theDayAfter = [];
+                    data.forEach(a => {
+                        availableTimes.theDayAfter.push(a)
+                    });
+
+                    if (data.length > 0) {
+
+                        const d = new Date(data[0].year, data[0].month - 1, data[0].day);
+
+                        const el = document.getElementById('available-times-day-after');
+                        el.innerText = `${getDayOfWeekText(d)} ${data[0].day}.${data[0].month}`
+                    }
+                }
+            } catch (error) {
+                offset++;
+            }
+        }
+    }
+
+    function getTimedURLSearchParams(offset) {
+        const date = new Date();
+
+        Date.prototype.addDays = function (days) {
+            let date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        }
+
+        return new URLSearchParams({
+            year: date.getFullYear(),
+            month: date.getMonth() + 1,
+            day: date.addDays(offset).getDate()
+        });
+    }
+
+    function onBarberChange(event) {
+        delete payload.year;
+        delete payload.month;
+        delete payload.day;
+        delete payload.hour;
+        delete payload.barberId;
+        pageItems.nextSlideButton.disabled = true;
+        populateAvailableTimesListing(event.target.value);
+        currentBarber = event.target.value;
+    }
+
+    function getDayOfWeekText(date) {
+        const n = date.getDay();
+
+        switch (n) {
+            case 0:
+                return "Sunnuntai";
+            case 1:
+                return "Maanantai";
+            case 2:
+                return "Tiistai";
+            case 3:
+                return "Keskiviikko";
+            case 4:
+                return "Torstai";
+            case 5:
+                return "Perjantai";
+            default:
+                return "Lauantai";
+        }
+    }
+
+    function populateAvailableTimesListing(barberId) {
+
+        let relevantAvailableTimes = {};
+
+        if (barberId === -1) {
+            relevantAvailableTimes = availableTimes;
+        } else {
+            relevantAvailableTimes.today =
+                availableTimes
+                    .today
+                    .filter(t => {
+                        let barberFound = false;
+                        for (let barber of t.barbersAvailable) {
+                            if (barber.id === barberId) {
+                                barberFound = true;
+                            }
+                        }
+                        return true;
+                    })
+            relevantAvailableTimes.today =
+                availableTimes
+                    .today
+                    .filter(t => {
+                        let barberFound = false;
+                        for (let barber of t.barbersAvailable) {
+                            if (barber.id === barberId) {
+                                barberFound = true;
+                            }
+                        }
+                        return true;
+                    })
+            relevantAvailableTimes.tomorrow =
+                availableTimes
+                    .tomorrow
+                    .filter(t => {
+                        let barberFound = false;
+                        for (let barber of t.barbersAvailable) {
+                            if (barber.id === barberId) {
+                                barberFound = true;
+                            }
+                        }
+                        return true;
+                    })
+            relevantAvailableTimes.theDayAfter =
+                availableTimes
+                    .theDayAfter
+                    .filter(t => {
+                        let barberFound = false;
+                        for (let barber of t.barbersAvailable) {
+                            if (barber.id === barberId) {
+                                barberFound = true;
+                            }
+                        }
+                        return true;
+                    })
+        }
+
+        const to = document.getElementById('available-times-list-today');
+        const tom = document.getElementById('available-times-list-tomorrow');
+        const da = document.getElementById('available-times-list-day-after');
+
+        to.innerHTML = "";
+        tom.innerHTML = "";
+        da.innerHTML = "";
+
+        relevantAvailableTimes.today.forEach(a => {
+            const btn = document.createElement('button');
+            btn.type = "button";
+            btn.classList.add('available-time-button');
+            btn.innerText = `${a.hour}:00`
+
+            btn.addEventListener('click', () => {
+                if (!btn.classList.contains('available-time-button-selected')) {
+                    let buttons = document.querySelectorAll('.available-time-button');
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].classList.remove('available-time-button-selected');
+                    }
+                    btn.classList.add('available-time-button-selected');
+                    payload.year = a.year;
+                    payload.month = a.month;
+                    payload.day = a.day;
+                    payload.hour = a.hour;
+                    payload.barberId = barberId;
+                    pageItems.nextSlideButton.disabled = false
+                }
+            });
+            to.appendChild(btn)
+        })
+
+        relevantAvailableTimes.tomorrow.forEach(a => {
+            const btn = document.createElement('button');
+            btn.type = "button";
+            btn.classList.add('available-time-button');
+            btn.innerText = `${a.hour}:00`
+            btn.addEventListener('click', () => {
+                if (!btn.classList.contains('available-time-button-selected')) {
+                    let buttons = document.querySelectorAll('.available-time-button');
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].classList.remove('available-time-button-selected');
+                    }
+                    btn.classList.add('available-time-button-selected');
+                    payload.year = a.year;
+                    payload.month = a.month;
+                    payload.day = a.day;
+                    payload.hour = a.hour;
+                    payload.barberId = barberId;
+                    pageItems.nextSlideButton.disabled = false
+                }
+            });
+            tom.appendChild(btn)
+        })
+
+        relevantAvailableTimes.theDayAfter.forEach(a => {
+            const btn = document.createElement('button');
+            btn.type = "button";
+            btn.classList.add('available-time-button');
+            btn.innerText = `${a.hour}:00`
+            btn.addEventListener('click', () => {
+                if (!btn.classList.contains('available-time-button-selected')) {
+                    let buttons = document.querySelectorAll('.available-time-button');
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].classList.remove('available-time-button-selected');
+                    }
+                    btn.classList.add('available-time-button-selected');
+                    payload.year = a.year;
+                    payload.month = a.month;
+                    payload.day = a.day;
+                    payload.hour = a.hour;
+                    payload.barberId = barberId;
+                    pageItems.nextSlideButton.disabled = false
+                }
+            });
+            da.appendChild(btn)
+        })
     }
 })(window.reservationView = window.reservationView || {})
 

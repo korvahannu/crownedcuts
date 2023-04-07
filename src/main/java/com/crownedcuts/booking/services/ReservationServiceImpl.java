@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,13 @@ public class ReservationServiceImpl implements ReservationService
     @Override
     public List<AvailableTime> getAllFreeTimesOnDay(int year, int month, int day)
     {
+        var localDate = LocalDate.of(year, month, day);
+
+        if(localDate.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY))
+        {
+            throw new IllegalArgumentException("Crowned Cuts does not offer service on weekends.");
+        }
+
         var reservations = getReservationsOfDay(year, month, day);
 
         var barberHairdressers = barberHairdresserService.getAllBarbers();
@@ -58,6 +66,13 @@ public class ReservationServiceImpl implements ReservationService
                 var availableTime = new AvailableTime(year, month, day, i, currentBarberHairdressers);
                 result.add(availableTime);
             }
+        }
+
+        if(localDate.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
+            result = result
+                    .stream()
+                    .filter(r -> r.hour() > LocalDateTime.now().getHour())
+                    .toList();
         }
 
         return result;

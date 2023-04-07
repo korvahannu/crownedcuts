@@ -87,12 +87,10 @@ h2 {
     margin-right: auto;
     background-color: white;
     padding: 2rem;
-    min-height: 450px;
 }
 .slides-container {
     scrollbar-width: none;
     -ms-overflow-style: none;
-    height: 450px;
 }
 
 .slides-container::-webkit-scrollbar {
@@ -289,6 +287,74 @@ h2 {
     margin-top: 4rem;
 }
 
+#available-times-list-container {
+    max-width: 60%;
+}
+
+#form-select-barber {
+    font-size: 1.1rem;
+    background-color: white;
+    border: 1px solid var(--blue);
+    width: 60%;
+    padding: 0.8rem;
+}
+
+.available-time-button {
+    font-size: 1.1rem;
+    max-width: 256px;
+    min-width: 80px;
+    border-radius: 16px;
+    border: none;
+    background-color: var(--blue);
+    color: var(--gray);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    margin-top: 1rem;
+}
+
+.available-time-button:hover {
+    background-color: var(--dark-blue);
+}
+
+.available-times-day-header {
+    margin-bottom: 1rem;
+}
+
+.available-time-button-selected {
+    background-color: var(--dark-green);
+}
+
+.available-time-button-selected:hover {
+    background-color: var(--green);
+}
+
+#available-times-nav-buttons {
+    max-width: 60%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#available-times-nav-buttons > button {
+    font-size: 2rem;
+    background-color: transparent;
+    border: 0;
+    width: 64px;
+    cursor: pointer;
+}
+
+#available-times-nav-buttons > button:hover {
+    background-color: var(--gray);
+}
+
+#summary-container {
+    font-size: 1.2rem;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
 @media only screen and (max-width: 864px) {
     .big-square-button {
         width: 150px;
@@ -305,6 +371,14 @@ h2 {
     #service-price {
         text-align: right;
         margin-top: 1rem;
+    }
+    #available-times-list-container {
+        width: 100%;
+        max-width: 100%;
+    }
+    #form-select-barber {
+        width: 100%;
+        max-width: 100%;
     }
     #pageIndicator {
         width: 100%;
@@ -357,5 +431,20 @@ h2 {
         left: 0;
         right: 0;
         transform: none;
+    }
+    .available-time-button {
+        font-size: 1.2rem;
+        min-width: 120px;
+    }
+    #summary-container {
+        width: 100%;
+    }
+    #available-times-nav-buttons {
+        max-width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    #available-times-nav-buttons > button {
+        font-size: 3rem;
     }
 }
