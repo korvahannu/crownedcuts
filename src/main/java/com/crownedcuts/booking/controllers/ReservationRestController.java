@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
 public class ReservationRestController
@@ -42,7 +43,36 @@ public class ReservationRestController
     @PostMapping("/rest/sendReservation")
     public ResponseEntity<Object> sendReservation(@RequestBody ReservationPayload payload) {
 
-        // TODO: Payload can have barberId of -1, in that case, fetch any available barber
+        // barberId of less than 0 means that the barber/hairdresser does not matter for the customer
+        if(payload.barberId() < 0) {
+            final var finalHour = payload.hour();
+            var freeTimesAtHour = reservationService.getAllFreeTimesOnDay(payload.year(), payload.month(), payload.day())
+                    .stream()
+                    .filter(f -> f.hour() == finalHour)
+                    .toList();
+
+            var randomBarberNumber = ThreadLocalRandom
+                    .current()
+                    .nextInt(0, freeTimesAtHour.get(0).barbersAvailable().size()) -1;
+
+            var finalRandomNumber = randomBarberNumber == -1 ? 0 : randomBarberNumber;
+
+            long barberId = freeTimesAtHour
+                    .get(0)
+                    .barbersAvailable()
+                    .get(finalRandomNumber)
+                    .id();
+
+            payload = new ReservationPayload(payload.serviceType(),
+                    payload.hairLength(),
+                    payload.services(),
+                    payload.year(),
+                    payload.month(),
+                    payload.day(),
+                    payload.hour(),
+                    barberId
+            );
+        }
 
         var barber = barberHairdresserService.getBarber(payload.barberId()).orElseThrow();
         var timeDetails = new TimeDetails(payload.year(), payload.month(), payload.day(), payload.hour());
