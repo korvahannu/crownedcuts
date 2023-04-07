@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fi">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fi">
 <head>
     <meta charset="UTF-8">
     <title>Ajanvaraus onnistui!</title>
@@ -25,16 +25,21 @@
                 <div style="width: 100%">
                     <h2>Varaus vahvistettu onnistuneesti!</h2>
                 </div>
-                <p>Parturi-kampaamo Crowned Cuts on vastaanottanut ja vahvistanut varauksesi. Voit tarkastella varaamiasi aikoja etusivulta. Vaihtoehtoisesti voit <a style="color: black" href="/ajanvaraus">varata uuden ajan tästä.</a></p>
-                <p style="margin-bottom: 3rem;">Ongelmatilanteissa ota yhteyttä asiakaspalveluun asiakaspalvelu@crownedcuts.fi tai +3580441224012</p>
-                <button id="return-to-frontpage-button" type="button" class="reservation-navigation-button slide-arrow">Siirry etusivulle</button>
+                <p>Parturi-kampaamo Crowned Cuts on vastaanottanut ja vahvistanut varauksesi. Voit tarkastella
+                    varaamiasi aikoja etusivulta. Vaihtoehtoisesti voit <a style="color: black" href="/ajanvaraus">varata
+                        uuden ajan tästä.</a></p>
+                <p style="margin-bottom: 3rem;">Ongelmatilanteissa ota yhteyttä asiakaspalveluun
+                    asiakaspalvelu@crownedcuts.fi tai +3580441224012</p>
+                <button id="return-to-frontpage-button" type="button" class="reservation-navigation-button slide-arrow">
+                    Siirry etusivulle
+                </button>
             </div>
         </div>
     </section>
 </div>
 <script>
     const button = document.getElementById('return-to-frontpage-button');
-    button.addEventListener('click', function(event) {
+    button.addEventListener('click', function (event) {
         event.preventDefault();
         window.location.href = "/";
     });

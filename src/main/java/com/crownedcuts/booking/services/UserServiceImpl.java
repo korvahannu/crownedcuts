@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService
      * Does NOT insert any roles that a UserDetails -instance might have
      *
      * @param connection This helper function needs a valid connection to the database
-     * @param user User to add to the database. Only username and password are required
+     * @param user       User to add to the database. Only username and password are required
      * @return true if user added successfully, otherwise false
      */
     private boolean insertUserToDatabase(Connection connection, UserDetails user)
@@ -186,8 +186,8 @@ public class UserServiceImpl implements UserService
      * and commit only according to the return value
      *
      * @param connection This helper function needs a valid connection to the database
-     * @param username Username that the given roles belong to
-     * @param roles List of roles to add to the database
+     * @param username   Username that the given roles belong to
+     * @param roles      List of roles to add to the database
      * @return true if everything went OK, otherwise false
      */
     private boolean insertRolesToDatabase(Connection connection, String username, Collection<? extends GrantedAuthority> roles)

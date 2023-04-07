@@ -29,20 +29,21 @@ public class BarberHairdresserServiceImpl implements BarberHairdresserService
     {
         String query = "SELECT * FROM barbers WHERE id = ?";
 
-        try(var statement = repository.getPreparedStatement(query))
+        try (var statement = repository.getPreparedStatement(query))
         {
             statement.setLong(1, id);
 
             var result = statement.executeQuery();
 
-            if(result.next()) {
+            if (result.next())
+            {
                 return Optional.of(
-                  new BarberHairdresser(result.getLong("id"),
-                          result.getString("name"))
+                        new BarberHairdresser(result.getLong("id"),
+                                result.getString("name"))
                 );
             }
         }
-        catch(SQLException ex)
+        catch (SQLException ex)
         {
             logger.warning(ex.getMessage());
         }
@@ -55,20 +56,21 @@ public class BarberHairdresserServiceImpl implements BarberHairdresserService
     {
         String query = "SELECT * FROM barbers WHERE name = ?";
 
-        try(var statement = repository.getPreparedStatement(query))
+        try (var statement = repository.getPreparedStatement(query))
         {
             statement.setString(1, name);
 
             var result = statement.executeQuery();
 
-            if(result.next()) {
+            if (result.next())
+            {
                 return Optional.of(
                         new BarberHairdresser(result.getLong("id"),
                                 result.getString("name"))
                 );
             }
         }
-        catch(SQLException ex)
+        catch (SQLException ex)
         {
             logger.warning(ex.getMessage());
         }
@@ -82,9 +84,9 @@ public class BarberHairdresserServiceImpl implements BarberHairdresserService
         String query = "SELECT * from barbers";
         List<BarberHairdresser> result = new ArrayList<>();
 
-        try(var statement = repository.getPreparedStatement(query))
+        try (var statement = repository.getPreparedStatement(query))
         {
-            try(var resultSet = statement.executeQuery())
+            try (var resultSet = statement.executeQuery())
             {
                 while (resultSet.next())
                 {
@@ -95,11 +97,11 @@ public class BarberHairdresserServiceImpl implements BarberHairdresserService
                 }
             }
         }
-        catch(SQLException ex)
+        catch (SQLException ex)
         {
             logger.warning(ex.getMessage());
         }
 
-        return  result;
+        return result;
     }
 }

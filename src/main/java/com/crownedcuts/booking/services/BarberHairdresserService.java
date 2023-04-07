@@ -12,6 +12,7 @@ public interface BarberHairdresserService
 {
     /**
      * Gets barber/hairdresser information from the database and returns it
+     *
      * @param id to search the barber/hairdresser with
      * @return Optional that may or may not contain a BarberHairdresser instance
      */
@@ -19,6 +20,7 @@ public interface BarberHairdresserService
 
     /**
      * Gets barber/hairdresser information from the database and returns it
+     *
      * @param name to search the barber/hairdresser with
      * @return Optional that may or may not contain a BarberHairdresser instance
      */
@@ -26,6 +28,7 @@ public interface BarberHairdresserService
 
     /**
      * Gets the list of all barbers/hairdressers in the database
+     *
      * @return List of barbers/hairdressers
      */
     List<BarberHairdresser> getAllBarbers();

@@ -121,7 +121,7 @@
                         .style.opacity = 1;
                 })
 
-            if(currentAvailableTimesOffset > 0) {
+            if (currentAvailableTimesOffset > 0) {
                 pageItems.availableTimesNavButtonPrevious
                     .style.visibility = "visible";
             }
@@ -150,7 +150,7 @@
                     })
             }
 
-            if(currentAvailableTimesOffset === 0) {
+            if (currentAvailableTimesOffset === 0) {
                 pageItems.availableTimesNavButtonPrevious
                     .style.visibility = "hidden";
             }
@@ -169,16 +169,16 @@
             headers: new Headers({'content-type': 'application/json'})
         }).then(response => {
 
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error();
             }
 
             window.location.href = "/ajanvarausonnistui";
         })
-        .catch(() => {
-            window.alert("Ajan varaaminen epäonnistui");
-            window.location.href = "/";
-        })
+            .catch(() => {
+                window.alert("Ajan varaaminen epäonnistui");
+                window.location.href = "/";
+            })
     }
 
     reservationView.toggleService = function toggleService(button, price) {
@@ -236,7 +236,7 @@
             pageItems.nextSlideButton.disabled = true
         }
 
-        if(currentSlide === 4) {
+        if (currentSlide === 4) {
             buildSummaryPage();
             pageItems.nextSlideButton.style.display = 'none'
             pageItems.confirmOrderButton.style.display = 'block'
@@ -507,11 +507,11 @@
         })
 
         const hairLengthText = document.createElement('p');
-        if(payload.hairLength === "short") {
+        if (payload.hairLength === "short") {
             hairLengthText.innerText = "Lyhyet hiukset";
-        } else if(payload.hairLength === "medium") {
+        } else if (payload.hairLength === "medium") {
             hairLengthText.innerText = "Keskipitkät hiukset";
-        } else if(payload.hairLength === "short") {
+        } else if (payload.hairLength === "short") {
             hairLengthText.innerText = "Pitkät hiukset";
         }
         s.appendChild(hairLengthText);
@@ -522,7 +522,7 @@
         dateText.innerText = `${getDayOfWeekText(date)} ${payload.day}.${payload.month}. klo ${payload.hour}.00`
         s.appendChild(dateText);
 
-        if(payload.barberId === -1) {
+        if (payload.barberId === -1) {
             const barberText = document.createElement('p');
             barberText.innerText = 'Parturi-kampaaja: Kuka tahansa'
             s.appendChild(barberText);
@@ -637,7 +637,7 @@
         tom.innerHTML = "";
         da.innerHTML = "";
 
-        if(!relevantAvailableTimes.today || relevantAvailableTimes.today.length < 1) {
+        if (!relevantAvailableTimes.today || relevantAvailableTimes.today.length < 1) {
             const non = document.createElement('p');
             non.innerText = "Kyseisellä parturi-kampaajalla ei ole vapaita aikoja tälle päivälle."
             non.classList.add('no-available-times-text');
@@ -668,7 +668,7 @@
             to.appendChild(btn)
         })
 
-        if(!relevantAvailableTimes.tomorrow || relevantAvailableTimes.tomorrow.length < 1) {
+        if (!relevantAvailableTimes.tomorrow || relevantAvailableTimes.tomorrow.length < 1) {
             const non = document.createElement('p');
             non.innerText = "Kyseisellä parturi-kampaajalla ei ole vapaita aikoja tälle päivälle."
             non.classList.add('no-available-times-text');
@@ -698,7 +698,7 @@
             tom.appendChild(btn)
         })
 
-        if(!relevantAvailableTimes.theDayAfter || relevantAvailableTimes.theDayAfter.length < 1) {
+        if (!relevantAvailableTimes.theDayAfter || relevantAvailableTimes.theDayAfter.length < 1) {
             const non = document.createElement('p');
             non.innerText = "Kyseisellä parturi-kampaajalla ei ole vapaita aikoja tälle päivälle."
             non.classList.add('no-available-times-text');

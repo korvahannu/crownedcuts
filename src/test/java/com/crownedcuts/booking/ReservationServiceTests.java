@@ -18,17 +18,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.*;
-import java.util.TimeZone;
 import java.util.logging.Logger;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@TestPropertySource(locations="classpath:test.reservationservicetests.properties")
+@TestPropertySource(locations = "classpath:test.reservationservicetests.properties")
 class ReservationServiceTests
 {
     private final ReservationService reservationService;
-    private  final BarberHairdresserService barberHairdresserService;
+    private final BarberHairdresserService barberHairdresserService;
     private final UserService userService;
     private static final Logger logger = Logger.getLogger(ReservationServiceTests.class.getName());
     private final int testBarbersCount = 5;
@@ -36,7 +34,8 @@ class ReservationServiceTests
     private static String databaseFilepath;
 
     @Value("${databaseFilepath}")
-    public void setNameStatic(String databaseFilepath){
+    public void setNameStatic(String databaseFilepath)
+    {
         ReservationServiceTests.databaseFilepath = databaseFilepath;
     }
 
@@ -89,12 +88,14 @@ class ReservationServiceTests
         Assertions.assertFalse(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 15)));
 
         var invalidReservationTimeTooLate = new TimeDetails(2023, 5, 5, 16);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+        {
             reservationService.reserveTime(barber, user, invalidReservationTimeTooLate);
         });
 
         var invalidReservationTimeTooEarly = new TimeDetails(2023, 5, 5, 16);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+        {
             reservationService.reserveTime(barber, user, invalidReservationTimeTooEarly);
         });
 
@@ -102,7 +103,7 @@ class ReservationServiceTests
 
         var barberTimes = reservationService.getAllFreeTimesOnDay(2023, 5, 5);
 
-        for(var time : barberTimes)
+        for (var time : barberTimes)
         {
             Assertions.assertFalse(time.barbersAvailable().contains(barber));
         }
@@ -111,7 +112,7 @@ class ReservationServiceTests
 
         Assertions.assertEquals(8, targetBarberTimes.size());
 
-        for(var time : targetBarberTimes)
+        for (var time : targetBarberTimes)
         {
             Assertions.assertEquals(barber.id(), time.barberId());
         }

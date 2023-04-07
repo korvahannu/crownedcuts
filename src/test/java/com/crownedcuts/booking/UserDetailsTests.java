@@ -24,7 +24,7 @@ class UserDetailsTests
     void nullInformationShouldNotThrow()
     {
         var user = UserDetails.of(null, null);
-        Assertions.assertEquals(null, user.username());
+        Assertions.assertNull(user.username());
     }
 
     @Test

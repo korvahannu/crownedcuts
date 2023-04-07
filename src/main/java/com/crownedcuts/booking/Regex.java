@@ -9,7 +9,7 @@ public final class Regex
     private Regex()
     {
     }
-    
+
     public static boolean isEmail(String email)
     {
         return Pattern

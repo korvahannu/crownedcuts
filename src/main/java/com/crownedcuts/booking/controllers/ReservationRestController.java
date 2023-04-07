@@ -18,33 +18,39 @@ public class ReservationRestController
     private final BarberHairdresserService barberHairdresserService;
 
     @Autowired
-    public ReservationRestController(ReservationService reservationService, BarberHairdresserService barberHairdresserService) {
+    public ReservationRestController(ReservationService reservationService, BarberHairdresserService barberHairdresserService)
+    {
         this.reservationService = reservationService;
         this.barberHairdresserService = barberHairdresserService;
     }
 
     @GetMapping("/rest/getBarbers")
-    public List<BarberHairdresser> onGetBarbers() {
+    public List<BarberHairdresser> onGetBarbers()
+    {
         return barberHairdresserService.getAllBarbers();
     }
 
     @GetMapping("/rest/getAvailableTimes")
     public ResponseEntity<List<AvailableTime>> getAvailableTimes(@RequestParam int year, @RequestParam int month, @RequestParam int day)
     {
-        try {
-            var result= reservationService.getAllFreeTimesOnDay(year, month, day);
+        try
+        {
+            var result = reservationService.getAllFreeTimesOnDay(year, month, day);
             return ResponseEntity.ok(result);
         }
-        catch(IllegalArgumentException ex) {
+        catch (IllegalArgumentException ex)
+        {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @PostMapping("/rest/sendReservation")
-    public ResponseEntity<Object> sendReservation(@RequestBody ReservationPayload payload) {
+    public ResponseEntity<Object> sendReservation(@RequestBody ReservationPayload payload)
+    {
 
         // barberId of less than 0 means that the barber/hairdresser does not matter for the customer
-        if(payload.barberId() < 0) {
+        if (payload.barberId() < 0)
+        {
             final var finalHour = payload.hour();
             var freeTimesAtHour = reservationService.getAllFreeTimesOnDay(payload.year(), payload.month(), payload.day())
                     .stream()
@@ -53,7 +59,7 @@ public class ReservationRestController
 
             var randomBarberNumber = ThreadLocalRandom
                     .current()
-                    .nextInt(0, freeTimesAtHour.get(0).barbersAvailable().size()) -1;
+                    .nextInt(0, freeTimesAtHour.get(0).barbersAvailable().size()) - 1;
 
             var finalRandomNumber = randomBarberNumber == -1 ? 0 : randomBarberNumber;
 
@@ -79,9 +85,12 @@ public class ReservationRestController
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         var user = UserDetails.of(username, null);
 
-        if(reservationService.reserveTime(barber, user, timeDetails)) {
+        if (reservationService.reserveTime(barber, user, timeDetails))
+        {
             return ResponseEntity.ok().build();
-        } else {
+        }
+        else
+        {
             return ResponseEntity.badRequest().build();
         }
     }

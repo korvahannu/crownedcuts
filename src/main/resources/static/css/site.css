@@ -89,6 +89,7 @@ h2 {
     background-color: white;
     padding: 2rem;
 }
+
 .slides-container {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -371,25 +372,31 @@ h2 {
         height: 150px;
         font-size: 0.9rem;
     }
+
     #service-list {
         width: 100%;
         max-width: 100%;
     }
+
     .service-listing {
         box-sizing: border-box;
     }
+
     #service-price {
         text-align: right;
         margin-top: 1rem;
     }
+
     #available-times-list-container {
         width: 100%;
         max-width: 100%;
     }
+
     #form-select-barber {
         width: 100%;
         max-width: 100%;
     }
+
     #pageIndicator {
         width: 100%;
         position: relative;
@@ -402,16 +409,19 @@ h2 {
         left: 0;
         right: 0;
     }
+
     .big-square-button-container {
         flex-direction: row;
         width: 100%;
         margin-bottom: 1rem;
     }
+
     .big-square-button {
         height: 80px;
         width: 100%;
         font-size: 1rem;
     }
+
     .reservation-navigation-button,
     #abort-reservation {
         width: 100%;
@@ -419,44 +429,54 @@ h2 {
         transform: none;
         margin-bottom: 1rem;
     }
+
     .reservation-navigation-button-container {
         bottom: 0;
         width: 100%;
         display: flex;
         flex-direction: column-reverse;
     }
+
     #service-list {
         width: 100%;
         max-width: 100%;
     }
+
     .service-listing {
         box-sizing: border-box;
     }
+
     #service-price {
         text-align: right;
         margin-top: 1rem;
     }
+
     #messageBox {
         max-width: 100%;
         left: 0;
         right: 0;
         transform: none;
     }
+
     .available-time-button {
         font-size: 1.2rem;
         min-width: 120px;
     }
+
     #summary-container {
         width: 100%;
     }
+
     #available-times-nav-buttons {
         max-width: 100%;
         display: flex;
         justify-content: space-between;
     }
+
     #available-times-nav-buttons > button {
         font-size: 3rem;
     }
+
     .checkmark {
         position: absolute;
         right: 64px;

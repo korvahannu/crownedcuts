@@ -2,7 +2,6 @@ package com.crownedcuts.booking;
 
 import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.services.UserService;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.util.Assert;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -43,6 +41,6 @@ class UserServiceTests
         var user = UserDetails.of("admin@crownedcuts.fi", "admin");
         Assertions.assertTrue(userService.checkUserPassword(user), "UserService did not correctly return true for correct password");
         user = UserDetails.of("admin@crownedcuts.fi", "user");
-        Assertions.assertTrue(!userService.checkUserPassword(user), "UserService did not correctly return false for wrong password");
+        Assertions.assertFalse(userService.checkUserPassword(user), "UserService did not correctly return false for wrong password");
     }
 }
