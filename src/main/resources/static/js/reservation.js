@@ -162,23 +162,21 @@
     function onOrderConfirm(event) {
         event.preventDefault();
 
-        fetch('/rest/sendReservation', {
+        fetch('/ajanvaraus', {
             method: "POST",
             body: JSON.stringify(payload),
             credentials: 'include',
             headers: new Headers({'content-type': 'application/json'})
         }).then(response => {
-
             if (!response.ok) {
                 throw new Error();
             }
-
             window.location.href = "/ajanvarausonnistui";
         })
-            .catch(() => {
-                window.alert("Ajan varaaminen epäonnistui");
-                window.location.href = "/";
-            })
+        .catch(() => {
+            window.alert("Ajan varaaminen epäonnistui");
+            window.location.href = "/";
+        })
     }
 
     reservationView.toggleService = function toggleService(button, price) {
