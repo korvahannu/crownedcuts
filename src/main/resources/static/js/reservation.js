@@ -173,10 +173,10 @@
             }
             window.location.href = "/ajanvarausonnistui";
         })
-        .catch(() => {
-            window.alert("Ajan varaaminen epäonnistui");
-            window.location.href = "/";
-        })
+            .catch(() => {
+                window.alert("Ajan varaaminen epäonnistui");
+                window.location.href = "/";
+            })
     }
 
     reservationView.toggleService = function toggleService(button, price) {

@@ -61,7 +61,8 @@ public class ReservationController
         return new ModelAndView("ajanvarausonnistui");
     }
 
-    private ReservationPayload getPayloadWithRandomBarber(ReservationPayload payload) {
+    private ReservationPayload getPayloadWithRandomBarber(ReservationPayload payload)
+    {
         final var finalHour = payload.hour();
 
         var freeTimesAtHour = reservationService.getAllFreeTimesOnDay(payload.year(), payload.month(), payload.day())

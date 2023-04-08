@@ -1,11 +1,15 @@
 package com.crownedcuts.booking.controllers;
 
-import com.crownedcuts.booking.records.*;
+import com.crownedcuts.booking.records.AvailableTime;
+import com.crownedcuts.booking.records.BarberHairdresser;
 import com.crownedcuts.booking.services.BarberHairdresserService;
 import com.crownedcuts.booking.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 @RestController
