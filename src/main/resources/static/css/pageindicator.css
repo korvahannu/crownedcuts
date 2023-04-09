@@ -1,0 +1,49 @@
+@import "colors.css";
+
+#page-indicator {
+    width: 60%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#page-indicator-list {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    padding: 0;
+}
+
+#page-indicator-list > li {
+    border: 2px solid var(--blue);
+    padding: 0.7rem;
+    height: 0.8rem;
+    width: 0.8rem;
+    border-radius: 100%;
+    color: var(--blacker-black);
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: white;
+}
+
+#page-indicator-line {
+    border-top: 1px solid var(--blue);
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    z-index: -1;
+}
+
+.page-indicator-selected {
+    background-color: var(--blue) !important;
+    color: var(--gray) !important;
+}
+
+@media only screen and (max-width: 864px) {
+    #page-indicator {
+        width: 100%;
+        position: relative;
+    }
+}

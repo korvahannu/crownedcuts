@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Ajanvaraus</title>
-    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="css/reservation.css">
+    <link rel="stylesheet" href="css/pageindicator.css">
+    <meta name="viewport" content="initial-scale=1">
 </head>
 <body>
 <div id="page-shadow">
@@ -19,10 +21,10 @@
 <div id="reservation-wrapper">
     <h1>Ajanvaraus</h1>
     <section class="slider-wrapper">
-        <div id="pageIndicator">
-            <div id="pageIndicatorLine"></div>
-            <ul id="pageIndicatorList">
-                <li class="selected">1</li>
+        <div id="page-indicator">
+            <div id="page-indicator-line"></div>
+            <ul id="page-indicator-list">
+                <li class="page-indicator-selected">1</li>
                 <li>2</li>
                 <li>3</li>
                 <li>4</li>
@@ -160,24 +162,29 @@
                 <label for="form-select-barber"><h2>Valitse aika ja työntekijä</h2></label>
                 <select id="form-select-barber">
                 </select>
-                <div id="available-times-list-container">
-                    <h3 class="available-times-day-header" id="available-times-today">Maanantai 27.3.</h3>
-                    <div id="available-times-list-today">
+                <div>
+                    <div id="available-times-list-container">
+                        <h3 class="available-times-day-header" id="available-times-today">Maanantai 27.3.</h3>
+                        <div id="available-times-list-today">
+                        </div>
+                        <hr/>
+                        <h3 class="available-times-day-header" id="available-times-tomorrow">Tiistai 28.3.</h3>
+                        <div id="available-times-list-tomorrow">
+                        </div>
+                        <hr/>
+                        <h3 class="available-times-day-header" id="available-times-day-after">Torstai 30.3.</h3>
+                        <div id="available-times-list-day-after">
+                        </div>
+                        <hr/>
                     </div>
-                    <hr/>
-                    <h3 class="available-times-day-header" id="available-times-tomorrow">Tiistai 28.3.</h3>
-                    <div id="available-times-list-tomorrow">
+                    <div id="available-times-nav-buttons">
+                        <button id="available-times-nav-button-previous" style="visibility: hidden" type="button">
+                            &#129144;
+                        </button>
+                        <button id="available-times-nav-button-next" type="button">
+                            &#129146;
+                        </button>
                     </div>
-                    <hr/>
-                    <h3 class="available-times-day-header" id="available-times-day-after">Torstai 30.3.</h3>
-                    <div id="available-times-list-day-after">
-                    </div>
-                    <hr/>
-                </div>
-                <div id="available-times-nav-buttons">
-                    <button id="available-times-nav-button-previous" style="visibility: hidden" type="button">&#8701;
-                    </button>
-                    <button id="available-times-nav-button-next" type="button">&#8702;</button>
                 </div>
             </div>
             <div class="slide">
@@ -227,13 +234,13 @@
 
     slides.onSlidePageChange.push(() => {
         const nodes = document
-            .getElementById('pageIndicatorList')
+            .getElementById('page-indicator-list')
             .children;
         for (let i = 0; i < nodes.length; i++) {
             if (i <= slides.slideState.currentSlide) {
-                nodes[i].classList.add('selected')
+                nodes[i].classList.add('page-indicator-selected')
             } else {
-                nodes[i].classList.remove('selected')
+                nodes[i].classList.remove('page-indicator-selected')
             }
         }
     });

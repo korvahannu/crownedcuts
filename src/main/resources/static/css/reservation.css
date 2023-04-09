@@ -1,23 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
-:root {
-    --lighter-blue: #2980b9;
-    --yellow: #f1c40f;
-    --dark-yellow: #f39c12;
-    --darker-gray: #bdc3c7;
-    --dark-gray: #95a5a6;
-    --blacker-black: #2c3e50;
-    --darkish-green: #1E8549;
-    --dark-red: #c0392b;
-    --purple: #9b59b6;
-    --dark-purple: #8e44ad;
-    --blue: #185D8C;
-    --gray: #ecf0f1;
-    --black: #2c3e50;
-    --green: #156034;
-    --red: #A82315;
-    --darkest-green: #156034;
-}
+@import "colors.css";
 
 html {
     font-family: 'Roboto', sans-serif;
@@ -143,52 +126,12 @@ h2 {
 }
 
 .checkmark {
-    font-size: 2rem;
+    font-size: 3rem;
     color: var(--darkest-green);
     display: none;
     height: 40px;
 }
 
-#pageIndicator {
-    width: 60%;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-}
-
-#pageIndicatorList {
-    display: flex;
-    list-style: none;
-    justify-content: space-between;
-    padding: 0;
-}
-
-#pageIndicatorList > li {
-    border: 2px solid var(--blue);
-    padding: 0.7rem;
-    height: 0.8rem;
-    width: 0.8rem;
-    border-radius: 100%;
-    color: var(--blacker-black);
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    font-weight: bold;
-    background-color: white;
-}
-
-.selected {
-    background-color: var(--blue) !important;
-    color: var(--gray) !important;
-}
-
-#pageIndicatorLine {
-    border-top: 1px solid var(--blue);
-    width: 100%;
-    position: absolute;
-    top: 50%;
-    z-index: -1;
-}
 
 #service-list {
     max-width: 60%;
@@ -204,10 +147,19 @@ h2 {
     padding-right: 1rem;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .service-listing:last-child {
     border-bottom: 1px solid black;
+}
+
+.service-listing:hover {
+    background-color: var(--gray);
+}
+
+.service-listing:hover .reservation-toggable-service-button {
+    background-color: var(--lighter-blue);
 }
 
 .reservation-toggable-service-button {
@@ -220,6 +172,9 @@ h2 {
     font-size: 1.5rem;
     cursor: pointer;
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .reservation-toggable-service-button:hover {
@@ -395,11 +350,6 @@ h2 {
     #form-select-barber {
         width: 100%;
         max-width: 100%;
-    }
-
-    #pageIndicator {
-        width: 100%;
-        position: relative;
     }
 }
 
