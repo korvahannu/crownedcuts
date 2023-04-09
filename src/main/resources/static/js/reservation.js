@@ -17,20 +17,6 @@
 
     let services;
 
-    const serviceDictionary = {
-        "hairdressingCut": "Leikkaus, pesu ja kuivaus",
-        "hairdressingNewStyle": "Mallinmuutosleikkaus",
-        "hairdressingCutForehead": "Otsahiusten leikkaus",
-        "hairdressingColor": "Hiusten värjäys",
-        "hairdressingColorRootGrowth": "Juurikasvun värjäys",
-        "barberBeard": "Leikkaus, pesu ja kuivaus",
-        "barberColorRootGrowth": "Mallinmuutosleikkaus",
-        "barberColor": "Parturi konetyö",
-        "barberMachineCut": "Hiusten värjäys",
-        "barberNewStyle": "Juurikasvun värjäys",
-        "barberCut": "Parran muotoilu",
-    }
-
     let slideshow;
 
     reservationView.init = function (slides) {
@@ -395,7 +381,7 @@
                     serviceText.innerText = s.name;
                 }
             })
-            
+
             s.appendChild(serviceText);
         })
 
