@@ -39,6 +39,8 @@
 
         addPageItemEventListeners();
 
+        populateServices();
+
         populateAvailableTimes(0).then(() => {
             populateBarbers()
                 .then(() => {
@@ -141,29 +143,6 @@
             })
     }
 
-    reservationView.toggleService = function toggleService(button, price) {
-        if (!payload.services) {
-            payload.services = []
-        }
-
-        if (payload.services.includes(button.value)) {
-            payload.services = payload.services
-                .filter(val => val !== button.value)
-
-            button.innerText = "+"
-            button.classList.remove('reservation-toggleable-service-button-selected')
-            currentPrice -= price
-        } else {
-            payload.services.push(button.value)
-            button.innerText = "-"
-            button.classList.add('reservation-toggleable-service-button-selected')
-            currentPrice += price
-        }
-
-        slideshow.nextSlideButton.disabled = payload.services.length === 0;
-        pageItems.priceText.innerText = currentPrice;
-    }
-
     function onSlidePageChange() {
 
         switch (slideshow.slideState.currentSlide) {
@@ -208,7 +187,7 @@
         pageItems.serviceListingsHairdressers.style.display = "none"
         pageItems.serviceListingsBarbers.style.display = "block"
         slideshow.nextSlideButton.disabled = false
-        payload.serviceType = "barber"
+        payload.isBarberService = true
         resetSelectedServices();
     }
 
@@ -219,7 +198,7 @@
         pageItems.serviceListingsHairdressers.style.display = "block"
         pageItems.serviceListingsBarbers.style.display = "none"
         slideshow.nextSlideButton.disabled = false
-        payload.serviceType = "hairdresser"
+        payload.isBarberService = false;
         resetSelectedServices();
     }
 
@@ -403,7 +382,7 @@
         s.innerHTML = "";
 
         const typeText = document.createElement('p');
-        typeText.innerText = payload.serviceType === "hairdresser" ? "Kampaaja" : "Parturi"
+        typeText.innerText = payload.isBarberService === false ? "Kampaaja" : "Parturi"
         s.appendChild(typeText);
 
         payload.services.forEach(service => {
@@ -581,5 +560,76 @@
         relevantAvailableTimes.theDayAfter.forEach(a => {
             da.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
         })
+    }
+
+    function toggleService(value, button, price) {
+        if (!payload.services) {
+            payload.services = []
+        }
+
+        if (payload.services.includes(value)) {
+            payload.services = payload.services
+                .filter(val => val !== value)
+
+            button.innerText = "+"
+            button.classList.remove('reservation-toggleable-service-button-selected')
+            currentPrice -= price
+        } else {
+            payload.services.push(value)
+            button.innerText = "-"
+            button.classList.add('reservation-toggleable-service-button-selected')
+            currentPrice += price
+        }
+
+        slideshow.nextSlideButton.disabled = payload.services.length === 0;
+        pageItems.priceText.innerText = currentPrice;
+    }
+
+    function createServiceListing(value, name, price) {
+        const div = document.createElement('div');
+        div.classList.add('service-listing');
+
+        const span1 = document.createElement('span');
+        span1.classList.add('service-title');
+        span1.innerText = name;
+
+        const span2 = document.createElement('span');
+        span2.classList.add('price');
+        span2.innerText = `${price}.00€`;
+
+        const button = document.createElement('button');
+        button.classList.add('reservation-toggleable-service-button');
+        button.type = 'button';
+
+        button.addEventListener('click', event => {
+           event.preventDefault();
+           // TODO, change so that you dont have to pass button here
+           toggleService(value, button, 45);
+        });
+
+        div.appendChild(span1);
+        div.appendChild(span2);
+        div.appendChild(button);
+        return div;
+    }
+
+    async function populateServices() {
+
+        const result = await (await fetch('/rest/getAllServices')).json();
+        pageItems.serviceListingsBarbers.innerHTML = '';
+        pageItems.serviceListingsHairdressers.innerHTML = '';
+
+        result.forEach(service => {
+           if(service.isBarberService === true) {
+                pageItems.serviceListingsBarbers.appendChild(
+                    createServiceListing(service.id, service.name, service.price)
+                );
+           } else {
+               pageItems.serviceListingsHairdressers.appendChild(
+                   createServiceListing(service.id, service.name, service.price)
+               );
+           }
+        });
+
     }
 })(window.reservationView = window.reservationView || {})

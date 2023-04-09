@@ -91,7 +91,8 @@ public class ReservationController
                 payload.month(),
                 payload.day(),
                 payload.hour(),
-                barberId
+                barberId,
+                payload.isBarberService()
         );
     }
 }
