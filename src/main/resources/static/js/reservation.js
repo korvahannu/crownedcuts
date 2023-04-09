@@ -15,6 +15,8 @@
 
     let currentAvailableTimesOffset = 0;
 
+    let services;
+
     const serviceDictionary = {
         "hairdressingCut": "Leikkaus, pesu ja kuivaus",
         "hairdressingNewStyle": "Mallinmuutosleikkaus",
@@ -387,7 +389,13 @@
 
         payload.services.forEach(service => {
             const serviceText = document.createElement('p');
-            serviceText.innerText = serviceDictionary[service]
+
+            services.forEach(s => {
+                if(s.id === service) {
+                    serviceText.innerText = s.name;
+                }
+            })
+            
             s.appendChild(serviceText);
         })
 
@@ -631,5 +639,6 @@
            }
         });
 
+        services = result;
     }
 })(window.reservationView = window.reservationView || {})
