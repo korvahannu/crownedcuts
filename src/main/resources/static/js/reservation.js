@@ -151,12 +151,12 @@
                 .filter(val => val !== button.value)
 
             button.innerText = "+"
-            button.classList.remove('reservation-toggable-service-button-selected')
+            button.classList.remove('reservation-toggleable-service-button-selected')
             currentPrice -= price
         } else {
             payload.services.push(button.value)
             button.innerText = "-"
-            button.classList.add('reservation-toggable-service-button-selected')
+            button.classList.add('reservation-toggleable-service-button-selected')
             currentPrice += price
         }
 
@@ -196,7 +196,7 @@
 
         for (let i = 0; i < pageItems.serviceListButtons.length; i++) {
             pageItems.serviceListButtons[i].innerText = "+"
-            pageItems.serviceListButtons[i].classList.remove('reservation-toggable-service-button-selected')
+            pageItems.serviceListButtons[i].classList.remove('reservation-toggleable-service-button-selected')
         }
         pageItems.priceText.innerText = '0';
     }

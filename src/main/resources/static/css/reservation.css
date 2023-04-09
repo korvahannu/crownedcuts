@@ -158,11 +158,11 @@ h2 {
     background-color: var(--gray);
 }
 
-.service-listing:hover .reservation-toggable-service-button {
+.service-listing:hover .reservation-toggleable-service-button {
     background-color: var(--lighter-blue);
 }
 
-.reservation-toggable-service-button {
+.reservation-toggleable-service-button {
     height: 40px;
     width: 40px;
     border-radius: 100%;
@@ -177,15 +177,15 @@ h2 {
     justify-content: center;
 }
 
-.reservation-toggable-service-button:hover {
+.reservation-toggleable-service-button:hover {
     background-color: var(--lighter-blue);
 }
 
-.reservation-toggable-service-button-selected {
+.reservation-toggleable-service-button-selected {
     background-color: var(--red);
 }
 
-.reservation-toggable-service-button-selected:hover {
+.reservation-toggleable-service-button-selected:hover {
     background-color: var(--dark-red);
 }
 
