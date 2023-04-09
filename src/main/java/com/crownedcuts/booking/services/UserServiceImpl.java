@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,10 +51,14 @@ public class UserServiceImpl implements UserService
 
             var roles = getUserRoles(username);
             String password = result.getString("password");
+            String firstname = result.getString("firstname");
+            String lastname = result.getString("lastname");
+            String phonenumber = getOrNull(result, "phonenumber");
+            String dateOfBirth = getOrNull(result, "dateOfBirth");
 
             return roles.isEmpty()
                     ? Optional.empty()
-                    : Optional.of(new UserDetails(username, password, roles));
+                    : Optional.of(new UserDetails(username, password, firstname, lastname, phonenumber, dateOfBirth, roles));
         }
         catch (Exception ex)
         {
@@ -142,6 +147,7 @@ public class UserServiceImpl implements UserService
 
                 result.add(new Reservation(username,
                         timeDetails,
+                        resultSet.getString("hairLength"),
                         resultSet.getLong("barberId")));
             }
         }
@@ -163,17 +169,21 @@ public class UserServiceImpl implements UserService
      */
     private boolean insertUserToDatabase(Connection connection, UserDetails user)
     {
-        var query = "insert into users (username, password) values (?, ?)";
+        var query = "insert into users (username, password, firstname, lastname, phonenumber, dateOfBirth) values (?, ?, ?, ?, ?, ?)";
         try (var statement = connection.prepareStatement(query))
         {
             statement.setString(1, user.username());
             statement.setString(2, passwordEncoder.encode(user.password()));
+            statement.setString(3, user.firstname());
+            statement.setString(4, user.lastname());
+            statement.setString(5, user.phonenumber());
+            statement.setString(6, user.dateOfBirth());
             statement.execute();
         }
         catch (Exception ex)
         {
             logger.warning("Failed to add user "
-                    + new UserDetails(user.username(), null, user.authorities()));
+                    + new UserDetails(user.username(), null, null, null, null, null, user.authorities()));
             return false;
         }
 
@@ -207,10 +217,20 @@ public class UserServiceImpl implements UserService
         catch (Exception ex)
         {
             logger.warning("Failed to add roles "
-                    + new UserDetails(username, null, roles));
+                    + new UserDetails(username, null, null, null, null, null, roles));
             return false;
         }
 
         return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getOrNull(ResultSet resultSet, String key) {
+        try {
+            return (T)resultSet.getObject(key);
+        }
+        catch(Exception ex) {
+            return null;
+        }
     }
 }

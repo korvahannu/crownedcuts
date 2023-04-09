@@ -64,7 +64,7 @@ class ReservationServiceTests
         var user = userService.getUser("user@crownedcuts.fi").get();
         var timeDetails = new TimeDetails(2023, 5, 5, 8);
 
-        var didReservationWork = reservationService.reserveTime(barber, user, timeDetails);
+        var didReservationWork = reservationService.reserveTime(barber, user, timeDetails, "long");
 
         Assertions.assertTrue(didReservationWork);
 
@@ -78,25 +78,25 @@ class ReservationServiceTests
         Assertions.assertEquals(1, reservations.size());
         Assertions.assertEquals(user.username(), reservations.get(0).username());
 
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 9)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 10)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 11)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 12)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 13)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 14)));
-        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 15)));
-        Assertions.assertFalse(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 15)));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 9), "long"));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 10), "long"));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 11), "long"));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 12), "long"));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 13), "long"));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 14), "long"));
+        Assertions.assertTrue(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 15), "long"));
+        Assertions.assertFalse(reservationService.reserveTime(barber, user, new TimeDetails(2023, 5, 5, 15), "long"));
 
         var invalidReservationTimeTooLate = new TimeDetails(2023, 5, 5, 16);
         Assertions.assertThrows(IllegalArgumentException.class, () ->
         {
-            reservationService.reserveTime(barber, user, invalidReservationTimeTooLate);
+            reservationService.reserveTime(barber, user, invalidReservationTimeTooLate, "long");
         });
 
         var invalidReservationTimeTooEarly = new TimeDetails(2023, 5, 5, 16);
         Assertions.assertThrows(IllegalArgumentException.class, () ->
         {
-            reservationService.reserveTime(barber, user, invalidReservationTimeTooEarly);
+            reservationService.reserveTime(barber, user, invalidReservationTimeTooEarly, "long");
         });
 
         Assertions.assertEquals(8, userService.getReservations(user.username()).size());

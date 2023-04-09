@@ -26,9 +26,10 @@ public interface ReservationService
      * @param barberHairdresser barber/haidresser that does the job
      * @param user              that comes to the saloon
      * @param timeDetails       details of the time (year, month, day, hour)
+     * @param hairLength        For each reservation we need the hair length of the customer
      * @return true if time was successfully reserved
      */
-    boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails);
+    boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails, String hairLength);
 
     /**
      * Gets list of all reservations for a given day

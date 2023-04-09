@@ -43,9 +43,11 @@ public class ReservationController
         var barber = barberHairdresserService.getBarber(payload.barberId()).orElseThrow();
         var timeDetails = new TimeDetails(payload.year(), payload.month(), payload.day(), payload.hour());
         var username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        var user = UserDetails.of(username, null);
+        var user = UserDetails.of(username, null, null, null);
 
-        if (reservationService.reserveTime(barber, user, timeDetails))
+        // TODO: After reserving the time for user, insert the service connections to database
+
+        if (reservationService.reserveTime(barber, user, timeDetails, payload.hairLength()))
         {
             return ResponseEntity.ok().build();
         }

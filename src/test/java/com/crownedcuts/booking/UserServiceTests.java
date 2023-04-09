@@ -38,9 +38,9 @@ class UserServiceTests
     @Test
     void checkPasswordWorks()
     {
-        var user = UserDetails.of("admin@crownedcuts.fi", "admin");
+        var user = UserDetails.of("admin@crownedcuts.fi", "admin", "admin", "admin");
         Assertions.assertTrue(userService.checkUserPassword(user), "UserService did not correctly return true for correct password");
-        user = UserDetails.of("admin@crownedcuts.fi", "user");
+        user = UserDetails.of("admin@crownedcuts.fi", "user", "user", "user");
         Assertions.assertFalse(userService.checkUserPassword(user), "UserService did not correctly return false for wrong password");
     }
 }

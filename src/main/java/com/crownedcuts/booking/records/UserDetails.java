@@ -4,17 +4,21 @@ import com.crownedcuts.booking.Regex;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Record that represents detailed information of a user
- *
- * @param username    Username, should be in the form of an email
- * @param password    Password container. Please note that password is not automatically encoded.
- * @param authorities List of authorities, or roles, that the user has
+ * @param username Username in the form of an email. Throws IllegalArgumentException if wrong format
+ * @param password the password, duh!
+ * @param firstname First name of user
+ * @param lastname Last name of user
+ * @param phonenumber Phonenumber of user (optional)
+ * @param dateOfBirth Date of birth (optional)
+ * @param authorities List of roles user has
  */
-public record UserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities)
+public record UserDetails(String username, String password, String firstname, String lastname, String phonenumber, String dateOfBirth, Collection<? extends GrantedAuthority> authorities)
 {
     public UserDetails
     {
@@ -32,14 +36,14 @@ public record UserDetails(String username, String password, Collection<? extends
     }
 
     /**
-     * Static method that creates a UserDetails instance.
+     * Static method that creates a UserDetails instance with only required information
      *
      * @param username Username for UserDetails
      * @param password Password for UserDetails
      * @param roles    An array of Strings that represent the roles
      * @return UserDetails with the roles type being a SimpleGrantedAuthority
      */
-    public static UserDetails of(String username, String password, String... roles)
+    public static UserDetails of(String username, String password, String firstname, String lastname, String... roles)
     {
         var userRoles = new ArrayList<SimpleGrantedAuthority>();
         if (roles != null)
@@ -49,7 +53,7 @@ public record UserDetails(String username, String password, Collection<? extends
                 userRoles.add(new SimpleGrantedAuthority(role));
             }
         }
-        return new UserDetails(username, password, userRoles);
+        return new UserDetails(username, password, firstname, lastname, null, null, userRoles);
     }
 
     /**

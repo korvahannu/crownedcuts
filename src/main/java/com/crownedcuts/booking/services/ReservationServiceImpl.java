@@ -81,14 +81,14 @@ public class ReservationServiceImpl implements ReservationService
     }
 
     @Override
-    public boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails)
+    public boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails, String hairLength)
     {
         if (timeDetails.isOutsideWorkingHoursAndDays())
         {
             throw new IllegalArgumentException("You may only reserve for weekends between 8-16 o'clock");
         }
 
-        String query = "INSERT INTO reservations (username, year, month, day, hour, barberId) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO reservations (username, year, month, day, hour, barberId, hairLength) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (var statement = repository.getPreparedStatement(query))
         {
@@ -98,6 +98,7 @@ public class ReservationServiceImpl implements ReservationService
             statement.setInt(4, timeDetails.day());
             statement.setInt(5, timeDetails.hour());
             statement.setLong(6, barberHairdresser.id());
+            statement.setString(7, hairLength);
             statement.execute();
         }
         catch (SQLException ex)
@@ -135,6 +136,7 @@ public class ReservationServiceImpl implements ReservationService
 
                 var reservation = new Reservation(reservationsResult.getString("username"),
                         timeDetails,
+                        reservationsResult.getString("hairLength"),
                         reservationsResult.getInt("barberId"));
 
                 result.add(reservation);
@@ -174,6 +176,7 @@ public class ReservationServiceImpl implements ReservationService
 
                 var reservation = new Reservation(reservationsResult.getString("username"),
                         timeDetails,
+                        reservationsResult.getString("hairLength"),
                         reservationsResult.getInt("barberId"));
 
                 result.add(reservation);

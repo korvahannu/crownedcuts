@@ -16,14 +16,14 @@ class UserDetailsTests
     @Test
     void worksWithNoRoles()
     {
-        var user = UserDetails.of("admin@crownedcuts.fi", "admin");
+        var user = UserDetails.of("admin@crownedcuts.fi", "admin", "admin", "admin");
         Assertions.assertEquals("admin@crownedcuts.fi", user.username());
     }
 
     @Test
     void nullInformationShouldNotThrow()
     {
-        var user = UserDetails.of(null, null);
+        var user = UserDetails.of(null, null, null, null);
         Assertions.assertNull(user.username());
     }
 
@@ -32,19 +32,19 @@ class UserDetailsTests
     {
         Assertions.assertThrows(IllegalArgumentException.class, () ->
         {
-            UserDetails.of("admin", "admin");
+            UserDetails.of("admin", "admin", "admin", "admin");
         });
         Assertions.assertThrows(IllegalArgumentException.class, () ->
         {
-            UserDetails.of("admin@", "admin");
+            UserDetails.of("admin@", "admin", "admin", "admin");
         });
         Assertions.assertThrows(IllegalArgumentException.class, () ->
         {
-            UserDetails.of("@crownedcuts.fi", "admin");
+            UserDetails.of("@crownedcuts.fi", "admin", "admin", "admin");
         });
         Assertions.assertThrows(IllegalArgumentException.class, () ->
         {
-            UserDetails.of("", "admin");
+            UserDetails.of("", "admin", "admin", "admin");
         });
     }
 
@@ -53,17 +53,17 @@ class UserDetailsTests
     {
         Assertions.assertThrows(IllegalArgumentException.class, () ->
         {
-            UserDetails.of("admin@crownedcuts.fi", "admin", " ");
+            UserDetails.of("admin@crownedcuts.fi", "admin", " ", "admin", "admin");
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () ->
         {
-            UserDetails.of("admin@crownedcuts.fi", "admin", "admin");
+            UserDetails.of("admin@crownedcuts.fi", "admin", "admin", "admin", "admin");
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () ->
         {
-            UserDetails.of("admin@crownedcuts.fi", "admin", "USER", "AD MIN");
+            UserDetails.of("admin@crownedcuts.fi", "admin", "admin", "admin", "USER", "AD MIN");
         });
     }
 }

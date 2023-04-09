@@ -34,7 +34,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider
 
         try
         {
-            userDetails = UserDetails.of(username, password);
+            userDetails = UserDetails.of(username, password, null, null);
         }
         catch (IllegalArgumentException ex)
         {
