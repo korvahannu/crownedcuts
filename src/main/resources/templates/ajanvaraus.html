@@ -208,13 +208,69 @@
             </button>
 
             <button type="button" class="reservation-navigation-button slide-arrow slide-arrow-next"
-                    id="slide-arrow-next" disabled>
+                    id="slide-arrow-next">
                 Seuraava &#8250;
             </button>
         </div>
     </section>
 </div>
 </body>
+<script src="js/slideshow.js"></script>
 <script src="js/reservation.js">
 </script>
+<script>
+    'use strict';
+
+    const slides = slideshow.initialize();
+    reservationView.init(slides);
+    const toggleService = reservationView.toggleService;
+
+    slides.onSlidePageChange.push(() => {
+        const nodes = document
+            .getElementById('pageIndicatorList')
+            .children;
+        for (let i = 0; i < nodes.length; i++) {
+            if (i <= slides.slideState.currentSlide) {
+                nodes[i].classList.add('selected')
+            } else {
+                nodes[i].classList.remove('selected')
+            }
+        }
+    });
+
+</script>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
