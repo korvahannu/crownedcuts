@@ -45,8 +45,6 @@ public class ReservationController
         var username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         var user = UserDetails.of(username, null, null, null);
 
-        // TODO: After reserving the time for user, insert the service connections to database
-
         if (reservationService.reserveTime(barber, user, timeDetails, payload.hairLength(), payload.services()))
         {
             return ResponseEntity.ok().build();
