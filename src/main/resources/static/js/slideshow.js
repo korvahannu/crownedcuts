@@ -83,8 +83,8 @@
     }
 
     function onSlidePageChangeTrigger() {
-        for(let i = 0; i < onSlidePageChange.length; i++) {
-            onSlidePageChange[i]();
+        for(const element of onSlidePageChange) {
+            element();
         }
     }
 })(window.slideshow = window.slideshow || {});

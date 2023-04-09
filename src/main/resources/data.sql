@@ -3,7 +3,7 @@ create table if not exists roles(username varchar(50) NOT NULL, userRole varchar
 create table if not exists barbers(id integer primary key autoincrement, name varchar(50));
 create table if not exists reservations(id integer primary key autoincrement, username varchar(50) NOT NULL, year integer NOT NULL, month integer NOT NULL, day integer NOT NULL, hour integer NOT NULL, barberId integer NOT NULL, hairLength VARCHAR(20) NOT NULL, foreign key (barberId) references barbers(id), unique(year, month, day, hour, barberId));
 create table if not exists services(id varchar(50) NOT NULL unique primary key, name varchar(50) NOT NULL, price real NOT NULL, isBarberService boolean NOT NULL);
-create table if not exists service_of_reservation(id integer primary key autoincrement, reservationid integer NOT NULL, username varchar(50) NOT NULL, foreign key (username) references users (username), foreign key (reservationid) references reservations(id));
+create table if not exists service_of_reservation(id integer primary key autoincrement, reservationid integer NOT NULL, serviceid varchar(50) NOT NULL, foreign key (serviceid) references services (id), foreign key (reservationid) references reservations(id));
 insert into barbers (name) values ('Milla Pyrrö');
 insert into barbers (name) values ('Hannu Korvala');
 insert into barbers (name) values ('Antti Juustila');

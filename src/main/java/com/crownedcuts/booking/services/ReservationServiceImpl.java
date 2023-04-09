@@ -110,6 +110,93 @@ public class ReservationServiceImpl implements ReservationService
         return true;
     }
 
+    @Override
+    public boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails, String hairLength, List<String> serviceIds)
+    {
+        if (timeDetails.isOutsideWorkingHoursAndDays())
+        {
+            throw new IllegalArgumentException("You may only reserve for weekends between 8-16 o'clock");
+        }
+
+        String query = "INSERT INTO reservations (username, year, month, day, hour, barberId, hairLength) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+        try(var connection = repository.getIsolatedConnection())
+        {
+            connection.setAutoCommit(false);
+            // insert reservation to database
+            try (var statement = connection.prepareStatement(query))
+            {
+                statement.setString(1, user.username());
+                statement.setInt(2, timeDetails.year());
+                statement.setInt(3, timeDetails.month());
+                statement.setInt(4, timeDetails.day());
+                statement.setInt(5, timeDetails.hour());
+                statement.setLong(6, barberHairdresser.id());
+                statement.setString(7, hairLength);
+                statement.execute();
+            }
+            catch (SQLException ex)
+            {
+                connection.rollback();
+                logger.warning(ex.getMessage());
+                return false;
+            }
+
+            int reservationId = -1;
+
+            // get actual reservationId
+            String reservationQuery = "SELECT * FROM reservations WHERE year=? AND month=? AND day=? AND hour=? AND barberId=?";
+            try(var statement = connection.prepareStatement(reservationQuery))
+            {
+                statement.setInt(1, timeDetails.year());
+                statement.setInt(2, timeDetails.month());
+                statement.setInt(3, timeDetails.day());
+                statement.setInt(4, timeDetails.hour());
+                statement.setLong(5, barberHairdresser.id());
+
+                var result = statement.executeQuery();
+
+                if(result.next())
+                {
+                    reservationId = result.getInt("id");
+                }
+                else
+                {
+                    connection.rollback();
+                    return false;
+                }
+            }
+
+            // add services to db
+            for(String serviceId : serviceIds)
+            {
+                String serviceQuery = "INSERT INTO service_of_reservation(reservationid, serviceid) VALUES (?, ?)";
+                try(var statement = connection.prepareStatement(serviceQuery))
+                {
+                    statement.setInt(1, reservationId);
+                    statement.setString(2, serviceId);
+                    statement.execute();
+                }
+                catch (SQLException ex)
+                {
+                    connection.rollback();
+                    logger.warning(ex.getMessage());
+                    return false;
+                }
+            }
+
+            connection.commit();
+        }
+        catch (SQLException ex)
+        {
+            logger.warning(ex.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
 
     @Override
     public List<Reservation> getReservationsOfDay(int year, int month, int day)

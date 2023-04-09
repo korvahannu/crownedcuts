@@ -21,7 +21,7 @@ public interface ReservationService
     List<AvailableTime> getAllFreeTimesOnDay(int year, int month, int day);
 
     /**
-     * Reserves a time for a user and a barber/haidresser
+     * Reserves a time for a user and a barber/haidresser with no services
      *
      * @param barberHairdresser barber/haidresser that does the job
      * @param user              that comes to the saloon
@@ -30,6 +30,18 @@ public interface ReservationService
      * @return true if time was successfully reserved
      */
     boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails, String hairLength);
+
+    /**
+     * Reserves a time for a user and a barber/haidresser and sets the correct service relationships
+     *
+     * @param barberHairdresser barber/haidresser that does the job
+     * @param user              that comes to the saloon
+     * @param timeDetails       details of the time (year, month, day, hour)
+     * @param hairLength        For each reservation we need the hair length of the customer
+     * @param serviceIds        List of serviceIds
+     * @return true if time was successfully reserved
+     */
+    boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails, String hairLength, List<String> serviceIds);
 
     /**
      * Gets list of all reservations for a given day

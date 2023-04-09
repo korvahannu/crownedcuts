@@ -161,9 +161,9 @@
         delete payload.services
         currentPrice = 0
 
-        for (let i = 0; i < pageItems.serviceListButtons.length; i++) {
-            pageItems.serviceListButtons[i].innerText = "+"
-            pageItems.serviceListButtons[i].classList.remove('reservation-toggleable-service-button-selected')
+        for (const element of pageItems.serviceListButtons) {
+            element.innerText = "+"
+            element.classList.remove('reservation-toggleable-service-button-selected')
         }
         pageItems.priceText.innerText = '0';
     }
@@ -390,7 +390,7 @@
             hairLengthText.innerText = "Lyhyet hiukset";
         } else if (payload.hairLength === "medium") {
             hairLengthText.innerText = "Keskipitkät hiukset";
-        } else if (payload.hairLength === "short") {
+        } else if (payload.hairLength === "long") {
             hairLengthText.innerText = "Pitkät hiukset";
         }
         s.appendChild(hairLengthText);
@@ -407,7 +407,7 @@
             s.appendChild(barberText);
         } else {
             barbers
-                .filter(b => b.id === payload.barberId) // don't change == to === TODO
+                .filter(b => b.id === payload.barberId)
                 .forEach(b => {
                     const barberText = document.createElement('p');
                     barberText.innerText = `Parturi-kampaaja: ${b.name}`
@@ -510,8 +510,8 @@
 
             const clearSelectedTime = () => {
                 let buttons = document.querySelectorAll('.available-time-button');
-                for (let i = 0; i < buttons.length; i++) {
-                    buttons[i].classList.remove('available-time-button-selected');
+                for (const element of buttons) {
+                    element.classList.remove('available-time-button-selected');
                 }
             }
 
@@ -556,29 +556,6 @@
         })
     }
 
-    function toggleService(value, button, price) {
-        if (!payload.services) {
-            payload.services = []
-        }
-
-        if (payload.services.includes(value)) {
-            payload.services = payload.services
-                .filter(val => val !== value)
-
-            button.innerText = "+"
-            button.classList.remove('reservation-toggleable-service-button-selected')
-            currentPrice -= price
-        } else {
-            payload.services.push(value)
-            button.innerText = "-"
-            button.classList.add('reservation-toggleable-service-button-selected')
-            currentPrice += price
-        }
-
-        slideshow.nextSlideButton.disabled = payload.services.length === 0;
-        pageItems.priceText.innerText = currentPrice;
-    }
-
     function createServiceListing(value, name, price) {
         const div = document.createElement('div');
         div.classList.add('service-listing');
@@ -597,8 +574,26 @@
 
         button.addEventListener('click', event => {
            event.preventDefault();
-           // TODO, change so that you dont have to pass button here
-           toggleService(value, button, 45);
+            if (!payload.services) {
+                payload.services = []
+            }
+
+            if (payload.services.includes(value)) {
+                payload.services = payload.services
+                    .filter(val => val !== value)
+
+                button.innerText = "+"
+                button.classList.remove('reservation-toggleable-service-button-selected')
+                currentPrice -= price
+            } else {
+                payload.services.push(value)
+                button.innerText = "-"
+                button.classList.add('reservation-toggleable-service-button-selected')
+                currentPrice += price
+            }
+
+            slideshow.nextSlideButton.disabled = payload.services.length === 0;
+            pageItems.priceText.innerText = currentPrice;
         });
 
         div.appendChild(span1);

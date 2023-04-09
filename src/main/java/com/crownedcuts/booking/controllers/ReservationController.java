@@ -47,7 +47,7 @@ public class ReservationController
 
         // TODO: After reserving the time for user, insert the service connections to database
 
-        if (reservationService.reserveTime(barber, user, timeDetails, payload.hairLength()))
+        if (reservationService.reserveTime(barber, user, timeDetails, payload.hairLength(), payload.services()))
         {
             return ResponseEntity.ok().build();
         }

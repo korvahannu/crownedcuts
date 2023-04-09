@@ -3,8 +3,6 @@ package com.crownedcuts.booking.records;
 import com.crownedcuts.booking.Regex;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 

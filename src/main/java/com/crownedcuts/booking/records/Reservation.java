@@ -1,7 +1,5 @@
 package com.crownedcuts.booking.records;
 
-import javax.naming.spi.ResolveResult;
-
 public record Reservation(String username, TimeDetails reservationInformation, String hairLength, long barberId)
 {
     public Reservation {
