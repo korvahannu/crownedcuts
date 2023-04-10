@@ -145,8 +145,10 @@
 <script>
     'use strict';
 
+    const locale = "[[${#locale.toString()}]]";
+
     const slides = slideshow.initialize();
-    reservationView.init(slides);
+    reservationView.init(slides, locale.substring(0, 2));
 
     slides.onSlidePageChange.push(() => {
         const nodes = document

@@ -19,7 +19,10 @@
 
     let slideshow;
 
-    reservationView.init = function (slides) {
+    let locale;
+
+    reservationView.init = function (slides, targetLocale) {
+        locale = targetLocale;
         slideshow = slides;
         slideshow.nextSlideButton.disabled = true;
         slideshow.onSlidePageChange.push(onSlidePageChange);
