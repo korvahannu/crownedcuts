@@ -15,7 +15,7 @@
     <p th:text="#{p.confirmAbort}">Keskeyttämisen jälkeen näkymä palaa etusivulle.</p>
     <div id="messageBoxButtonContainer">
         <button id="cancelAbortButton" th:text="#{cancel}">Peruuta</button>
-        <button id="confirmAbortButton"  th:text="#{b.confirmAbort}">Keskeytä ajanvaraus</button>
+        <button id="confirmAbortButton" th:text="#{b.confirmAbort}">Keskeytä ajanvaraus</button>
     </div>
 </div>
 <div id="reservation-wrapper">
@@ -38,13 +38,15 @@
                 <div class="big-square-buttons-wrapper">
                     <div class="big-square-button-container">
                         <button id="button-service-type-barber" class="big-square-button">
-                            <span th:text="#{barber}">PARTURI</span><br/><span th:text="#{cut}">HIUSTENLEIKKUU</span><br/><span th:text="#{otherBarberServices}">+MUUT PARTURIPALVELUT</span>
+                            <span th:text="#{barber}">PARTURI</span><br/><span
+                                th:text="#{cut}">HIUSTENLEIKKUU</span><br/><span th:text="#{otherBarberServices}">+MUUT PARTURIPALVELUT</span>
                         </button>
                         <span class="checkmark checkmark-service-type">&#10003;</span>
                     </div>
                     <div class="big-square-button-container">
                         <button id="button-service-type-haidresser" class="big-square-button">
-                            <span th:text="#{hairdresser}">KAMPAAMO</span><br/><span th:text="#{cut}">HIUSTENLEIKKUU</span><br/><span th:text="#{otherHairdressingServices}">+MUUT KAMPAAMOPALVELUT</span>
+                            <span th:text="#{hairdresser}">KAMPAAMO</span><br/><span
+                                th:text="#{cut}">HIUSTENLEIKKUU</span><br/><span th:text="#{otherHairdressingServices}">+MUUT KAMPAAMOPALVELUT</span>
                         </button>
                         <span class="checkmark checkmark-service-type">&#10003;</span>
                     </div>
@@ -54,11 +56,14 @@
                 <h2 th:text="#{h.selectHairLength}">Valitse hiusten pituus</h2>
                 <div class="big-square-buttons-wrapper">
                     <div class="big-square-button-container">
-                        <button id="button-hair-length-short" class="big-square-button" th:text="#{short}">LYHYET</button>
+                        <button id="button-hair-length-short" class="big-square-button" th:text="#{short}">LYHYET
+                        </button>
                         <span class="checkmark checkmark-hair-length">&#10003;</span>
                     </div>
                     <div class="big-square-button-container">
-                        <button id="button-hair-length-medium" class="big-square-button" th:text="#{medium}">KESKIPITKÄT</button>
+                        <button id="button-hair-length-medium" class="big-square-button" th:text="#{medium}">
+                            KESKIPITKÄT
+                        </button>
                         <span class="checkmark checkmark-hair-length">&#10003;</span>
                     </div>
                     <div class="big-square-button-container">
@@ -69,7 +74,8 @@
             </div>
             <div class="slide">
                 <h2 th:text="#{h.selectServices}">Valitse palvelut</h2>
-                <p th:text="#{p.selectServices}">Huomaa, että voit valita ajanvaraukseesi useamman kuin yhden palvelun.</p>
+                <p th:text="#{p.selectServices}">Huomaa, että voit valita ajanvaraukseesi useamman kuin yhden
+                    palvelun.</p>
                 <div id="service-list">
                     <div id="service-list-hairdresser">
                     </div>
@@ -81,7 +87,8 @@
                 </div>
             </div>
             <div class="slide">
-                <label for="form-select-barber"><h2 th:text="#{h.selectTimeAndWorker}">Valitse aika ja työntekijä</h2></label>
+                <label for="form-select-barber"><h2 th:text="#{h.selectTimeAndWorker}">Valitse aika ja työntekijä</h2>
+                </label>
                 <select id="form-select-barber">
                 </select>
                 <div>
@@ -123,11 +130,13 @@
                 &#8249; <span th:text="#{previous}">Edellinen</span>
             </button>
 
-            <button type="button" class="reservation-navigation-button" id="abort-reservation"  th:text="#{b.confirmAbort}">
+            <button type="button" class="reservation-navigation-button" id="abort-reservation"
+                    th:text="#{b.confirmAbort}">
                 Keskeytä ajanvaraus
             </button>
 
-            <button type="button" class="reservation-navigation-button slide-arrow" id="confirm-order-button" th:text="#{b.confirmReservation}">
+            <button type="button" class="reservation-navigation-button slide-arrow" id="confirm-order-button"
+                    th:text="#{b.confirmReservation}">
                 Vahvista varaus
             </button>
 

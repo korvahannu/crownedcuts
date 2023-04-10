@@ -121,7 +121,7 @@ public class ReservationServiceImpl implements ReservationService
         String query = "INSERT INTO reservations (username, year, month, day, hour, barberId, hairLength) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 
-        try(var connection = repository.getIsolatedConnection())
+        try (var connection = repository.getIsolatedConnection())
         {
             connection.setAutoCommit(false);
             // insert reservation to database
@@ -147,7 +147,7 @@ public class ReservationServiceImpl implements ReservationService
 
             // get actual reservationId
             String reservationQuery = "SELECT * FROM reservations WHERE year=? AND month=? AND day=? AND hour=? AND barberId=?";
-            try(var statement = connection.prepareStatement(reservationQuery))
+            try (var statement = connection.prepareStatement(reservationQuery))
             {
                 statement.setInt(1, timeDetails.year());
                 statement.setInt(2, timeDetails.month());
@@ -157,7 +157,7 @@ public class ReservationServiceImpl implements ReservationService
 
                 var result = statement.executeQuery();
 
-                if(result.next())
+                if (result.next())
                 {
                     reservationId = result.getInt("id");
                 }
@@ -169,10 +169,10 @@ public class ReservationServiceImpl implements ReservationService
             }
 
             // add services to db
-            for(String serviceId : serviceIds)
+            for (String serviceId : serviceIds)
             {
                 String serviceQuery = "INSERT INTO service_of_reservation(reservationid, serviceid) VALUES (?, ?)";
-                try(var statement = connection.prepareStatement(serviceQuery))
+                try (var statement = connection.prepareStatement(serviceQuery))
                 {
                     statement.setInt(1, reservationId);
                     statement.setString(2, serviceId);

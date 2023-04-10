@@ -104,14 +104,40 @@ public class SQLLiteRepository implements DbRepository
 
         try (var reader = new BufferedReader(new FileReader(file)))
         {
-            String line = reader.readLine();
+            String line = getNextStatement(reader);
 
             while (line != null)
             {
                 var preparedStatement = getPreparedStatement(line);
                 preparedStatement.execute();
-                line = reader.readLine();
+                line = getNextStatement(reader);
             }
         }
+    }
+
+    private String getNextStatement(BufferedReader reader) throws IOException
+    {
+        String line = reader.readLine();
+
+        if(line == null)
+        {
+            return null;
+        }
+
+        var builder = new StringBuilder(line);
+
+        while (!line.endsWith(";"))
+        {
+            line = reader.readLine();
+
+            if(line == null)
+            {
+                return null;
+            }
+
+            builder.append(line);
+        }
+
+        return builder.toString();
     }
 }

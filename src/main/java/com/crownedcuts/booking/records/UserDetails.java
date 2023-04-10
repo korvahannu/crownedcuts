@@ -3,20 +3,23 @@ package com.crownedcuts.booking.records;
 import com.crownedcuts.booking.Regex;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Record that represents detailed information of a user
- * @param username Username in the form of an email. Throws IllegalArgumentException if wrong format
- * @param password the password, duh!
- * @param firstname First name of user
- * @param lastname Last name of user
+ *
+ * @param username    Username in the form of an email. Throws IllegalArgumentException if wrong format
+ * @param password    the password, duh!
+ * @param firstname   First name of user
+ * @param lastname    Last name of user
  * @param phonenumber Phonenumber of user (optional)
  * @param dateOfBirth Date of birth (optional)
  * @param authorities List of roles user has
  */
-public record UserDetails(String username, String password, String firstname, String lastname, String phonenumber, String dateOfBirth, Collection<? extends GrantedAuthority> authorities)
+public record UserDetails(String username, String password, String firstname, String lastname, String phonenumber,
+                          String dateOfBirth, Collection<? extends GrantedAuthority> authorities)
 {
     public UserDetails
     {

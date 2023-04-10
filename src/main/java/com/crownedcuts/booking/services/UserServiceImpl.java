@@ -225,11 +225,14 @@ public class UserServiceImpl implements UserService
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T getOrNull(ResultSet resultSet, String key) {
-        try {
-            return (T)resultSet.getObject(key);
+    private <T> T getOrNull(ResultSet resultSet, String key)
+    {
+        try
+        {
+            return (T) resultSet.getObject(key);
         }
-        catch(Exception ex) {
+        catch (Exception ex)
+        {
             return null;
         }
     }

@@ -1,4 +1,4 @@
-(function(slideshow) {
+(function (slideshow) {
     'use strict';
 
     const pi = {};
@@ -26,13 +26,18 @@
         pi.nextSlideButton.addEventListener('click', onNextSlideButtonClick);
         pi.previousSlideButton.addEventListener('click', onPrevSlideButtonClick)
 
-        return { slideState, onSlidePageChange, nextSlideButton: pi.nextSlideButton, previousSlideButton: pi.previousSlideButton };
+        return {
+            slideState,
+            onSlidePageChange,
+            nextSlideButton: pi.nextSlideButton,
+            previousSlideButton: pi.previousSlideButton
+        };
     }
 
     function onNextSlideButtonClick(event) {
         event.preventDefault();
         window.scrollTo(0, 0)
-        if(slideState.currentSlide + 1 === slideState.slideCount) {
+        if (slideState.currentSlide + 1 === slideState.slideCount) {
             pi.nextSlideButton.style.visibility = 'hidden';
         }
 
@@ -83,7 +88,7 @@
     }
 
     function onSlidePageChangeTrigger() {
-        for(const element of onSlidePageChange) {
+        for (const element of onSlidePageChange) {
             element();
         }
     }
