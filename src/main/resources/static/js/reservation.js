@@ -21,6 +21,49 @@
 
     let locale;
 
+    const translations = {
+        "fi": {
+            reservationFailed: "Ajanvaraus epäonnistui sisäisen virheen vuoksi.",
+            hairdresser: "Kampaaja",
+            barber: "Barber",
+            shortHair: "Lyhyet hiukset",
+            mediumHair: "Keskipitkät hiukset",
+            longHair: "Pitkät hiukset",
+            barberHairdresser: "Parturi-kampaaja: ",
+            barberHairdresserAnyone: "Parturi-kampaaja: Kuka tahansa",
+            barberHairdresserHasNoAvailableTimes: "Kyseisellä parturi-kampaajalla ei ole vapaita aikoja tälle päivälle.",
+            price: "Hinta: ",
+            monday: "Maanantai",
+            tuesday: "Tiistai",
+            wednesday: "Keskiviikko",
+            thursday: "Torstai",
+            friday: "Perjantai",
+            saturday: "Lauantai",
+            sunday: "Sunnuntai",
+            anyone: "Kuka tahansa"
+        },
+        "en": {
+            reservationFailed: "Reservation failed due to internal error.",
+            hairdresser: "Haidresser",
+            barber: "Barber",
+            shortHair: "Short hair",
+            mediumHair: "Medium hair",
+            longHair: "Long hair",
+            barberHairdresser: "Barber-haidresser: ",
+            barberHairdresserAnyone: "Barber-hairdresser: Anyone",
+            barberHairdresserHasNoAvailableTimes: "Chosen barber-hairdresse has no free times for this day.",
+            price: "Price: ",
+            monday: "Monday",
+            tuesday: "Tuesday",
+            wednesday: "Wednesday",
+            thursday: "Thursday",
+            friday: "Friday",
+            saturday: "Saturday",
+            sunday: "Sunday",
+            anyone: "Anyone"
+        }
+    };
+
     reservationView.init = function (slides, targetLocale) {
         locale = targetLocale;
         slideshow = slides;
@@ -129,7 +172,7 @@
             window.location.href = "/ajanvarausonnistui";
         })
             .catch(() => {
-                window.alert("Ajan varaaminen epäonnistui");
+                window.alert(translations[locale].reservationFailed);
                 window.location.href = "/";
             })
     }
@@ -257,7 +300,7 @@
 
         const el = document.createElement('option');
         el.value = '-1';
-        el.innerText = 'Kuka tahansa';
+        el.innerText = translations[locale].anyone;
         pageItems.barbersSelectBox.appendChild(el);
 
         barbers.forEach(barber => {
@@ -373,7 +416,7 @@
         s.innerHTML = "";
 
         const typeText = document.createElement('p');
-        typeText.innerText = payload.isBarberService === false ? "Kampaaja" : "Parturi"
+        typeText.innerText = payload.isBarberService === false ? translations[locale].hairdresser : translations[locale].barber;
         s.appendChild(typeText);
 
         payload.services.forEach(service => {
@@ -390,11 +433,11 @@
 
         const hairLengthText = document.createElement('p');
         if (payload.hairLength === "short") {
-            hairLengthText.innerText = "Lyhyet hiukset";
+            hairLengthText.innerText = translations[locale].shortHair;
         } else if (payload.hairLength === "medium") {
-            hairLengthText.innerText = "Keskipitkät hiukset";
+            hairLengthText.innerText = translations[locale].mediumHair;
         } else if (payload.hairLength === "long") {
-            hairLengthText.innerText = "Pitkät hiukset";
+            hairLengthText.innerText = translations[locale].longHair;
         }
         s.appendChild(hairLengthText);
 
@@ -406,20 +449,20 @@
 
         if (payload.barberId === -1) {
             const barberText = document.createElement('p');
-            barberText.innerText = 'Parturi-kampaaja: Kuka tahansa'
+            barberText.innerText = translations[locale].barberHairdresserAnyone
             s.appendChild(barberText);
         } else {
             barbers
                 .filter(b => b.id === payload.barberId)
                 .forEach(b => {
                     const barberText = document.createElement('p');
-                    barberText.innerText = `Parturi-kampaaja: ${b.name}`
+                    barberText.innerText = `${translations[locale].barberHairdresser} ${b.name}`
                     s.appendChild(barberText);
                 });
         }
 
         const priceText = document.createElement('p');
-        priceText.innerText = `Hinta: ${currentPrice}.00€`;
+        priceText.innerText = `${translations[locale].price} ${currentPrice}.00€`;
         s.appendChild(priceText);
     }
 
@@ -439,19 +482,19 @@
 
         switch (n) {
             case 0:
-                return "Sunnuntai";
+                return translations[locale].sunday;
             case 1:
-                return "Maanantai";
+                return translations[locale].monday;
             case 2:
-                return "Tiistai";
+                return translations[locale].tuesday;
             case 3:
-                return "Keskiviikko";
+                return translations[locale].wednesday;
             case 4:
-                return "Torstai";
+                return translations[locale].thursday;
             case 5:
-                return "Perjantai";
+                return translations[locale].friday;
             default:
-                return "Lauantai";
+                return translations[locale].saturday;
         }
     }
 
@@ -500,7 +543,7 @@
 
         const createNoTimesParagraph = () => {
             const non = document.createElement('p');
-            non.innerText = "Kyseisellä parturi-kampaajalla ei ole vapaita aikoja tälle päivälle."
+            non.innerText = translations[locale].barberHairdresserHasNoAvailableTimes
             non.classList.add('no-available-times-text');
             return non;
         }
