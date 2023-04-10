@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fi">
 <head>
     <meta charset="UTF-8">
-    <title>Ajanvaraus</title>
+    <title th:text="#{h.reservation}">Ajanvaraus</title>
     <link rel="stylesheet" href="css/reservation.css">
     <link rel="stylesheet" href="css/pageindicator.css">
     <meta name="viewport" content="initial-scale=1">
@@ -11,15 +11,15 @@
 <div id="page-shadow">
 </div>
 <div id="messageBox">
-    <h2>Haluatko varmasti keskeyttää varauksen?</h2>
-    <p>Keskeyttämisen jälkeen näkymä palaa etusivulle.</p>
+    <h2 th:text="#{h.confirmAbort}">Haluatko varmasti keskeyttää varauksen?</h2>
+    <p th:text="#{p.confirmAbort}">Keskeyttämisen jälkeen näkymä palaa etusivulle.</p>
     <div id="messageBoxButtonContainer">
-        <button id="cancelAbortButton">Peruuta</button>
-        <button id="confirmAbortButton">Keskeytä ajanvaraus</button>
+        <button id="cancelAbortButton" th:text="#{cancel}">Peruuta</button>
+        <button id="confirmAbortButton"  th:text="#{b.confirmAbort}">Keskeytä ajanvaraus</button>
     </div>
 </div>
 <div id="reservation-wrapper">
-    <h1>Ajanvaraus</h1>
+    <h1 th:text="#{h.reservation}">Ajanvaraus</h1>
     <section class="slider-wrapper">
         <div id="page-indicator">
             <div id="page-indicator-line"></div>
@@ -34,42 +34,42 @@
         </div>
         <form class="slides-container" id="slides-container">
             <div class="slide">
-                <h2>Valitse palvelun tyyppi</h2>
+                <h2 th:text="#{h.selectServiceType}">Valitse palvelun tyyppi</h2>
                 <div class="big-square-buttons-wrapper">
                     <div class="big-square-button-container">
                         <button id="button-service-type-barber" class="big-square-button">
-                            PARTURI<br/>HIUSTENLEIKKUU<br/>+MUUT PARTURIPALVELUT
+                            <span th:text="#{barber}">PARTURI</span><br/><span th:text="#{cut}">HIUSTENLEIKKUU</span><br/><span th:text="#{otherBarberServices}">+MUUT PARTURIPALVELUT</span>
                         </button>
                         <span class="checkmark checkmark-service-type">&#10003;</span>
                     </div>
                     <div class="big-square-button-container">
-                        <button id="button-service-type-haidresser" class="big-square-button">KAMPAAMO<br/>HIUSTENLEIKKUU<br/>+MUUT
-                            KAMPAAMOPALVELUT
+                        <button id="button-service-type-haidresser" class="big-square-button">
+                            <span th:text="#{hairdresser}">KAMPAAMO</span><br/><span th:text="#{cut}">HIUSTENLEIKKUU</span><br/><span th:text="#{otherHairdressingServices}">+MUUT KAMPAAMOPALVELUT</span>
                         </button>
                         <span class="checkmark checkmark-service-type">&#10003;</span>
                     </div>
                 </div>
             </div>
             <div class="slide">
-                <h2>Valitse hiusten pituus</h2>
+                <h2 th:text="#{h.selectHairLength}">Valitse hiusten pituus</h2>
                 <div class="big-square-buttons-wrapper">
                     <div class="big-square-button-container">
-                        <button id="button-hair-length-long" class="big-square-button">PITKÄT</button>
+                        <button id="button-hair-length-long" class="big-square-button" th:text="#{long}">PITKÄT</button>
                         <span class="checkmark checkmark-hair-length">&#10003;</span>
                     </div>
                     <div class="big-square-button-container">
-                        <button id="button-hair-length-medium" class="big-square-button">KESKIPITKÄT</button>
+                        <button id="button-hair-length-medium" class="big-square-button" th:text="#{medium}">KESKIPITKÄT</button>
                         <span class="checkmark checkmark-hair-length">&#10003;</span>
                     </div>
                     <div class="big-square-button-container">
-                        <button id="button-hair-length-short" class="big-square-button">LYHYET</button>
+                        <button id="button-hair-length-short" class="big-square-button" th:text="#{short}">LYHYET</button>
                         <span class="checkmark checkmark-hair-length">&#10003;</span>
                     </div>
                 </div>
             </div>
             <div class="slide">
-                <h2>Valitse palvelut</h2>
-                <p>Huomaa, että voit valita ajanvaraukseesi useamman kuin yhden palvelun</p>
+                <h2 th:text="#{h.selectServices}">Valitse palvelut</h2>
+                <p th:text="#{p.selectServices}">Huomaa, että voit valita ajanvaraukseesi useamman kuin yhden palvelun.</p>
                 <div id="service-list">
                     <div id="service-list-hairdresser">
                     </div>
@@ -77,24 +77,24 @@
                     </div>
                 </div>
                 <div id="service-price">
-                    Kokonaissumma: <span id="service-price-amount">0</span>.00€
+                    <span th:text="#{sumPrice}">Kokonaissumma:</span> <span id="service-price-amount">0</span>.00€
                 </div>
             </div>
             <div class="slide">
-                <label for="form-select-barber"><h2>Valitse aika ja työntekijä</h2></label>
+                <label for="form-select-barber"><h2 th:text="#{h.selectTimeAndWorker}">Valitse aika ja työntekijä</h2></label>
                 <select id="form-select-barber">
                 </select>
                 <div>
                     <div id="available-times-list-container">
-                        <h3 class="available-times-day-header" id="available-times-today">Maanantai 27.3.</h3>
+                        <h3 class="available-times-day-header" id="available-times-today"></h3>
                         <div id="available-times-list-today">
                         </div>
                         <hr/>
-                        <h3 class="available-times-day-header" id="available-times-tomorrow">Tiistai 28.3.</h3>
+                        <h3 class="available-times-day-header" id="available-times-tomorrow"></h3>
                         <div id="available-times-list-tomorrow">
                         </div>
                         <hr/>
-                        <h3 class="available-times-day-header" id="available-times-day-after">Torstai 30.3.</h3>
+                        <h3 class="available-times-day-header" id="available-times-day-after"></h3>
                         <div id="available-times-list-day-after">
                         </div>
                         <hr/>
@@ -111,13 +111,8 @@
             </div>
             <div class="slide">
                 <div id="summary-container">
-                    <h2>Yhteenveto</h2>
+                    <h2 th:text="#{summary}">Yhteenveto</h2>
                     <div id="summary-details-container">
-                        <p>Pampaaja leikkaus, pesu ja kuivaus</p>
-                        <p>Hiusten värjäys</p>
-                        <p>Keskiviikko 29.3. klo 9:00</p>
-                        <p>Parturi-Kampaaja: Milla Pyrrö</p>
-                        <p>Hinta: 0.00€</p>
                     </div>
                 </div>
             </div>
@@ -125,20 +120,20 @@
         <div class="reservation-navigation-button-container">
             <button type="button" class="reservation-navigation-button slide-arrow slide-arrow-prev"
                     id="slide-arrow-prev">
-                &#8249; Edellinen
+                &#8249; <span th:text="#{previous}">Edellinen</span>
             </button>
 
-            <button type="button" class="reservation-navigation-button" id="abort-reservation">
+            <button type="button" class="reservation-navigation-button" id="abort-reservation"  th:text="#{b.confirmAbort}">
                 Keskeytä ajanvaraus
             </button>
 
-            <button type="button" class="reservation-navigation-button slide-arrow" id="confirm-order-button">
+            <button type="button" class="reservation-navigation-button slide-arrow" id="confirm-order-button" th:text="#{b.confirmReservation}">
                 Vahvista varaus
             </button>
 
             <button type="button" class="reservation-navigation-button slide-arrow slide-arrow-next"
                     id="slide-arrow-next">
-                Seuraava &#8250;
+                <span th:text="#{next}">Seuraava</span> &#8250;
             </button>
         </div>
     </section>

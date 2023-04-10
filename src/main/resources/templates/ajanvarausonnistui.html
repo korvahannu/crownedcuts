@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fi">
 <head>
     <meta charset="UTF-8">
-    <title>Ajanvaraus onnistui!</title>
+    <title th:text="#{t.reservationSuccessful}">Ajanvaraus onnistui!</title>
     <link rel="stylesheet" href="css/reservation.css">
     <link rel="stylesheet" href="css/pageindicator.css">
     <meta name="viewport" content="initial-scale=1">
 </head>
 <body>
 <div id="reservation-wrapper">
-    <h1>Ajanvaraus</h1>
+    <h1 th:text="#{h.reservation}">Ajanvaraus</h1>
     <section class="slider-wrapper">
         <div id="page-indicator">
             <div id="page-indicator-line"></div>
@@ -25,14 +25,14 @@
         <div id="summary-container">
             <div style="display: flex; flex-direction: column; align-items: center">
                 <div style="width: 100%">
-                    <h2>Varaus vahvistettu onnistuneesti!</h2>
+                    <h2 th:text="#{h.reservationConfirmedSuccessfully}">Varaus vahvistettu onnistuneesti!</h2>
                 </div>
-                <p>Parturi-kampaamo Crowned Cuts on vastaanottanut ja vahvistanut varauksesi. Voit tarkastella
-                    varaamiasi aikoja etusivulta. Vaihtoehtoisesti voit <a style="color: black" href="/ajanvaraus">varata
+                <p><span th:text="#{p.reservationSuccessful}">Parturi-kampaamo Crowned Cuts on vastaanottanut ja vahvistanut varauksesi. Voit tarkastella
+                    varaamiasi aikoja etusivulta. Vaihtoehtoisesti voit</span> <a style="color: black" href="/ajanvaraus" th:text="#{a.reserveNewTimeHere}">varata
                         uuden ajan tästä.</a></p>
-                <p style="margin-bottom: 3rem;">Ongelmatilanteissa ota yhteyttä asiakaspalveluun
+                <p style="margin-bottom: 3rem;" th:text="#{p.contactIfProblems}">Ongelmatilanteissa ota yhteyttä asiakaspalveluun
                     asiakaspalvelu@crownedcuts.fi tai +3580441224012</p>
-                <button id="return-to-frontpage-button" type="button" class="reservation-navigation-button slide-arrow">
+                <button id="return-to-frontpage-button" type="button" class="reservation-navigation-button slide-arrow" th:text="#{b.moveToFrontPage}">
                     Siirry etusivulle
                 </button>
             </div>
