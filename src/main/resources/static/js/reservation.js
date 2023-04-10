@@ -51,7 +51,7 @@
             longHair: "Long hair",
             barberHairdresser: "Barber-haidresser: ",
             barberHairdresserAnyone: "Barber-hairdresser: Anyone",
-            barberHairdresserHasNoAvailableTimes: "Chosen barber-hairdresse has no free times for this day.",
+            barberHairdresserHasNoAvailableTimes: "Chosen barber-hairdresser has no free times for this day.",
             price: "Price: ",
             monday: "Monday",
             tuesday: "Tuesday",
