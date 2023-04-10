@@ -134,12 +134,12 @@
             slideshow.nextSlideButton.disabled = true;
             currentAvailableTimesOffset += amount;
             populateAvailableTimes(currentAvailableTimesOffset)
-            .then(() => {
-                populateAvailableTimesListing(currentBarber)
-                pageItems.availableTimesNavButtonPrevious.disabled = false;
-                pageItems.availableTimesNavButtonNext.disabled = false;
-                pageItems.availableTimesListContainer.style.opacity = '1';
-            })
+                .then(() => {
+                    populateAvailableTimesListing(currentBarber)
+                    pageItems.availableTimesNavButtonPrevious.disabled = false;
+                    pageItems.availableTimesNavButtonNext.disabled = false;
+                    pageItems.availableTimesListContainer.style.opacity = '1';
+                })
 
             if (currentAvailableTimesOffset > 0) {
                 pageItems.availableTimesNavButtonPrevious
@@ -150,9 +150,9 @@
             }
         }
 
-        pageItems.availableTimesNavButtonNext.addEventListener('click',  () => changeAvailableTimeOffset(4));
+        pageItems.availableTimesNavButtonNext.addEventListener('click', () => changeAvailableTimeOffset(4));
 
-        pageItems.availableTimesNavButtonPrevious.addEventListener('click',  () => changeAvailableTimeOffset(-4));
+        pageItems.availableTimesNavButtonPrevious.addEventListener('click', () => changeAvailableTimeOffset(-4));
 
         pageItems.confirmOrderButton.addEventListener('click', onOrderConfirm);
     }
@@ -423,8 +423,9 @@
             const serviceText = document.createElement('p');
 
             services.forEach(s => {
-                if(s.id === service) {
-                    serviceText.innerText = s.name;
+                if (s.id === service) {
+                    const serviceName = locale === 'en' ? s.name_en : s.name;
+                    serviceText.innerText = serviceName;
                 }
             })
 
@@ -504,7 +505,7 @@
         const barberFilter = (time) => {
             let barberFound = false;
 
-            if(!time.hasOwnProperty('barbersAvailable')) {
+            if (!time.hasOwnProperty('barbersAvailable')) {
                 return barberFound;
             }
 
@@ -619,7 +620,7 @@
         button.type = 'button';
 
         button.addEventListener('click', event => {
-           event.preventDefault();
+            event.preventDefault();
             if (!payload.services) {
                 payload.services = []
             }
@@ -653,17 +654,17 @@
         const result = await (await fetch('/rest/getAllServices')).json();
         pageItems.serviceListingsBarbers.innerHTML = '';
         pageItems.serviceListingsHairdressers.innerHTML = '';
-
         result.forEach(service => {
-           if(service.isBarberService === true) {
+            const serviceName = locale === 'en' ? service.name_en : service.name;
+            if (service.isBarberService === true) {
                 pageItems.serviceListingsBarbers.appendChild(
-                    createServiceListing(service.id, service.name, service.price)
+                    createServiceListing(service.id, serviceName, service.price)
                 );
-           } else {
-               pageItems.serviceListingsHairdressers.appendChild(
-                   createServiceListing(service.id, service.name, service.price)
-               );
-           }
+            } else {
+                pageItems.serviceListingsHairdressers.appendChild(
+                    createServiceListing(service.id, serviceName, service.price)
+                );
+            }
         });
 
         services = result;

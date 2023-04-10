@@ -35,6 +35,7 @@ public class ServicesServiceImpl implements ServicesService
                         new Service(
                                 result.getString("id"),
                                 result.getString("name"),
+                                result.getString("name_en"),
                                 result.getDouble("price"),
                                 result.getBoolean("isBarberService")
                         )

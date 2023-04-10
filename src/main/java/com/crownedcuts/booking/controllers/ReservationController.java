@@ -35,6 +35,12 @@ public class ReservationController
         return new ModelAndView("ajanvaraus");
     }
 
+    @GetMapping("/newreservation")
+    public ModelAndView onGetEn()
+    {
+        return new ModelAndView("ajanvaraus");
+    }
+
     @PostMapping("/ajanvaraus")
     public ResponseEntity<Object> sendReservation(@RequestBody ReservationPayload payload)
     {
