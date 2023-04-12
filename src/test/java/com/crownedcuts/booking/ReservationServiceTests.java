@@ -124,6 +124,13 @@ class ReservationServiceTests
         }
     }
 
+    @Test
+    void weekendTimeShouldThrow()
+    {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> freeTimesService.getAllFreeTimesOnDay(2023, 4, 8));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> freeTimesService.getAllFreeTimesOnDay(2023, 4, 9));
+    }
+
     @AfterAll
     static void cleanup()
     {
