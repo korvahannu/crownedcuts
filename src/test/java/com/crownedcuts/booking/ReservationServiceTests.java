@@ -2,6 +2,7 @@ package com.crownedcuts.booking;
 
 import com.crownedcuts.booking.records.TimeDetails;
 import com.crownedcuts.booking.services.BarberHairdresserService;
+import com.crownedcuts.booking.services.FreeTimesService;
 import com.crownedcuts.booking.services.ReservationService;
 import com.crownedcuts.booking.services.UserService;
 import org.junit.jupiter.api.AfterAll;
@@ -28,8 +29,8 @@ class ReservationServiceTests
     private final ReservationService reservationService;
     private final BarberHairdresserService barberHairdresserService;
     private final UserService userService;
+    private final FreeTimesService freeTimesService;
     private static final Logger logger = Logger.getLogger(ReservationServiceTests.class.getName());
-    private final int testBarbersCount = 5;
 
     private static String databaseFilepath;
 
@@ -40,18 +41,22 @@ class ReservationServiceTests
     }
 
     @Autowired
-    public ReservationServiceTests(ReservationService reservationService, BarberHairdresserService barberHairdresserService, UserService userService)
+    public ReservationServiceTests(ReservationService reservationService,
+                                   BarberHairdresserService barberHairdresserService,
+                                   UserService userService,
+                                   FreeTimesService freeTimesService)
     {
         this.reservationService = reservationService;
         this.barberHairdresserService = barberHairdresserService;
         this.userService = userService;
+        this.freeTimesService = freeTimesService;
     }
 
     @Test
     @Order(1)
     void gettingFreeTimeForADayWorks()
     {
-        var result = reservationService.getAllFreeTimesOnDay(2023, 1, 20);
+        var result = freeTimesService.getAllFreeTimesOnDay(2023, 1, 20);
 
         Assertions.assertEquals(8, result.size());
     }
@@ -68,9 +73,10 @@ class ReservationServiceTests
 
         Assertions.assertTrue(didReservationWork);
 
-        var result = reservationService.getAllFreeTimesOnDay(2023, 5, 5);
+        var result = freeTimesService.getAllFreeTimesOnDay(2023, 5, 5);
 
         Assertions.assertEquals(8, result.size());
+        int testBarbersCount = 5;
         Assertions.assertEquals(testBarbersCount - 1, result.get(0).barbersAvailable().size());
         Assertions.assertFalse(result.get(0).barbersAvailable().contains(barber));
 
@@ -101,7 +107,7 @@ class ReservationServiceTests
 
         Assertions.assertEquals(8, userService.getReservations(user.username()).size());
 
-        var barberTimes = reservationService.getAllFreeTimesOnDay(2023, 5, 5);
+        var barberTimes = freeTimesService.getAllFreeTimesOnDay(2023, 5, 5);
 
         for (var time : barberTimes)
         {
@@ -121,7 +127,6 @@ class ReservationServiceTests
     @AfterAll
     static void cleanup()
     {
-
         try
         {
             Files.delete(Paths.get(databaseFilepath));

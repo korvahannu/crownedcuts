@@ -4,6 +4,7 @@ import com.crownedcuts.booking.records.ReservationPayload;
 import com.crownedcuts.booking.records.TimeDetails;
 import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.services.BarberHairdresserService;
+import com.crownedcuts.booking.services.FreeTimesService;
 import com.crownedcuts.booking.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,16 @@ public class ReservationController
 {
     private final ReservationService reservationService;
     private final BarberHairdresserService barberHairdresserService;
+    private final FreeTimesService freeTimesService;
 
     @Autowired
-    public ReservationController(ReservationService reservationService, BarberHairdresserService barberHairdresserService)
+    public ReservationController(ReservationService reservationService,
+                                 BarberHairdresserService barberHairdresserService,
+                                 FreeTimesService freeTimesService)
     {
         this.reservationService = reservationService;
         this.barberHairdresserService = barberHairdresserService;
+        this.freeTimesService = freeTimesService;
     }
 
     @GetMapping("/ajanvaraus")
@@ -71,7 +76,7 @@ public class ReservationController
     {
         final var finalHour = payload.hour();
 
-        var freeTimesAtHour = reservationService.getAllFreeTimesOnDay(payload.year(), payload.month(), payload.day())
+        var freeTimesAtHour = freeTimesService.getAllFreeTimesOnDay(payload.year(), payload.month(), payload.day())
                 .stream()
                 .filter(f -> f.hour() == finalHour)
                 .toList();

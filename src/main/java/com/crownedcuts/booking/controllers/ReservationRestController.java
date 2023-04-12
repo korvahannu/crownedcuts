@@ -4,7 +4,7 @@ import com.crownedcuts.booking.records.AvailableTime;
 import com.crownedcuts.booking.records.BarberHairdresser;
 import com.crownedcuts.booking.records.Service;
 import com.crownedcuts.booking.services.BarberHairdresserService;
-import com.crownedcuts.booking.services.ReservationService;
+import com.crownedcuts.booking.services.FreeTimesService;
 import com.crownedcuts.booking.services.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +17,16 @@ import java.util.List;
 @RestController
 public class ReservationRestController
 {
-    private final ReservationService reservationService;
+    private final FreeTimesService freeTimesService;
     private final BarberHairdresserService barberHairdresserService;
     private final ServicesService servicesService;
 
     @Autowired
-    public ReservationRestController(ReservationService reservationService, BarberHairdresserService barberHairdresserService, ServicesService servicesService)
+    public ReservationRestController(FreeTimesService freeTimesService,
+                                     BarberHairdresserService barberHairdresserService,
+                                     ServicesService servicesService)
     {
-        this.reservationService = reservationService;
+        this.freeTimesService = freeTimesService;
         this.barberHairdresserService = barberHairdresserService;
         this.servicesService = servicesService;
     }
@@ -36,11 +38,13 @@ public class ReservationRestController
     }
 
     @GetMapping("/rest/getAvailableTimes")
-    public ResponseEntity<List<AvailableTime>> getAvailableTimes(@RequestParam int year, @RequestParam int month, @RequestParam int day)
+    public ResponseEntity<List<AvailableTime>> getAvailableTimes(@RequestParam int year,
+                                                                 @RequestParam int month,
+                                                                 @RequestParam int day)
     {
         try
         {
-            var result = reservationService.getAllFreeTimesOnDay(year, month, day);
+            var result = freeTimesService.getAllFreeTimesOnDay(year, month, day);
             return ResponseEntity.ok(result);
         }
         catch (IllegalArgumentException ex)

@@ -4,11 +4,10 @@ import com.crownedcuts.booking.records.*;
 import com.crownedcuts.booking.repositories.DbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -17,71 +16,19 @@ import java.util.logging.Logger;
 public class ReservationServiceImpl implements ReservationService
 {
     private final DbRepository repository;
-    private final BarberHairdresserService barberHairdresserService;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Autowired
-    public ReservationServiceImpl(DbRepository repository, BarberHairdresserService barberHairdresserService)
+    public ReservationServiceImpl(DbRepository repository)
     {
         this.repository = repository;
-        this.barberHairdresserService = barberHairdresserService;
     }
 
     @Override
-    public List<AvailableTime> getAllFreeTimesOnDay(int year, int month, int day)
-    {
-        var localDate = LocalDate.of(year, month, day);
-
-        if (localDate.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY))
-        {
-            throw new IllegalArgumentException("Crowned Cuts does not offer service on weekends.");
-        }
-
-        var reservations = getReservationsOfDay(year, month, day);
-
-        var barberHairdressers = barberHairdresserService.getAllBarbers();
-
-        List<AvailableTime> result = new ArrayList<>();
-
-        for (int i = 8; i < 16; i++)
-        {
-            int finalI = i;
-
-            var currentHoursReservations = reservations
-                    .stream()
-                    .filter(r -> r.reservationInformation().hour() == finalI)
-                    .toList();
-
-            var currentHoursReservationBarberIds = currentHoursReservations
-                    .stream()
-                    .map(Reservation::barberId)
-                    .toList();
-
-            var currentBarberHairdressers = new ArrayList<>(barberHairdressers)
-                    .stream()
-                    .filter(b -> !currentHoursReservationBarberIds.contains(b.id()))
-                    .toList();
-
-            if (!currentBarberHairdressers.isEmpty())
-            {
-                var availableTime = new AvailableTime(year, month, day, i, currentBarberHairdressers);
-                result.add(availableTime);
-            }
-        }
-
-        if (localDate.getDayOfMonth() == LocalDate.now().getDayOfMonth())
-        {
-            result = result
-                    .stream()
-                    .filter(r -> r.hour() > LocalDateTime.now().getHour())
-                    .toList();
-        }
-
-        return result;
-    }
-
-    @Override
-    public boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails, String hairLength)
+    public boolean reserveTime(BarberHairdresser barberHairdresser,
+                               UserDetails user,
+                               TimeDetails timeDetails,
+                               String hairLength)
     {
         if (timeDetails.isOutsideWorkingHoursAndDays())
         {
@@ -111,79 +58,33 @@ public class ReservationServiceImpl implements ReservationService
     }
 
     @Override
-    public boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails, String hairLength, List<String> serviceIds)
+    @Transactional
+    public boolean reserveTime(BarberHairdresser barberHairdresser,
+                               UserDetails user,
+                               TimeDetails timeDetails,
+                               String hairLength,
+                               List<String> serviceIds)
     {
         if (timeDetails.isOutsideWorkingHoursAndDays())
         {
             throw new IllegalArgumentException("You may only reserve for weekends between 8-16 o'clock");
         }
 
-        String query = "INSERT INTO reservations (username, year, month, day, hour, barberId, hairLength) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-
         try (var connection = repository.getIsolatedConnection())
         {
             connection.setAutoCommit(false);
-            // insert reservation to database
-            try (var statement = connection.prepareStatement(query))
-            {
-                statement.setString(1, user.username());
-                statement.setInt(2, timeDetails.year());
-                statement.setInt(3, timeDetails.month());
-                statement.setInt(4, timeDetails.day());
-                statement.setInt(5, timeDetails.hour());
-                statement.setLong(6, barberHairdresser.id());
-                statement.setString(7, hairLength);
-                statement.execute();
-            }
-            catch (SQLException ex)
-            {
-                connection.rollback();
-                logger.warning(ex.getMessage());
-                return false;
-            }
 
-            int reservationId = -1;
+            insertIntoReservations(connection,
+                    user.username(),
+                    timeDetails,
+                    barberHairdresser.id(),
+                    hairLength);
 
-            // get actual reservationId
-            String reservationQuery = "SELECT * FROM reservations WHERE year=? AND month=? AND day=? AND hour=? AND barberId=?";
-            try (var statement = connection.prepareStatement(reservationQuery))
-            {
-                statement.setInt(1, timeDetails.year());
-                statement.setInt(2, timeDetails.month());
-                statement.setInt(3, timeDetails.day());
-                statement.setInt(4, timeDetails.hour());
-                statement.setLong(5, barberHairdresser.id());
+            int reservationId = getReservationId(connection, timeDetails, barberHairdresser.id());
 
-                var result = statement.executeQuery();
-
-                if (result.next())
-                {
-                    reservationId = result.getInt("id");
-                }
-                else
-                {
-                    connection.rollback();
-                    return false;
-                }
-            }
-
-            // add services to db
             for (String serviceId : serviceIds)
             {
-                String serviceQuery = "INSERT INTO service_of_reservation(reservationid, serviceid) VALUES (?, ?)";
-                try (var statement = connection.prepareStatement(serviceQuery))
-                {
-                    statement.setInt(1, reservationId);
-                    statement.setString(2, serviceId);
-                    statement.execute();
-                }
-                catch (SQLException ex)
-                {
-                    connection.rollback();
-                    logger.warning(ex.getMessage());
-                    return false;
-                }
+                insertIntoServices(connection, reservationId, serviceId);
             }
 
             connection.commit();
@@ -275,5 +176,89 @@ public class ReservationServiceImpl implements ReservationService
         }
 
         return result;
+    }
+
+    /**
+     * Helper function that inserts a reservation into the database
+     *
+     * @param connection          Connection that will be used
+     * @param username            Username who the reservation is for
+     * @param timeDetails         Details when the reservation is (year, month, day, hour)
+     * @param barberHairdresserId id of barber/hairdresser
+     * @param hairLength          Length of the hair
+     * @throws SQLException If SQL connection fails
+     */
+    private void insertIntoReservations(Connection connection,
+                                        String username,
+                                        TimeDetails timeDetails,
+                                        long barberHairdresserId,
+                                        String hairLength) throws SQLException
+    {
+        String query = "INSERT INTO reservations (username, year, month, day, hour, barberId, hairLength) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (var statement = connection.prepareStatement(query))
+        {
+            statement.setString(1, username);
+            statement.setInt(2, timeDetails.year());
+            statement.setInt(3, timeDetails.month());
+            statement.setInt(4, timeDetails.day());
+            statement.setInt(5, timeDetails.hour());
+            statement.setLong(6, barberHairdresserId);
+            statement.setString(7, hairLength);
+            statement.execute();
+        }
+    }
+
+    /**
+     * Helper function that gets a single reservation of the database using provided information and returns the id of it
+     *
+     * @param connection          Connection to use
+     * @param timeDetails         Details of when the reservation should be
+     * @param barberHairdresserId The unique id of barber/hairdresser
+     * @return id as type int
+     * @throws SQLException If connection fails
+     */
+    private int getReservationId(Connection connection,
+                                 TimeDetails timeDetails,
+                                 long barberHairdresserId) throws SQLException
+    {
+        String reservationQuery = "SELECT * FROM reservations WHERE year=? AND month=? AND day=? AND hour=? AND barberId=?";
+        try (var statement = connection.prepareStatement(reservationQuery))
+        {
+            statement.setInt(1, timeDetails.year());
+            statement.setInt(2, timeDetails.month());
+            statement.setInt(3, timeDetails.day());
+            statement.setInt(4, timeDetails.hour());
+            statement.setLong(5, barberHairdresserId);
+
+            var result = statement.executeQuery();
+
+            if (result.next())
+            {
+                return result.getInt("id");
+            }
+        }
+
+        throw new SQLException("Failed to find reservation id.");
+    }
+
+    /**
+     * Helper function that inserts a service_of_reservation to the database
+     * Reservations and services have many-to-many relationship, this is the glue that holds them together
+     *
+     * @param connection    Connection to use
+     * @param reservationId Id of reservation (int)
+     * @param serviceId     Id of service (String)
+     * @throws SQLException If connection fails
+     */
+    private void insertIntoServices(Connection connection, int reservationId, String serviceId) throws SQLException
+    {
+        String serviceQuery = "INSERT INTO service_of_reservation(reservationid, serviceid) VALUES (?, ?)";
+        try (var statement = connection.prepareStatement(serviceQuery))
+        {
+            statement.setInt(1, reservationId);
+            statement.setString(2, serviceId);
+            statement.execute();
+        }
     }
 }

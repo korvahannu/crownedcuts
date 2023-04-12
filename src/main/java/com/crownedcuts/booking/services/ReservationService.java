@@ -5,21 +5,10 @@ import com.crownedcuts.booking.records.*;
 import java.util.List;
 
 /**
- * This service is responsible for getting the information about free times
- * and for making a reservation for the end user
+ * This service is responsible for getting and making reservations
  */
 public interface ReservationService
 {
-    /**
-     * Returns a list of available times that can be reserved on a given date.
-     *
-     * @param year  in which we want to inspect free times
-     * @param month in which we want to inspect free times
-     * @param day   in which we want to inspect free times
-     * @return a list of AvailableTimes, length of 0 if there are none
-     */
-    List<AvailableTime> getAllFreeTimesOnDay(int year, int month, int day);
-
     /**
      * Reserves a time for a user and a barber/haidresser with no services
      *
