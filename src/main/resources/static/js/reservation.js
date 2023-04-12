@@ -606,6 +606,8 @@
     function createServiceListing(value, name, price) {
         const div = document.createElement('div');
         div.classList.add('service-listing');
+        div.role = 'button';
+        div.tabIndex = 1;
 
         const span1 = document.createElement('span');
         span1.classList.add('service-title');
@@ -615,11 +617,11 @@
         span2.classList.add('price');
         span2.innerText = `${price}.00€`;
 
-        const button = document.createElement('button');
+        const button = document.createElement('div');
         button.classList.add('reservation-toggleable-service-button');
-        button.type = 'button';
+        button.innerText = '+';
 
-        button.addEventListener('click', event => {
+        function handleButtonClick(event) {
             event.preventDefault();
             if (!payload.services) {
                 payload.services = []
@@ -641,6 +643,13 @@
 
             slideshow.nextSlideButton.disabled = payload.services.length === 0;
             pageItems.priceText.innerText = currentPrice;
+        }
+
+        div.addEventListener('click', handleButtonClick);
+        div.addEventListener('keyup', function (event) {
+            if(event.key === "Enter" || event.key === " ") {
+                handleButtonClick(event);
+            }
         });
 
         div.appendChild(span1);

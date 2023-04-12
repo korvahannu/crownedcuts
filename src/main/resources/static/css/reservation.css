@@ -294,10 +294,9 @@ h2 {
 }
 
 #available-times-nav-buttons > button {
-    font-size: 2rem;
     background-color: transparent;
     border: 0;
-    width: 64px;
+    width: 50px;
     cursor: pointer;
 }
 
@@ -330,6 +329,10 @@ h2 {
 
     #service-list {
         width: 100%;
+        max-width: 100%;
+    }
+
+    #available-times-nav-buttons {
         max-width: 100%;
     }
 
