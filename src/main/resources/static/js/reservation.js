@@ -259,19 +259,22 @@
         payload.hairLength = "short"
         slideshow.nextSlideButton.disabled = false
     }
+    
+    function changeMessageboxState(hide) {
+        window.scrollTo(0, 0);
+        pageItems.shadow.style.display = hide ? 'none' : 'block';
+        pageItems.messageBox.style.display = hide ? 'none' : 'block';
+    }
 
     function onAbortButtonClick(event) {
-        window.scrollTo(0, 0);
         event.preventDefault();
-        pageItems.shadow.style.display = 'block';
-        pageItems.messageBox.style.display = 'block';
+        changeMessageboxState(false);
     }
 
     function cancelAbort(event) {
         event.preventDefault();
         event.stopPropagation();
-        pageItems.shadow.style.display = 'none';
-        pageItems.messageBox.style.display = 'none';
+        changeMessageboxState(true);
     }
 
     function confirmAbort(event) {
@@ -317,77 +320,46 @@
         delete availableTimes.tomorrow;
         delete availableTimes.today;
 
+        const getAvailableTime = async function (key) {
+            const requestParams = getTimedURLSearchParams(offset)
+            const data = await (await fetch('/rest/getAvailableTimes?' + requestParams)).json();
+
+            if (!Array.isArray(data) || data.length < 1) {
+                return;
+            }
+
+            availableTimes[key] = [];
+            data.forEach(a => {
+                availableTimes[key].push(a)
+            });
+
+            if (data.length > 0) {
+
+                const d = new Date(data[0].year, data[0].month - 1, data[0].day);
+                const el = document.getElementById(`available-times-${key}`);
+                el.innerText = `${getDayOfWeekText(d)} ${data[0].day}.${data[0].month}`
+            }
+        }
+
         while (!availableTimes.theDayAfter) {
             try {
                 if (!availableTimes.today) {
-                    const requestParams = getTimedURLSearchParams(offset)
-                    const data = await (await fetch('/rest/getAvailableTimes?' + requestParams)).json();
-
-                    if (!Array.isArray(data) || data.length < 1) {
-                        offset++;
-                        continue;
-                    }
-
-                    availableTimes.today = [];
-                    data.forEach(a => {
-                        availableTimes.today.push(a)
-                    });
-
-                    if (data.length > 0) {
-
-                        const d = new Date(data[0].year, data[0].month - 1, data[0].day);
-                        const el = document.getElementById('available-times-today');
-                        el.innerText = `${getDayOfWeekText(d)} ${data[0].day}.${data[0].month}`
-                    }
-
+                    await getAvailableTime("today")
                     offset++;
+                } else {
+                    console.log("Got today")
                 }
 
                 if (!availableTimes.tomorrow) {
-                    const requestParams = getTimedURLSearchParams(offset)
-                    const data = await (await fetch('/rest/getAvailableTimes?' + requestParams)).json();
-
-                    if (!Array.isArray(data) || data.length < 1) {
-                        offset++;
-                        continue;
-                    }
-
-                    availableTimes.tomorrow = [];
-                    data.forEach(a => {
-                        availableTimes.tomorrow.push(a)
-                    });
-
-                    if (data.length > 0) {
-
-                        const d = new Date(data[0].year, data[0].month - 1, data[0].day);
-                        const el = document.getElementById('available-times-tomorrow');
-                        el.innerText = `${getDayOfWeekText(d)} ${data[0].day}.${data[0].month}`
-                    }
-
+                    await getAvailableTime("tomorrow")
                     offset++;
+                } else {
+                    console.log("Got tomorrow")
                 }
 
                 if (!availableTimes.theDayAfter) {
-                    const requestParams = getTimedURLSearchParams(offset)
-                    const data = await (await fetch('/rest/getAvailableTimes?' + requestParams)).json();
-
-                    if (!Array.isArray(data) || data.length < 1) {
-                        offset++;
-                        continue;
-                    }
-
-                    availableTimes.theDayAfter = [];
-                    data.forEach(a => {
-                        availableTimes.theDayAfter.push(a)
-                    });
-
-                    if (data.length > 0) {
-
-                        const d = new Date(data[0].year, data[0].month - 1, data[0].day);
-
-                        const el = document.getElementById('available-times-day-after');
-                        el.innerText = `${getDayOfWeekText(d)} ${data[0].day}.${data[0].month}`
-                    }
+                    await getAvailableTime("theDayAfter")
+                    offset++;
                 }
             } catch (error) {
                 offset++;

@@ -24,12 +24,12 @@
         <div id="page-indicator">
             <div id="page-indicator-line"></div>
             <ul id="page-indicator-list">
-                <li class="page-indicator-selected">1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>5</li>
-                <li>6</li>
+                <li class="page-indicator-selected page-indicator-selected-current">1</li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
             </ul>
         </div>
         <form class="slides-container" id="slides-container">
@@ -101,7 +101,7 @@
                         <div id="available-times-list-tomorrow">
                         </div>
                         <hr/>
-                        <h3 class="available-times-day-header" id="available-times-day-after"></h3>
+                        <h3 class="available-times-day-header" id="available-times-theDayAfter"></h3>
                         <div id="available-times-list-day-after">
                         </div>
                         <hr/>
@@ -168,6 +168,13 @@
                 nodes[i].classList.add('page-indicator-selected')
             } else {
                 nodes[i].classList.remove('page-indicator-selected')
+            }
+            if(i === slides.slideState.currentSlide) {
+                nodes[i].innerHTML = ( i + 1 );
+                nodes[i].classList.add('page-indicator-selected-current')
+            } else {
+                nodes[i].innerHTML = '';
+                nodes[i].classList.remove('page-indicator-selected-current')
             }
         }
     });
