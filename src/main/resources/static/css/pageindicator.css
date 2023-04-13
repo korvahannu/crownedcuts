@@ -16,7 +16,6 @@
 
 #page-indicator-list > li {
     border: 2px solid var(--blue);
-    padding: 0.7rem;
     height: 0.8rem;
     width: 0.8rem;
     border-radius: 100%;
@@ -26,6 +25,7 @@
     justify-content: center;
     font-weight: bold;
     background-color: white;
+    margin-top: 0.6rem;
 }
 
 #page-indicator-line {
@@ -39,6 +39,11 @@
 .page-indicator-selected {
     background-color: var(--blue) !important;
     color: var(--gray) !important;
+}
+
+#page-indicator-list > .page-indicator-selected.page-indicator-selected-current {
+    padding: 0.5rem;
+    margin: 0;
 }
 
 @media only screen and (max-width: 864px) {
