@@ -9,6 +9,7 @@ public record TimeDetails(int year, int month, int day, int hour)
     {
         var localDateTime = LocalDateTime.of(year(), month(), day(), hour(), 0);
 
-        return hour() < 8 || hour() >= 16 || localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY) || localDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY);
+        return hour() < 8 || hour() >= 16 || localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY) || localDateTime.getDayOfWeek().equals(
+                DayOfWeek.SATURDAY);
     }
 }

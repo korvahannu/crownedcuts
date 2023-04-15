@@ -1,6 +1,9 @@
 package com.crownedcuts.booking.services;
 
-import com.crownedcuts.booking.records.*;
+import com.crownedcuts.booking.records.BarberHairdresser;
+import com.crownedcuts.booking.records.Reservation;
+import com.crownedcuts.booking.records.TimeDetails;
+import com.crownedcuts.booking.records.UserDetails;
 
 import java.util.List;
 
@@ -18,7 +21,10 @@ public interface ReservationService
      * @param hairLength        For each reservation we need the hair length of the customer
      * @return true if time was successfully reserved
      */
-    boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails, String hairLength);
+    boolean reserveTime(BarberHairdresser barberHairdresser,
+                        UserDetails user,
+                        TimeDetails timeDetails,
+                        String hairLength);
 
     /**
      * Reserves a time for a user and a barber/haidresser and sets the correct service relationships
@@ -30,7 +36,11 @@ public interface ReservationService
      * @param serviceIds        List of serviceIds
      * @return true if time was successfully reserved
      */
-    boolean reserveTime(BarberHairdresser barberHairdresser, UserDetails user, TimeDetails timeDetails, String hairLength, List<String> serviceIds);
+    boolean reserveTime(BarberHairdresser barberHairdresser,
+                        UserDetails user,
+                        TimeDetails timeDetails,
+                        String hairLength,
+                        List<String> serviceIds);
 
     /**
      * Gets list of all reservations for a given day

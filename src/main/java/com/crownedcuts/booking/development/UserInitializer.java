@@ -26,7 +26,12 @@ public class UserInitializer
     @PostConstruct
     public void initializeUsers()
     {
-        userService.addUser(UserDetails.of("admin@crownedcuts.fi", "admin", "admin firstname", "admin lastname", "USER", "ADMIN"));
+        userService.addUser(UserDetails.of("admin@crownedcuts.fi",
+                "admin",
+                "admin firstname",
+                "admin lastname",
+                "USER",
+                "ADMIN"));
         userService.addUser(UserDetails.of("user@crownedcuts.fi", "user", "user firstname", "user lastname", "USER"));
     }
 }

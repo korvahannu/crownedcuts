@@ -119,7 +119,7 @@ public class SQLLiteRepository implements DbRepository
     {
         String line = reader.readLine();
 
-        if(line == null)
+        if (line == null)
         {
             return null;
         }
@@ -130,7 +130,7 @@ public class SQLLiteRepository implements DbRepository
         {
             line = reader.readLine();
 
-            if(line == null)
+            if (line == null)
             {
                 return null;
             }

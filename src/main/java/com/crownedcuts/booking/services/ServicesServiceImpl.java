@@ -1,5 +1,6 @@
 package com.crownedcuts.booking.services;
 
+import com.crownedcuts.booking.mappers.ServiceRowMapper;
 import com.crownedcuts.booking.records.Service;
 import com.crownedcuts.booking.repositories.DbRepository;
 
@@ -13,10 +14,12 @@ public class ServicesServiceImpl implements ServicesService
 {
     private final DbRepository repository;
     private final Logger logger = Logger.getLogger(ServicesServiceImpl.class.getName());
+    private final ServiceRowMapper mapper;
 
-    public ServicesServiceImpl(DbRepository repository)
+    public ServicesServiceImpl(DbRepository repository, ServiceRowMapper mapper)
     {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -27,20 +30,7 @@ public class ServicesServiceImpl implements ServicesService
 
         try (var statement = repository.getPreparedStatement(query))
         {
-            var result = statement.executeQuery();
-
-            while (result.next())
-            {
-                services.add(
-                        new Service(
-                                result.getString("id"),
-                                result.getString("name"),
-                                result.getString("name_en"),
-                                result.getDouble("price"),
-                                result.getBoolean("isBarberService")
-                        )
-                );
-            }
+            services = mapper.processResultSet(statement.executeQuery());
         }
         catch (SQLException ex)
         {

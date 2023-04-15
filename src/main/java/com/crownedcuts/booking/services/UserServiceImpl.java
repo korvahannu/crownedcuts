@@ -1,7 +1,8 @@
 package com.crownedcuts.booking.services;
 
+import com.crownedcuts.booking.mappers.ReservationRowMapper;
+import com.crownedcuts.booking.mappers.UserDetailsRowMapper;
 import com.crownedcuts.booking.records.Reservation;
-import com.crownedcuts.booking.records.TimeDetails;
 import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.repositories.DbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,19 @@ public class UserServiceImpl implements UserService
     private final DbRepository repository;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final PasswordEncoder passwordEncoder;
+    private final UserDetailsRowMapper userDetailsRowMapper;
+    private final ReservationRowMapper reservationRowMapper;
 
     @Autowired
-    public UserServiceImpl(DbRepository repository, PasswordEncoder passwordEncoder)
+    public UserServiceImpl(DbRepository repository,
+                           PasswordEncoder passwordEncoder,
+                           UserDetailsRowMapper userDetailsRowMapper,
+                           ReservationRowMapper reservationRowMapper)
     {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.userDetailsRowMapper = userDetailsRowMapper;
+        this.reservationRowMapper = reservationRowMapper;
     }
 
     @Override
@@ -50,15 +58,22 @@ public class UserServiceImpl implements UserService
             }
 
             var roles = getUserRoles(username);
-            String password = result.getString("password");
-            String firstname = result.getString("firstname");
-            String lastname = result.getString("lastname");
-            String phonenumber = getOrNull(result, "phonenumber");
-            String dateOfBirth = getOrNull(result, "dateOfBirth");
+            var userDetailsRaw = userDetailsRowMapper
+                    .mapRow(result);
+
+            var userDetailsWithRoles = new UserDetails(
+                    userDetailsRaw.username(),
+                    userDetailsRaw.password(),
+                    userDetailsRaw.firstname(),
+                    userDetailsRaw.lastname(),
+                    userDetailsRaw.phonenumber(),
+                    userDetailsRaw.dateOfBirth(),
+                    roles
+            );
 
             return roles.isEmpty()
                     ? Optional.empty()
-                    : Optional.of(new UserDetails(username, password, firstname, lastname, phonenumber, dateOfBirth, roles));
+                    : Optional.of(userDetailsWithRoles);
         }
         catch (Exception ex)
         {
@@ -134,22 +149,9 @@ public class UserServiceImpl implements UserService
         try (var statement = repository.getPreparedStatement(query))
         {
             statement.setString(1, username);
-            var resultSet = statement.executeQuery();
-
-            while (resultSet.next())
-            {
-                var timeDetails = new TimeDetails(
-                        resultSet.getInt("year"),
-                        resultSet.getInt("month"),
-                        resultSet.getInt("day"),
-                        resultSet.getInt("hour")
-                );
-
-                result.add(new Reservation(username,
-                        timeDetails,
-                        resultSet.getString("hairLength"),
-                        resultSet.getLong("barberId")));
-            }
+            var rs = statement.executeQuery();
+            result = reservationRowMapper
+                    .processResultSet(rs);
         }
         catch (Exception ex)
         {
@@ -200,7 +202,9 @@ public class UserServiceImpl implements UserService
      * @param roles      List of roles to add to the database
      * @return true if everything went OK, otherwise false
      */
-    private boolean insertRolesToDatabase(Connection connection, String username, Collection<? extends GrantedAuthority> roles)
+    private boolean insertRolesToDatabase(Connection connection,
+                                          String username,
+                                          Collection<? extends GrantedAuthority> roles)
     {
         String query = "insert into roles (username, userRole) values (?, ?)";
 

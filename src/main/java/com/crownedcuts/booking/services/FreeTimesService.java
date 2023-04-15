@@ -1,6 +1,7 @@
 package com.crownedcuts.booking.services;
 
 import com.crownedcuts.booking.records.AvailableTime;
+
 import java.util.List;
 
 public interface FreeTimesService

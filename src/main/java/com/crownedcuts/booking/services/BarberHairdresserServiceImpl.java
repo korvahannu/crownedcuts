@@ -1,5 +1,6 @@
 package com.crownedcuts.booking.services;
 
+import com.crownedcuts.booking.mappers.BarberHairdresserRowMapper;
 import com.crownedcuts.booking.records.BarberHairdresser;
 import com.crownedcuts.booking.repositories.DbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ public class BarberHairdresserServiceImpl implements BarberHairdresserService
 
     private final DbRepository repository;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final BarberHairdresserRowMapper mapper;
 
     @Autowired
-    public BarberHairdresserServiceImpl(DbRepository repository)
+    public BarberHairdresserServiceImpl(DbRepository repository, BarberHairdresserRowMapper mapper)
     {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -37,10 +40,7 @@ public class BarberHairdresserServiceImpl implements BarberHairdresserService
 
             if (result.next())
             {
-                return Optional.of(
-                        new BarberHairdresser(result.getLong("id"),
-                                result.getString("name"))
-                );
+                return Optional.of(mapper.mapRow(result));
             }
         }
         catch (SQLException ex)
@@ -64,10 +64,7 @@ public class BarberHairdresserServiceImpl implements BarberHairdresserService
 
             if (result.next())
             {
-                return Optional.of(
-                        new BarberHairdresser(result.getLong("id"),
-                                result.getString("name"))
-                );
+                return Optional.of(mapper.mapRow(result));
             }
         }
         catch (SQLException ex)
@@ -86,16 +83,8 @@ public class BarberHairdresserServiceImpl implements BarberHairdresserService
 
         try (var statement = repository.getPreparedStatement(query))
         {
-            try (var resultSet = statement.executeQuery())
-            {
-                while (resultSet.next())
-                {
-                    result.add(new BarberHairdresser(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name")
-                    ));
-                }
-            }
+            var rs = statement.executeQuery();
+            result = mapper.processResultSet(rs);
         }
         catch (SQLException ex)
         {

@@ -1,6 +1,10 @@
 package com.crownedcuts.booking.services;
 
-import com.crownedcuts.booking.records.*;
+import com.crownedcuts.booking.mappers.ReservationRowMapper;
+import com.crownedcuts.booking.records.BarberHairdresser;
+import com.crownedcuts.booking.records.Reservation;
+import com.crownedcuts.booking.records.TimeDetails;
+import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.repositories.DbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +21,13 @@ public class ReservationServiceImpl implements ReservationService
 {
     private final DbRepository repository;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final ReservationRowMapper mapper;
 
     @Autowired
-    public ReservationServiceImpl(DbRepository repository)
+    public ReservationServiceImpl(DbRepository repository, ReservationRowMapper mapper)
     {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -111,24 +117,9 @@ public class ReservationServiceImpl implements ReservationService
             statement.setLong(2, month);
             statement.setLong(3, day);
 
-            var reservationsResult = statement.executeQuery();
+            var rs = statement.executeQuery();
 
-            while (reservationsResult.next())
-            {
-                var timeDetails = new TimeDetails(
-                        reservationsResult.getInt("year"),
-                        reservationsResult.getInt("month"),
-                        reservationsResult.getInt("day"),
-                        reservationsResult.getInt("hour")
-                );
-
-                var reservation = new Reservation(reservationsResult.getString("username"),
-                        timeDetails,
-                        reservationsResult.getString("hairLength"),
-                        reservationsResult.getInt("barberId"));
-
-                result.add(reservation);
-            }
+            result = mapper.processResultSet(rs);
         }
         catch (SQLException ex)
         {
@@ -151,24 +142,8 @@ public class ReservationServiceImpl implements ReservationService
             statement.setLong(3, day);
             statement.setLong(4, barberHairdresser.id());
 
-            var reservationsResult = statement.executeQuery();
-
-            while (reservationsResult.next())
-            {
-                var timeDetails = new TimeDetails(
-                        reservationsResult.getInt("year"),
-                        reservationsResult.getInt("month"),
-                        reservationsResult.getInt("day"),
-                        reservationsResult.getInt("hour")
-                );
-
-                var reservation = new Reservation(reservationsResult.getString("username"),
-                        timeDetails,
-                        reservationsResult.getString("hairLength"),
-                        reservationsResult.getInt("barberId"));
-
-                result.add(reservation);
-            }
+            var rs = statement.executeQuery();
+            result = mapper.processResultSet(rs);
         }
         catch (SQLException ex)
         {

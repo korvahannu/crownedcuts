@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class UserInformationController {
-    
+public class UserInformationController
+{
+
     @GetMapping("/information")
-    public ModelAndView onGet() {
+    public ModelAndView onGet()
+    {
 
         var mvc = new ModelAndView("information");
         mvc.addObject("message", "User information");
