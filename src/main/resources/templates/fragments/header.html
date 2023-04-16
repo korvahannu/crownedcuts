@@ -2,7 +2,8 @@
 <html xmlns:th="https://www.thymeleaf.org">
   <head>
     <!--<link href="\resources\static\css\header.css" rel="stylesheet" type="text/css" th:href="@{\resources\static\css\header.css}" /> -->
-    <link rel="stylesheet" href="header.css">
+    <link href="css/header.css" rel="stylesheet" type="text/css" th:href="css/header.css">
+    <meta charset="UTF-8">
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
@@ -20,9 +21,6 @@
             <li th:classappend="${module == 'home' ? 'active' : ''}">
               <a href="#" th:href="@{/}">Crowned Cuts</a>
             </li>
-            <!-- <li th:classappend="${module == 'omat tiedot' ? 'active' : ''}">
-              <a href="#" th:href="@{/task}">Omat tiedot</a>
-            </li> -->
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li th:if="${#authorization.expression('isAuthenticated()')}">

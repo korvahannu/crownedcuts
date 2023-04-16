@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fi">
 <head>
-    <div th:replace="~{fragments/header :: header}"></div>
     <meta charset="UTF-8">
     <title th:text="#{h.reservation}">Ajanvaraus</title>
     <link rel="stylesheet" href="css/reservation.css">
@@ -9,6 +8,7 @@
     <meta name="viewport" content="initial-scale=1">
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}"></div>
 <div id="page-shadow">
 </div>
 <div id="messageBox">
