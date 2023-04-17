@@ -1,24 +1,29 @@
 @import "colors.css";
 
-
-.navbar-inverse {
+.navbar {
     background-color: var(--dark-yellow);
-    border-color: var(--dark-yellow);
-    height: 60px;
-  }
-  .navbar-inverse .navbar-brand {
-    color: white;
-    font-size: 24px;
-    padding: 10px 15px;
-  }
-  .navbar-inverse .navbar-nav > li > a {
-    color: white;
-    font-size: 18px;
-    padding: 20px 15px;
-  }
-  .navbar-inverse .navbar-nav > li.active > a {
-    background-color: var(--dark-gray);
-  }
-  .navbar-inverse .navbar-nav > li > a:hover {
-    background-color: var(--dark-gray);
-  }
+    overflow: hidden;
+}
+
+.navbar a {
+  float: left;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbar a:hover {
+  background-color: white;
+  color: black;
+}
+
+.navbar a.active {
+  background-color: var(--yellow);
+  color: white;
+}
+
+.navbar-right {
+  float: right;
+}
