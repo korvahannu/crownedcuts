@@ -11,11 +11,14 @@ public class UserInformationController
     @GetMapping("/information")
     public ModelAndView onGet()
     {
-
         var mvc = new ModelAndView("information");
-        mvc.addObject("message", "User information");
+        return mvc;
+    }
 
-
+    @GetMapping("/omattiedot")
+    public ModelAndView onGetAjanvaraus()
+    {
+        var mvc = new ModelAndView("information");
         return mvc;
     }
 }

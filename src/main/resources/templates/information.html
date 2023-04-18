@@ -1,17 +1,51 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="fi">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fi">
 <head>
-    <link rel="stylesheet" href="css/header.css">
     <title>Omat tiedot</title>
+    <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" href="css/forms.css">
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
-<h1 th:inline="text">Omat tiedot <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-<h2>User details:</h2>
-<p th:text="${userDetails}"></p>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+<div id="information-wrapper">
+    <h1 th:text="#{h.ownInformation}">Omat tiedot</h1>
+    <form method="post">
+        <div class="form-field">
+            <ul>
+                <li th:text="#{label.email}">
+                    Sähköposti
+                </li>
+                <li>
+                    hannu.s.korvala@gmail.com
+                </li>
+            </ul>
+        </div>
+        <div class="form-field">
+            <label for="firstname" th:text="#{label.firstname}">Etunimi (pakollinen)*</label>
+            <input type="text" name="firstname" id="firstname" />
+        </div>
+        <div class="form-field">
+            <label for="lastname" th:text="#{label.lastname}">Sukunimi (pakollinen)*</label>
+            <input type="text" name="lastname" id="lastname" />
+        </div>
+        <div class="form-field">
+            <label for="phonenumber" th:text="#{label.phonenumber}">Puhelinnumero</label>
+            <input type="text" name="phonenumber" id="phonenumber" />
+        </div>
+        <div class="form-field">
+            <label for="dateOfBirth" th:text="#{label.dateOfBirth}">Syntymäaika</label>
+            <input th:placeholder="#{placeholder.dateOfBirth}" placeholder="pp.kk.vvvv" type="text" name="dateOfBirth" id="dateOfBirth" />
+        </div>
+        <div class="form-field">
+            <ul>
+                <li th:text="#{label.password}">Salasana</li>
+                <li><a href="#" th:text="#{link.changePassword}">Vaihda salasana</a></li>
+            </ul>
+        </div>
+        <div class="buttons">
+            <button type="button" class="button-dimmed" th:text="#{b.back}">Takaisin</button>
+            <button type="button" th:text="#{b.save}">Tallenna</button>
+        </div>
+    </form>
+</div>
 </body>
 </html>
