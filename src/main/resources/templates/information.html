@@ -4,36 +4,44 @@
     <title>Omat tiedot</title>
     <meta name="viewport" content="initial-scale=1">
     <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/header.css">
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}"></div>
 <div id="information-wrapper">
     <h1 th:text="#{h.ownInformation}">Omat tiedot</h1>
     <form method="post">
+        <div id="errorMessage" th:text="#{error.informationValidation}">
+            Virhe tietojen tallentamisessa! Tarkista merkityt kohdat.
+        </div>
         <div class="form-field">
             <ul>
                 <li th:text="#{label.email}">
                     Sähköposti
                 </li>
-                <li>
-                    hannu.s.korvala@gmail.com
+                <li th:text="${userDetails.username}">
                 </li>
             </ul>
         </div>
         <div class="form-field">
             <label for="firstname" th:text="#{label.firstname}">Etunimi (pakollinen)*</label>
-            <input type="text" name="firstname" id="firstname" />
+            <input th:field="${userDetails.firstname}" type="text" name="firstname" id="firstname" />
+            <div class="errorMarked">!</div>
         </div>
         <div class="form-field">
             <label for="lastname" th:text="#{label.lastname}">Sukunimi (pakollinen)*</label>
-            <input type="text" name="lastname" id="lastname" />
+            <input th:field="${userDetails.lastname}" type="text" name="lastname" id="lastname" />
+            <div class="errorMarked">!</div>
         </div>
         <div class="form-field">
             <label for="phonenumber" th:text="#{label.phonenumber}">Puhelinnumero</label>
-            <input type="text" name="phonenumber" id="phonenumber" />
+            <input th:field="${userDetails.phonenumber}" type="text" name="phonenumber" id="phonenumber" />
+            <div class="errorMarked">!</div>
         </div>
         <div class="form-field">
             <label for="dateOfBirth" th:text="#{label.dateOfBirth}">Syntymäaika</label>
-            <input th:placeholder="#{placeholder.dateOfBirth}" placeholder="pp.kk.vvvv" type="text" name="dateOfBirth" id="dateOfBirth" />
+            <input th:field="${userDetails.dateOfBirth}" th:placeholder="#{placeholder.dateOfBirth}" placeholder="pp.kk.vvvv" type="text" name="dateOfBirth" id="dateOfBirth" />
+            <div class="errorMarked">!</div>
         </div>
         <div class="form-field">
             <ul>
@@ -43,9 +51,52 @@
         </div>
         <div class="buttons">
             <button type="button" class="button-dimmed" th:text="#{b.back}">Takaisin</button>
-            <button type="button" th:text="#{b.save}">Tallenna</button>
+            <button type="button" th:text="#{b.save}" id="submit">Tallenna</button>
         </div>
     </form>
 </div>
 </body>
+<script src="js/validators.js"></script>
+<script>
+
+    document.querySelectorAll('input').forEach(el => {
+       el.addEventListener('change', ()=> {
+           el.classList.remove('error')
+           next(el).style.display = 'none';
+           document.getElementById('errorMessage')
+               .style.display = 'none';
+       });
+    });
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        let isValidForm = true;
+        isValidForm = applyValidator(isValidForm, () => requiredValidator('firstname'), 'firstname');
+        isValidForm = applyValidator(isValidForm, () => requiredValidator('lastname'), 'lastname');
+        isValidForm = applyValidator(isValidForm, () => phonenumberValidator('phonenumber'), 'phonenumber');
+        isValidForm = applyValidator(isValidForm, () => dateOfBirthValidator('dateOfBirth'), 'dateOfBirth');
+
+        if(isValidForm) {
+            console.log("Submitting");
+        } else {
+            document.getElementById('errorMessage')
+                .style.display = 'block';
+        }
+    }
+
+    function applyValidator(val, validate, name) {
+        if(validate() === false) {
+            if(val === true) {
+                document.getElementById(name).focus();
+                return false;
+            } else {
+                return false;
+            }
+        }
+        return val;
+    }
+
+    const submitButton = document.getElementById('submit');
+    submitButton.addEventListener('click', handleSubmit);
+</script>
 </html>

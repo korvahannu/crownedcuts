@@ -49,7 +49,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider
         }
 
         return userService.getUser(username)
-                .map(u -> new UsernamePasswordAuthenticationToken(u.username(), null, u.authorities()))
+                .map(u -> new UsernamePasswordAuthenticationToken(u, null, u.authorities()))
                 .orElse(null);
     }
 

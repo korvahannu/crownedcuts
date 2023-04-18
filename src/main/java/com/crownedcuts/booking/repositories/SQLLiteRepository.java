@@ -19,17 +19,13 @@ import java.util.logging.Logger;
 @Repository
 public class SQLLiteRepository implements DbRepository
 {
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     @Value("${databaseFilepath}")
     private String databaseFilepath;
-
     @Value("${initializeDatabaseSQLFilepath}")
     private String initializeDatabaseSQLFilepath;
-
     private String connectionString;
-
     private Connection connection;
-
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @PostConstruct
     @Profile("dev")

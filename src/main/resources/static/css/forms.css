@@ -60,6 +60,7 @@ form {
     display: flex;
     flex-direction: column;
     margin-top: 2rem;
+    position: relative;
 }
 
 .form-field input {
@@ -102,6 +103,25 @@ form {
 
 .button-dimmed:hover {
     background-color: var(--gray);
+}
+
+.error {
+    border: 2px solid var(--red) !important;
+}
+
+.errorMarked {
+    position: absolute;
+    left: -16px;
+    top: 22px;
+    color: var(--red);
+    font-size: 2rem;
+    display: none;
+}
+
+#errorMessage {
+    display: none;
+    font-size: 1.2rem;
+    color: var(--red);
 }
 
 @media only screen and (max-width: 410px) {

@@ -9,7 +9,7 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
 <h2>User details:</h2>
-<p th:text="${userDetails}"></p>
+<p th:text="${userDetails.username}"></p>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>

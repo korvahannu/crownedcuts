@@ -17,7 +17,7 @@ public class IndexController
 
         try
         {
-            mav.addObject("userDetails", auth.getPrincipal() + " : " + auth.getAuthorities());
+            mav.addObject("userDetails", auth.getPrincipal());
         }
         catch (Exception exception)
         {

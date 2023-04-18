@@ -1,5 +1,6 @@
 package com.crownedcuts.booking.controllers;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +13,7 @@ public class UserInformationController
     public ModelAndView onGet()
     {
         var mvc = new ModelAndView("information");
+        mvc.addObject("userDetails", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return mvc;
     }
 
@@ -19,6 +21,7 @@ public class UserInformationController
     public ModelAndView onGetAjanvaraus()
     {
         var mvc = new ModelAndView("information");
+        mvc.addObject("userDetails", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return mvc;
     }
 }
