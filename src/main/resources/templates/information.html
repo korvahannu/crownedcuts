@@ -10,9 +10,13 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <div id="information-wrapper">
     <h1 th:text="#{h.ownInformation}">Omat tiedot</h1>
-    <form method="post">
-        <div id="errorMessage" th:text="#{error.informationValidation}">
+    <form method="post" id="form">
+        <div id="validationError" class="errorMessage" th:text="#{error.informationValidation}" style="display: none">
             Virhe tietojen tallentamisessa! Tarkista merkityt kohdat.
+        </div>
+        <div class="errorMessage" id="paramFail" th:if="${updateFail}" th:text="#{message.updateFail}">
+        </div>
+        <div class="successMessage" id="paramSuccess" th:if="${updateSuccess}" th:text="#{message.updateSuccess}">
         </div>
         <div class="form-field">
             <ul>
@@ -23,6 +27,7 @@
                 </li>
             </ul>
         </div>
+        <input type="hidden" id="username" name="username" th:field="${userDetails.username}" />
         <div class="form-field">
             <label for="firstname" th:text="#{label.firstname}">Etunimi (pakollinen)*</label>
             <input th:field="${userDetails.firstname}" type="text" name="firstname" id="firstname" />
@@ -51,7 +56,7 @@
         </div>
         <div class="buttons">
             <button type="button" class="button-dimmed" th:text="#{b.back}">Takaisin</button>
-            <button type="button" th:text="#{b.save}" id="submit">Tallenna</button>
+            <button type="button" th:text="#{b.save}" id="submitButton">Tallenna</button>
         </div>
     </form>
 </div>
@@ -63,8 +68,12 @@
        el.addEventListener('change', ()=> {
            el.classList.remove('error')
            next(el).style.display = 'none';
-           document.getElementById('errorMessage')
+           document.getElementById('validationError')
                .style.display = 'none';
+           const pfail = document.getElementById('paramFail');
+           if(pfail) pfail.style.display = 'none';
+           const psuc = document.getElementById('paramSuccess');
+           if(psuc) psuc.style.display = 'none';
        });
     });
 
@@ -77,9 +86,9 @@
         isValidForm = applyValidator(isValidForm, () => dateOfBirthValidator('dateOfBirth'), 'dateOfBirth');
 
         if(isValidForm) {
-            console.log("Submitting");
+            document.getElementById('form').submit();
         } else {
-            document.getElementById('errorMessage')
+            document.getElementById('validationError')
                 .style.display = 'block';
         }
     }
@@ -96,7 +105,7 @@
         return val;
     }
 
-    const submitButton = document.getElementById('submit');
+    const submitButton = document.getElementById('submitButton');
     submitButton.addEventListener('click', handleSubmit);
 </script>
 </html>

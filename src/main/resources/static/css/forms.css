@@ -118,10 +118,14 @@ form {
     display: none;
 }
 
-#errorMessage {
-    display: none;
+.errorMessage {
     font-size: 1.2rem;
     color: var(--red);
+}
+
+.successMessage {
+    font-size: 1.2rem;
+    color: var(--green);
 }
 
 @media only screen and (max-width: 410px) {
