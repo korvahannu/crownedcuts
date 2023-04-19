@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class IndexController
 {
-    @GetMapping("/")
+    @GetMapping(value = {"/", "/index"})
     public ModelAndView onGet()
     {
         ModelAndView mav = new ModelAndView("index");
@@ -17,7 +17,7 @@ public class IndexController
 
         try
         {
-            mav.addObject("userDetails", auth.getPrincipal() + " : " + auth.getAuthorities());
+            mav.addObject("userDetails", auth.getPrincipal());
         }
         catch (Exception exception)
         {

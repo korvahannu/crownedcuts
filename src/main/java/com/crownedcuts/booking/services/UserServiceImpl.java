@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
@@ -159,6 +160,38 @@ public class UserServiceImpl implements UserService
         }
 
         return result;
+    }
+
+    @Override
+    public boolean updateUserInformation(String username,
+                                         String firstname,
+                                         String lastname,
+                                         String phonenumber,
+                                         String dateOfBirth)
+    {
+        String query = "UPDATE users SET firstname = ?, lastname = ?, phonenumber = ?, dateOfBirth = ? WHERE username = ?";
+
+        try (var statement = repository.getPreparedStatement(query))
+        {
+            statement.setString(1, firstname);
+            statement.setString(2, lastname);
+            statement.setString(3, phonenumber);
+            statement.setString(4, dateOfBirth);
+            statement.setString(5, username);
+            statement.executeUpdate();
+
+            if (statement.getUpdateCount() != 1)
+            {
+                logger.log(Level.SEVERE, "Possible destructive query processed: {0}", statement);
+            }
+        }
+        catch (SQLException ex)
+        {
+            logger.warning("Failed to update user information.");
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -1,0 +1,149 @@
+@import "colors.css";
+
+html {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    background-color: var(--gray);
+}
+
+a {
+    color: black;
+}
+
+h1 {
+    text-decoration: underline;
+}
+
+label {
+    font-size: 1.15rem;
+}
+
+button {
+    font-size: 1.2rem;
+    padding: 1rem;
+    max-width: 256px;
+    min-width: 164px;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--blue);
+    color: var(--gray);
+}
+
+button:hover {
+    background-color: var(--lighter-blue);
+}
+
+button:disabled {
+    background-color: var(--blue);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+form {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+#information-wrapper {
+    border-radius: 8px;
+    z-index: -2;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 2rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    position: relative;
+}
+
+.form-field input {
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--dark-gray);
+}
+
+.form-field ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.form-field ul li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.form-field ul li:nth-child(2) {
+    font-size: 1.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: black;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.button-dimmed {
+    background: transparent;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+}
+
+.button-dimmed:hover {
+    background-color: var(--gray);
+}
+
+.error {
+    border: 2px solid var(--red) !important;
+}
+
+.errorMarked {
+    position: absolute;
+    left: -16px;
+    top: 22px;
+    color: var(--red);
+    font-size: 2rem;
+    display: none;
+}
+
+.errorMessage {
+    font-size: 1.3rem;
+    color: var(--red);
+    border: 2px solid var(--red);
+    padding: 1rem;
+    background-color: var(--simple-highlight);
+}
+
+.successMessage {
+    font-size: 1.3rem;
+    color: var(--green);
+    border: 2px solid var(--darkest-green);
+    padding: 1rem;
+    background-color: var(--simple-highlight);
+}
+
+@media only screen and (max-width: 410px) {
+    button {
+        max-width: 100%;
+        width: 100%;
+    }
+    .buttons {
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+    .buttons button:nth-child(2) {
+        margin-bottom: 2rem;
+    }
+}

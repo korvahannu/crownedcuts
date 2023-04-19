@@ -58,6 +58,37 @@ public record UserDetails(String username, String password, String firstname, St
     }
 
     /**
+     * Static method that creates a UserDetails instance with all required information
+     *
+     * @param username    Username for UserDetails
+     * @param password    Password for UserDetails
+     * @param firstname   Firstname of UserDetails
+     * @param lastname    Lastname of UserDetails
+     * @param phonenumber Phonenumber of UserDetails
+     * @param dateOfBirth Date of birth of UserDetails
+     * @param roles       An array of Strings that represents the roles
+     * @return UserDetails with the roles type being a SimpleGrantedAuthority
+     */
+    public static UserDetails ofFull(String username,
+                                     String password,
+                                     String firstname,
+                                     String lastname,
+                                     String phonenumber,
+                                     String dateOfBirth,
+                                     String... roles)
+    {
+        var userRoles = new ArrayList<SimpleGrantedAuthority>();
+        if (roles != null)
+        {
+            for (String role : roles)
+            {
+                userRoles.add(new SimpleGrantedAuthority(role));
+            }
+        }
+        return new UserDetails(username, password, firstname, lastname, phonenumber, dateOfBirth, userRoles);
+    }
+
+    /**
      * Helper method to check if user roles are compliant with specifications
      *
      * @return True if roles are OK, otherwise false

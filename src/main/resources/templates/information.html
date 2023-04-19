@@ -1,17 +1,111 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="fi">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fi">
 <head>
-    <link rel="stylesheet" href="css/header.css">
     <title>Omat tiedot</title>
+    <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/header.css">
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-<h1 th:inline="text">Omat tiedot <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-<h2>User details:</h2>
-<p th:text="${userDetails}"></p>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+<div id="information-wrapper">
+    <h1 th:text="#{h.ownInformation}">Omat tiedot</h1>
+    <form method="post" id="form">
+        <div id="validationError" class="errorMessage" th:text="#{error.informationValidation}" style="display: none">
+            Virhe tietojen tallentamisessa! Tarkista merkityt kohdat.
+        </div>
+        <div class="errorMessage" id="paramFail" th:if="${updateFail}" th:text="#{message.updateFail}">
+        </div>
+        <div class="successMessage" id="paramSuccess" th:if="${updateSuccess}" th:text="#{message.updateSuccess}">
+        </div>
+        <div class="form-field">
+            <ul>
+                <li th:text="#{label.email}">
+                    Sähköposti
+                </li>
+                <li th:text="${userDetails.username}">
+                </li>
+            </ul>
+        </div>
+        <input type="hidden" id="username" name="username" th:field="${userDetails.username}" />
+        <div class="form-field">
+            <label for="firstname" th:text="#{label.firstname}">Etunimi (pakollinen)*</label>
+            <input th:field="${userDetails.firstname}" type="text" name="firstname" id="firstname" />
+            <div class="errorMarked">!</div>
+        </div>
+        <div class="form-field">
+            <label for="lastname" th:text="#{label.lastname}">Sukunimi (pakollinen)*</label>
+            <input th:field="${userDetails.lastname}" type="text" name="lastname" id="lastname" />
+            <div class="errorMarked">!</div>
+        </div>
+        <div class="form-field">
+            <label for="phonenumber" th:text="#{label.phonenumber}">Puhelinnumero</label>
+            <input th:field="${userDetails.phonenumber}" type="text" name="phonenumber" id="phonenumber" />
+            <div class="errorMarked">!</div>
+        </div>
+        <div class="form-field">
+            <label for="dateOfBirth" th:text="#{label.dateOfBirth}">Syntymäaika</label>
+            <input th:field="${userDetails.dateOfBirth}" th:placeholder="#{placeholder.dateOfBirth}" placeholder="pp.kk.vvvv" type="text" name="dateOfBirth" id="dateOfBirth" />
+            <div class="errorMarked">!</div>
+        </div>
+        <div class="form-field">
+            <ul>
+                <li th:text="#{label.password}">Salasana</li>
+                <li><a href="#" th:text="#{link.changePassword}">Vaihda salasana</a></li>
+            </ul>
+        </div>
+        <div class="buttons">
+            <button onclick="window.location.href='/'" type="button" class="button-dimmed" th:text="#{b.back}">Takaisin</button>
+            <button type="button" th:text="#{b.save}" id="submitButton">Tallenna</button>
+        </div>
+    </form>
+</div>
 </body>
+<script src="js/validators.js"></script>
+<script>
+
+    document.querySelectorAll('input').forEach(el => {
+       el.addEventListener('change', ()=> {
+           el.classList.remove('error')
+           next(el).style.display = 'none';
+           document.getElementById('validationError')
+               .style.display = 'none';
+           const pfail = document.getElementById('paramFail');
+           if(pfail) pfail.style.display = 'none';
+           const psuc = document.getElementById('paramSuccess');
+           if(psuc) psuc.style.display = 'none';
+       });
+    });
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        let isValidForm = true;
+        isValidForm = applyValidator(isValidForm, () => requiredValidator('firstname'), 'firstname');
+        isValidForm = applyValidator(isValidForm, () => requiredValidator('lastname'), 'lastname');
+        isValidForm = applyValidator(isValidForm, () => phonenumberValidator('phonenumber'), 'phonenumber');
+        isValidForm = applyValidator(isValidForm, () => dateOfBirthValidator('dateOfBirth'), 'dateOfBirth');
+
+        if(isValidForm) {
+            document.getElementById('form').submit();
+        } else {
+            document.getElementById('validationError')
+                .style.display = 'block';
+        }
+    }
+
+    function applyValidator(val, validate, name) {
+        if(validate() === false) {
+            if(val === true) {
+                document.getElementById(name).focus();
+                return false;
+            } else {
+                return false;
+            }
+        }
+        return val;
+    }
+
+    const submitButton = document.getElementById('submitButton');
+    submitButton.addEventListener('click', handleSubmit);
+</script>
 </html>

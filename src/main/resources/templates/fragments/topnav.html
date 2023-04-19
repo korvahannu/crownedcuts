@@ -1,0 +1,19 @@
+<div th:fragment="navbar"></div>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">Crowned Cuts</a>
+        <div class="collapse navbar-collapse" if="navbarDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item-active">
+                    <a class="nav-link" href="/">Omat tiedot <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Kirjaudu ulos</a>
+                </li>
+            </ul>
+        </div>
+        <form class="form-inline" action="#" th:action="@{/index}" method="GET">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchTerm" id="search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+</div>
