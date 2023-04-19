@@ -2,7 +2,7 @@
 
 function requiredValidator(elementId) {
     const { el, val } = getElementAndValue(elementId);
-    if(val && val !== "") {
+    if(val && val.trim() !== "") {
         return true;
     }
     return addErrorAndReturnFalse(el);
