@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService
     {
         String query = "UPDATE users SET firstname = ?, lastname = ?, phonenumber = ?, dateOfBirth = ? WHERE username = ?";
 
-        try(var statement = repository.getPreparedStatement(query))
+        try (var statement = repository.getPreparedStatement(query))
         {
             statement.setString(1, firstname);
             statement.setString(2, lastname);
@@ -180,7 +180,8 @@ public class UserServiceImpl implements UserService
             statement.setString(5, username);
             statement.executeUpdate();
 
-            if(statement.getUpdateCount() != 1) {
+            if (statement.getUpdateCount() != 1)
+            {
                 logger.log(Level.SEVERE, "Possible destructive query processed: {0}", statement);
             }
         }

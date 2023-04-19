@@ -54,12 +54,17 @@ public interface UserService
 
     /**
      * Updates information of user. Does NOT update password.
-     * @param username Username is used to find the correct user to update. Username can not be updated
-     * @param firstname Firstname to set for the user
-     * @param lastname Lastname to set for the user
+     *
+     * @param username    Username is used to find the correct user to update. Username can not be updated
+     * @param firstname   Firstname to set for the user
+     * @param lastname    Lastname to set for the user
      * @param phonenumber Phonenumber of user
      * @param dateOfBirth Date of Birth of user
      * @return true if update was successful, otherwise false
      */
-    boolean updateUserInformation(String username, String firstname, String lastname, String phonenumber, String dateOfBirth);
+    boolean updateUserInformation(String username,
+                                  String firstname,
+                                  String lastname,
+                                  String phonenumber,
+                                  String dateOfBirth);
 }

@@ -119,13 +119,19 @@ form {
 }
 
 .errorMessage {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: var(--red);
+    border: 2px solid var(--red);
+    padding: 1rem;
+    background-color: var(--simple-highlight);
 }
 
 .successMessage {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: var(--green);
+    border: 2px solid var(--darkest-green);
+    padding: 1rem;
+    background-color: var(--simple-highlight);
 }
 
 @media only screen and (max-width: 410px) {
