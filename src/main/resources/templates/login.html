@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fi">
 <head>
-    <div th:replace="~{fragments/header :: header}"></div>
     <title>Spring Security Login Page</title>
     <link rel="stylesheet" href="css/header.css">
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}"></div>
 <div th:if="${param.error}">
     Invalid username and password.
 </div>
