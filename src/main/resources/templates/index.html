@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="fi">
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="fi">
+
 <head>
     <title>Hello World!</title>
     <link rel="stylesheet" href="css/header.css">
 </head>
+
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
-<h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-<h2>User details:</h2>
-<p th:text="${userDetails.username}"></p>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <!-- Ajanvarausosion linkkinappi -->
+    <section class="ajanvaraus">
+
+    </section>
+    <!--  Varausten katsomisten osio -->
+    <section class="tulevatvaraukset">
+        <h1 th:inline="text">Tulevat varaukset </h1>
+        <ul>
+            <li>Aika 1</li>
+            <li>Aika 2</li>
+        </ul>
+    </section>
 </body>
+
 </html>
