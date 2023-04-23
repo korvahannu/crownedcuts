@@ -3,24 +3,41 @@
     xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="fi">
 
 <head>
-    <title>Hello World!</title>
+    <title>Crowned Cuts</title>
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/index.css">
+
 </head>
 
 <body>
     <div th:replace="~{fragments/header :: header}"></div>
     <!-- Ajanvarausosion linkkinappi -->
+    <div class="leftside">
     <section class="ajanvaraus">
-
+        <div class="big-square-button-container">
+            <button id="button-service-type-haidresser" class="big-square-button">
+                <a href="/ajanvaraus">
+                    <span th:text="#{h.newReservation}">VARAA UUSI AIKA</span>
+            </button>
+        </div>
     </section>
+    </div>
     <!--  Varausten katsomisten osio -->
-    <section class="tulevatvaraukset">
-        <h1 th:inline="text">Tulevat varaukset </h1>
-        <ul>
+    <div class="rightside">
+    <section class="tulevatvaraukset-right">
+        <h1 th:text="#{h.upcomingReservations}">Tulevat varaukset</h1>
+        <ol>
             <li>Aika 1</li>
             <li>Aika 2</li>
-        </ul>
+        </ol>
+        <div class="allreservations-button">
+        <a href="/allreservations">
+        <button type="button" class="allreservations-navigation-button" id="show-all-reservations"
+                    th:text="#{b.showAllReservations}">
+                Näytä kaikki varaamani ajat
+            </button>
+        </div>
     </section>
+    </div>
 </body>
-
 </html>

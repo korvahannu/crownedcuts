@@ -1,0 +1,47 @@
+@import "colors.css";
+
+html {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    background-color: var(--gray);
+}
+
+h1 {
+    text-decoration: underline;
+}
+
+.leftside {
+    width: 50%;
+    height: 100px;
+    float: left;
+}
+
+.rightside {
+    margin-left: 50%;
+    height: 100px;
+}
+
+.big-square-button {
+    width: 200px;
+    height: 200px;
+    font-size: 1.1rem;
+    text-align: left;
+    padding: 1rem;
+    margin-right: 1rem;
+    border: 1px solid var(--blacker-black);
+    border-radius: 4px;
+    box-shadow: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.big-square-button:hover {
+    background-color: var(--dark-yellow);
+}
+
+.allreservations-button {
+    cursor: pointer;
+    z-index: 10;
+    border: 1px solid var(--blue);
+    color: var(--blacker-black);
+}
