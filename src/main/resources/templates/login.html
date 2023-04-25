@@ -1,25 +1,153 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fi">
 <head>
-    <title>Spring Security Login Page</title>
+    <title th:text="#{header.login}">Kirjaudu sisään</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+        :root {
+            --lighter-blue: #2980b9;
+            --yellow: #f1c40f;
+            --dark-yellow: #f39c12;
+            --darker-gray: #bdc3c7;
+            --dark-gray: #95a5a6;
+            --blacker-black: #2c3e50;
+            --darkish-green: #1E8549;
+            --dark-red: #c0392b;
+            --purple: #9b59b6;
+            --dark-purple: #8e44ad;
+            --blue: #185D8C;
+            --gray: #ecf0f1;
+            --black: #2c3e50;
+            --green: #156034;
+            --red: #A82315;
+            --darkest-green: #156034;
+            --simple-highlight: #fcfaf2;
+        }
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            background-color: var(--gray);
+        }
+
+        a {
+            color: black;
+        }
+
+        h1 {
+            text-decoration: underline;
+        }
+
+        label {
+            font-size: 1.15rem;
+        }
+        button {
+            font-size: 1.2rem;
+            padding: 1rem;
+            max-width: 256px;
+            min-width: 164px;
+            border-radius: 4px;
+            border: none;
+            background-color: var(--blue);
+            color: var(--gray);
+        }
+
+        button:hover {
+            background-color: var(--lighter-blue);
+        }
+
+        form {
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .form-field input {
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--dark-gray);
+        }
+
+        .form-field ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .form-field ul li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .form-field ul li:nth-child(2) {
+            font-size: 1.25rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            color: black;
+        }
+
+        .errorMessage {
+            font-size: 1.3rem;
+            color: var(--red);
+            border: 2px solid var(--red);
+            padding: 1rem;
+            background-color: var(--simple-highlight);
+        }
+
+        .successMessage {
+            font-size: 1.3rem;
+            color: var(--green);
+            border: 2px solid var(--darkest-green);
+            padding: 1rem;
+            background-color: var(--simple-highlight);
+        }
+
+        #information-wrapper {
+            border-radius: 8px;
+            z-index: -2;
+            max-width: 1024px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: white;
+            padding: 2rem;
+        }
+        @media only screen and (max-width: 410px) {
+            button {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<h2 th:text="${message}"></h2>
+<div id="information-wrapper">
+    <h1>Crowned Cuts</h1>
+    <h2 th:text="#{header.login}"></h2>
 <form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
+    <div th:if="${param.logout}" th:text="#{message.youHaveBeenLoggedOut}" class="successMessage">
+        Sinut on kirjattu ulos.
+    </div>
+    <div th:if="${param.error}" th:text="#{message.wrongUsernameOrPassword}" class="errorMessage">
+        Käyttäjätunnus tai salasana on väärä.
+    </div>
+    <div class="form-field"><label for="username" th:text="#{common.username}">Käyttäjätunnus: </label>
+        <input required type="text" id="username" name="username"/></div>
+    <div class="form-field"><label for="password" th:text="#{common.password}">Salasana:</label>
+        <input required id="password" type="password" name="password"/></div>
+    <div class="form-field"><button type="submit" th:text="#{header.login}"></button></div>
 </form>
-<p id="loggingIn" style="display: none">
-    Logging in...
+<p style="display:none; text-align:center; margin-left:auto; margin-right:auto" id="loggingIn" th:text="#{message.loggingIn}">
+    Kirjaudutaan sisään, hetki...
 </p>
+</div>
 </body>
 <script>
     const form = document.getElementsByTagName("form").item(0);

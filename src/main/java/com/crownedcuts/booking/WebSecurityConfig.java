@@ -26,6 +26,8 @@ public class WebSecurityConfig
                 .csrf()
                 .disable()
                 .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/login")
+                        .permitAll()
                         .anyRequest()
                         .hasAuthority("USER")
                 )
