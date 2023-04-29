@@ -32,25 +32,26 @@ public class AllreservationsController {
     @GetMapping(value = {"/allreservations", "/kaikkiajanvaraukset"})
     public ModelAndView onGet()
     {
-        System.out.println("/allreservations " + VIEW_NAME);
         var mvc = new ModelAndView(VIEW_NAME);
 
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var username = ((UserDetails) authentication.getPrincipal()).username();
 
         List<Reservation> allreservations = userService.getReservations(username);
-        List<TimeDetails> earlierreservations = new ArrayList<>();
-        List<TimeDetails> upcomingreservations = new ArrayList<>();
+        List<String> earlierreservations = new ArrayList<>();
+        List<String> upcomingreservations = new ArrayList<>();
 
         for(int i = 0; i < allreservations.size(); i++) {
             LocalDateTime now = LocalDateTime.now();
             var timeDetails = allreservations.get(i).reservationInformation();
             var localDateTime = LocalDateTime.of(timeDetails.year(), timeDetails.month(), timeDetails.day(), timeDetails.hour(), 0);
+            String date = timeDetails.day() + "." + timeDetails.month() + "." + timeDetails.year() + " klo " + timeDetails.hour();
+
 
             if(now.isBefore(localDateTime)) {
-                earlierreservations.add(allreservations.get(i).reservationInformation());
+                earlierreservations.add(date);
             } else {
-                upcomingreservations.add(allreservations.get(i).reservationInformation());
+                upcomingreservations.add(date);
             }
         }
 

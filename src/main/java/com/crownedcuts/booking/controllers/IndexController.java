@@ -44,15 +44,16 @@ public class IndexController
         }
 
         List<Reservation> allreservations = userService.getReservations(username);
-        List<TimeDetails> upcomingreservations = new ArrayList<>();
+        List<String> upcomingreservations = new ArrayList<>();
 
         for(int i = 0; i < allreservations.size(); i++) {
             LocalDateTime now = LocalDateTime.now();
             var timeDetails = allreservations.get(i).reservationInformation();
             var localDateTime = LocalDateTime.of(timeDetails.year(), timeDetails.month(), timeDetails.day(), timeDetails.hour(), 0);
+            String date = timeDetails.day() + "." + timeDetails.month() + "." + timeDetails.year() + " klo " + timeDetails.hour();
 
             if(now.isAfter(localDateTime)) {
-                upcomingreservations.add(allreservations.get(i).reservationInformation());
+                upcomingreservations.add(date);
             }
         }
 
