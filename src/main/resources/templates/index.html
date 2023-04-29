@@ -6,11 +6,10 @@
     <title>Crowned Cuts</title>
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/index.css">
-
 </head>
-
 <body>
-    <div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+<div id="index-wrapper">
     <!-- Ajanvarausosion linkkinappi -->
     <div class="leftside">
     <section class="ajanvaraus">
@@ -24,18 +23,16 @@
     <div class="rightside">
     <section class="tulevatvaraukset-right">
         <h1 th:text="#{h.upcomingReservations}">Tulevat varaukset</h1>
-        <ol>
-            <li>Aika 1</li>
-            <li>Aika 2</li>
-        </ol>
+        <tr th:each="upcomingreservation : ${upcomingreservationslist}">
+            <td th:text="${upcomingreservation}"></td>
+        </tr>
         <div class="allreservations-button">
-        <a href="/allreservations">
-        <button type="button" class="allreservations-navigation-button" id="show-all-reservations"
-                    th:text="#{b.showAllReservations}">
-                Näytä kaikki varaamani ajat
-            </button>
+        <a href="/allreservations" class="allreservations-navigation-button" id="show-all-reservations">
+                    <span th:text="#{b.showAllReservations}">
+                Näytä kaikki varaamani ajat</span></a>
         </div>
     </section>
     </div>
+</div>
 </body>
 </html>

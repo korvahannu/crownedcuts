@@ -21,9 +21,19 @@ h1 {
     height: 100px;
 }
 
-.big-square-button {
+#reservations-wrapper {
+    border-radius: 8px;
+    z-index: -2;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 2rem;
+}
+
+.big-square-button-container {
     width: 200px;
-    height: 200px;
+    height: 50px;
     font-size: 1.1rem;
     text-align: left;
     padding: 1rem;
@@ -33,25 +43,4 @@ h1 {
     box-shadow: none;
     background-color: white;
     cursor: pointer;
-}
-
-.big-square-button:hover {
-    background-color: var(--dark-yellow);
-}
-
-.allreservations-button {
-    cursor: pointer;
-    z-index: 10;
-    border: 1px solid var(--blue);
-    color: var(--blacker-black);
-}
-
-#index-wrapper {
-    border-radius: 8px;
-    z-index: -2;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: white;
-    padding: 2rem;
 }

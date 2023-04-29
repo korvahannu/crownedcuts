@@ -5,10 +5,31 @@
 <head>
     <title>Crowned Cuts</title>
     <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/index.css">
-
+    <link rel="stylesheet" href="css/allreservations.css">
 </head>
 <body>
-<h1 th:text="#{h.upcomingReservations}">Tulevat varaukset</h1>
+<div th:replace="~{fragments/header :: header}"></div>
+<div id="reservations-wrapper">
+    <div class="leftside">
+        <section class="upcomingreservations">
+        <h2 th:text="#{h.upcomingReservations}">Tulevat ajat</h2>
+        <tr th:each="upcomingreservation : ${upcomingreservationslist}">
+            <td th:text="${upcomingreservation}"></td>
+        </tr>
+        <div class="big-square-button-container">
+            <a href="/index" id="button-go-back" class="big-square-button">
+                    <span th:text="#{b.back}">Takaisin</span></a>
+        </div>
+        </section>
+    </div>
+    <div class="rightside">
+        <section class="earlierreservations">
+        <h2 th:text="#{h.earlierReservations}">Menneet ajat</h2>
+        <tr th:each="earlierreservation : ${earlierreservationslist}">
+            <td th:text="${earlierreservation}"></td>
+        </tr>
+        </section>
+    </div>
+</div>
 </body>
 </html>
