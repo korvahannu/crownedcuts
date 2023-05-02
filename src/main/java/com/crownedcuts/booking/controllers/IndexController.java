@@ -49,7 +49,7 @@ public class IndexController
             var localDateTime = LocalDateTime.of(timeDetails.year(), timeDetails.month(), timeDetails.day(), timeDetails.hour(), 0);
             String date = timeDetails.day() + "." + timeDetails.month() + "." + timeDetails.year() + " klo " + timeDetails.hour();
 
-            if(now.isAfter(localDateTime)) {
+            if(now.isBefore(localDateTime)) {
                 upcomingreservations.add(date);
             }
         }

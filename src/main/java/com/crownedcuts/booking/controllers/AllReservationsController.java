@@ -49,9 +49,9 @@ public class AllReservationsController {
 
 
             if(now.isBefore(localDateTime)) {
-                earlierreservations.add(date);
-            } else {
                 upcomingreservations.add(date);
+            } else {
+                earlierreservations.add(date);
             }
         }
 
