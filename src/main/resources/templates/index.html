@@ -1,37 +1,37 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="fi">
+<html lang="fi" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
 
 <head>
     <title>Crowned Cuts</title>
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link href="css/header.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <div id="index-wrapper">
     <!-- Ajanvarausosion linkkinappi -->
     <div class="leftside">
-    <section class="ajanvaraus">
-        <div class="big-square-button-container">
-            <a href="/ajanvaraus" id="button-service-type-haidresser" class="big-square-button">
+        <section class="ajanvaraus">
+            <div class="big-square-button-container">
+                <a class="big-square-button" href="/ajanvaraus" id="button-service-type-haidresser">
                     <span th:text="#{h.newReservation}">VARAA UUSI AIKA</span></a>
-        </div>
-    </section>
+            </div>
+        </section>
     </div>
     <!--  Varausten katsomisten osio -->
     <div class="rightside">
-    <section class="tulevatvaraukset-right">
-        <h1 th:text="#{h.upcomingReservations}">Tulevat varaukset</h1>
-        <tr th:each="upcomingreservation : ${upcomingreservationslist}">
-            <td th:text="${upcomingreservation}"></td>
-        </tr>
-        <div class="allreservations-button">
-        <a href="/allreservations" class="allreservations-navigation-button" id="show-all-reservations">
+        <section class="tulevatvaraukset-right">
+            <h1 th:text="#{h.upcomingReservations}">Tulevat varaukset</h1>
+            <tr th:each="upcomingreservation : ${upcomingreservationslist}">
+                <td th:text="${upcomingreservation}"></td>
+            </tr>
+            <div class="allreservations-button">
+                <a class="allreservations-navigation-button" href="/allreservations" id="show-all-reservations">
                     <span th:text="#{b.showAllReservations}">
                 Näytä kaikki varaamani ajat</span></a>
-        </div>
-    </section>
+            </div>
+        </section>
     </div>
 </div>
 </body>

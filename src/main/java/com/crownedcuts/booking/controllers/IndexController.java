@@ -1,16 +1,17 @@
 package com.crownedcuts.booking.controllers;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import com.crownedcuts.booking.records.Reservation;
+import com.crownedcuts.booking.records.UserDetails;
+import com.crownedcuts.booking.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import com.crownedcuts.booking.records.Reservation;
-import com.crownedcuts.booking.records.UserDetails;
-import com.crownedcuts.booking.services.UserService;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class IndexController
@@ -19,7 +20,8 @@ public class IndexController
     private final UserService userService;
 
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService)
+    {
         this.userService = userService;
     }
 
@@ -43,13 +45,19 @@ public class IndexController
         List<Reservation> allreservations = userService.getReservations(username);
         List<String> upcomingreservations = new ArrayList<>();
 
-        for(int i = 0; i < allreservations.size(); i++) {
+        for (int i = 0; i < allreservations.size(); i++)
+        {
             LocalDateTime now = LocalDateTime.now();
             var timeDetails = allreservations.get(i).reservationInformation();
-            var localDateTime = LocalDateTime.of(timeDetails.year(), timeDetails.month(), timeDetails.day(), timeDetails.hour(), 0);
+            var localDateTime = LocalDateTime.of(timeDetails.year(),
+                    timeDetails.month(),
+                    timeDetails.day(),
+                    timeDetails.hour(),
+                    0);
             String date = timeDetails.day() + "." + timeDetails.month() + "." + timeDetails.year() + " klo " + timeDetails.hour();
 
-            if(now.isBefore(localDateTime)) {
+            if (now.isBefore(localDateTime))
+            {
                 upcomingreservations.add(date);
             }
         }

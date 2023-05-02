@@ -27,9 +27,13 @@ class UserServiceTests
     {
         var user = userService.getUser("admin@crownedcuts.fi");
         Assertions.assertTrue(user.isPresent(), "UserService did not find user");
-        Assertions.assertEquals("admin@crownedcuts.fi", user.get().username(), "UserService returned wrong user (username)");
-        Assertions.assertTrue(user.get().authorities().contains(new SimpleGrantedAuthority("ADMIN")), "UserService did not return correct roles");
-        Assertions.assertTrue(user.get().authorities().contains(new SimpleGrantedAuthority("USER")), "UserService did not return correct roles");
+        Assertions.assertEquals("admin@crownedcuts.fi",
+                user.get().username(),
+                "UserService returned wrong user (username)");
+        Assertions.assertTrue(user.get().authorities().contains(new SimpleGrantedAuthority("ADMIN")),
+                "UserService did not return correct roles");
+        Assertions.assertTrue(user.get().authorities().contains(new SimpleGrantedAuthority("USER")),
+                "UserService did not return correct roles");
 
         user = userService.getUser("nonexistinguser");
         Assertions.assertTrue(user.isEmpty(), "UserService returned something when it shouldn't have");
@@ -39,8 +43,10 @@ class UserServiceTests
     void checkPasswordWorks()
     {
         var user = UserDetails.of("admin@crownedcuts.fi", "admin", "admin", "admin");
-        Assertions.assertTrue(userService.checkUserPassword(user), "UserService did not correctly return true for correct password");
+        Assertions.assertTrue(userService.checkUserPassword(user),
+                "UserService did not correctly return true for correct password");
         user = UserDetails.of("admin@crownedcuts.fi", "user", "user", "user");
-        Assertions.assertFalse(userService.checkUserPassword(user), "UserService did not correctly return false for wrong password");
+        Assertions.assertFalse(userService.checkUserPassword(user),
+                "UserService did not correctly return false for wrong password");
     }
 }

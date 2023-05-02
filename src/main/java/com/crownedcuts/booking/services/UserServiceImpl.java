@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -259,18 +258,5 @@ public class UserServiceImpl implements UserService
         }
 
         return true;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T getOrNull(ResultSet resultSet, String key)
-    {
-        try
-        {
-            return (T) resultSet.getObject(key);
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
     }
 }

@@ -259,7 +259,7 @@
         payload.hairLength = "short"
         slideshow.nextSlideButton.disabled = false
     }
-    
+
     function changeMessageboxState(hide) {
         window.scrollTo(0, 0);
         pageItems.shadow.style.display = hide ? 'none' : 'block';
@@ -552,8 +552,7 @@
 
         if (!relevantAvailableTimes.today || relevantAvailableTimes.today.length < 1) {
             to.appendChild(createNoTimesParagraph());
-        }
-        else {
+        } else {
             relevantAvailableTimes.today.forEach(a => {
                 to.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
             })
@@ -561,8 +560,7 @@
 
         if (!relevantAvailableTimes.tomorrow || relevantAvailableTimes.tomorrow.length < 1) {
             tom.appendChild(createNoTimesParagraph());
-        }
-        else {
+        } else {
             relevantAvailableTimes.tomorrow.forEach(a => {
                 tom.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
             })
@@ -570,8 +568,7 @@
 
         if (!relevantAvailableTimes.theDayAfter || relevantAvailableTimes.theDayAfter.length < 1) {
             da.appendChild(createNoTimesParagraph());
-        }
-        else {
+        } else {
             relevantAvailableTimes.theDayAfter.forEach(a => {
                 da.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
             })
@@ -622,7 +619,7 @@
 
         div.addEventListener('click', handleButtonClick);
         div.addEventListener('keyup', function (event) {
-            if(event.key === "Enter" || event.key === " ") {
+            if (event.key === "Enter" || event.key === " ") {
                 handleButtonClick(event);
             }
         });

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fi">
+<html lang="fi" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <title th:text="#{header.login}">Kirjaudu sisään</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
         :root {
             --lighter-blue: #2980b9;
             --yellow: #f1c40f;
@@ -23,6 +24,7 @@
             --darkest-green: #156034;
             --simple-highlight: #fcfaf2;
         }
+
         html {
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
@@ -40,6 +42,7 @@
         label {
             font-size: 1.15rem;
         }
+
         button {
             font-size: 1.2rem;
             padding: 1rem;
@@ -119,6 +122,7 @@
             background-color: white;
             padding: 2rem;
         }
+
         @media only screen and (max-width: 410px) {
             button {
                 max-width: 100%;
@@ -131,22 +135,25 @@
 <div id="information-wrapper">
     <h1>Crowned Cuts</h1>
     <h2 th:text="#{header.login}"></h2>
-<form th:action="@{/login}" method="post">
-    <div th:if="${param.logout}" th:text="#{message.youHaveBeenLoggedOut}" class="successMessage">
-        Sinut on kirjattu ulos.
-    </div>
-    <div th:if="${param.error}" th:text="#{message.wrongUsernameOrPassword}" class="errorMessage">
-        Käyttäjätunnus tai salasana on väärä.
-    </div>
-    <div class="form-field"><label for="username" th:text="#{common.username}">Käyttäjätunnus: </label>
-        <input required type="text" id="username" name="username"/></div>
-    <div class="form-field"><label for="password" th:text="#{common.password}">Salasana:</label>
-        <input required id="password" type="password" name="password"/></div>
-    <div class="form-field"><button type="submit" th:text="#{header.login}"></button></div>
-</form>
-<p style="display:none; text-align:center; margin-left:auto; margin-right:auto" id="loggingIn" th:text="#{message.loggingIn}">
-    Kirjaudutaan sisään, hetki...
-</p>
+    <form method="post" th:action="@{/login}">
+        <div class="successMessage" th:if="${param.logout}" th:text="#{message.youHaveBeenLoggedOut}">
+            Sinut on kirjattu ulos.
+        </div>
+        <div class="errorMessage" th:if="${param.error}" th:text="#{message.wrongUsernameOrPassword}">
+            Käyttäjätunnus tai salasana on väärä.
+        </div>
+        <div class="form-field"><label for="username" th:text="#{common.username}">Käyttäjätunnus: </label>
+            <input id="username" name="username" required type="text"/></div>
+        <div class="form-field"><label for="password" th:text="#{common.password}">Salasana:</label>
+            <input id="password" name="password" required type="password"/></div>
+        <div class="form-field">
+            <button th:text="#{header.login}" type="submit"></button>
+        </div>
+    </form>
+    <p id="loggingIn" style="display:none; text-align:center; margin-left:auto; margin-right:auto"
+       th:text="#{message.loggingIn}">
+        Kirjaudutaan sisään, hetki...
+    </p>
 </div>
 </body>
 <script>

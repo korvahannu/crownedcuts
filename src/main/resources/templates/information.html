@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="fi">
+<html lang="fi" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Omat tiedot</title>
-    <meta name="viewport" content="initial-scale=1">
-    <link rel="stylesheet" href="css/forms.css">
-    <link rel="stylesheet" href="css/header.css">
+    <meta content="initial-scale=1" name="viewport">
+    <link href="css/forms.css" rel="stylesheet">
+    <link href="css/header.css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <div id="information-wrapper">
     <h1 th:text="#{h.ownInformation}">Omat tiedot</h1>
-    <form method="post" id="form">
-        <div id="validationError" class="errorMessage" th:text="#{error.informationValidation}" style="display: none">
+    <form id="form" method="post">
+        <div class="errorMessage" id="validationError" style="display: none" th:text="#{error.informationValidation}">
             Virhe tietojen tallentamisessa! Tarkista merkityt kohdat.
         </div>
         <div class="errorMessage" id="paramFail" th:if="${updateFail}" th:text="#{message.updateFail}">
@@ -27,25 +27,26 @@
                 </li>
             </ul>
         </div>
-        <input type="hidden" id="username" name="username" th:field="${userDetails.username}" />
+        <input id="username" name="username" th:field="${userDetails.username}" type="hidden"/>
         <div class="form-field">
             <label for="firstname" th:text="#{label.firstname}">Etunimi (pakollinen)*</label>
-            <input th:field="${userDetails.firstname}" type="text" name="firstname" id="firstname" />
+            <input id="firstname" name="firstname" th:field="${userDetails.firstname}" type="text"/>
             <div class="errorMarked">!</div>
         </div>
         <div class="form-field">
             <label for="lastname" th:text="#{label.lastname}">Sukunimi (pakollinen)*</label>
-            <input th:field="${userDetails.lastname}" type="text" name="lastname" id="lastname" />
+            <input id="lastname" name="lastname" th:field="${userDetails.lastname}" type="text"/>
             <div class="errorMarked">!</div>
         </div>
         <div class="form-field">
             <label for="phonenumber" th:text="#{label.phonenumber}">Puhelinnumero</label>
-            <input th:field="${userDetails.phonenumber}" type="text" name="phonenumber" id="phonenumber" />
+            <input id="phonenumber" name="phonenumber" th:field="${userDetails.phonenumber}" type="text"/>
             <div class="errorMarked">!</div>
         </div>
         <div class="form-field">
             <label for="dateOfBirth" th:text="#{label.dateOfBirth}">Syntymäaika</label>
-            <input th:field="${userDetails.dateOfBirth}" th:placeholder="#{placeholder.dateOfBirth}" placeholder="pp.kk.vvvv" type="text" name="dateOfBirth" id="dateOfBirth" />
+            <input id="dateOfBirth" name="dateOfBirth"
+                   placeholder="pp.kk.vvvv" th:field="${userDetails.dateOfBirth}" th:placeholder="#{placeholder.dateOfBirth}" type="text"/>
             <div class="errorMarked">!</div>
         </div>
         <div class="form-field">
@@ -55,8 +56,10 @@
             </ul>
         </div>
         <div class="buttons">
-            <button onclick="window.location.href='/'" type="button" class="button-dimmed" th:text="#{b.back}">Takaisin</button>
-            <button type="button" th:text="#{b.save}" id="submitButton">Tallenna</button>
+            <button class="button-dimmed" onclick="window.location.href='/'" th:text="#{b.back}" type="button">
+                Takaisin
+            </button>
+            <button id="submitButton" th:text="#{b.save}" type="button">Tallenna</button>
         </div>
     </form>
 </div>
@@ -65,16 +68,16 @@
 <script>
 
     document.querySelectorAll('input').forEach(el => {
-       el.addEventListener('change', ()=> {
-           el.classList.remove('error')
-           next(el).style.display = 'none';
-           document.getElementById('validationError')
-               .style.display = 'none';
-           const pfail = document.getElementById('paramFail');
-           if(pfail) pfail.style.display = 'none';
-           const psuc = document.getElementById('paramSuccess');
-           if(psuc) psuc.style.display = 'none';
-       });
+        el.addEventListener('change', () => {
+            el.classList.remove('error')
+            next(el).style.display = 'none';
+            document.getElementById('validationError')
+                .style.display = 'none';
+            const pfail = document.getElementById('paramFail');
+            if (pfail) pfail.style.display = 'none';
+            const psuc = document.getElementById('paramSuccess');
+            if (psuc) psuc.style.display = 'none';
+        });
     });
 
     function handleSubmit(event) {
@@ -85,7 +88,7 @@
         isValidForm = applyValidator(isValidForm, () => phonenumberValidator('phonenumber'), 'phonenumber');
         isValidForm = applyValidator(isValidForm, () => dateOfBirthValidator('dateOfBirth'), 'dateOfBirth');
 
-        if(isValidForm) {
+        if (isValidForm) {
             document.getElementById('form').submit();
         } else {
             document.getElementById('validationError')
@@ -94,8 +97,8 @@
     }
 
     function applyValidator(val, validate, name) {
-        if(validate() === false) {
-            if(val === true) {
+        if (validate() === false) {
+            if (val === true) {
                 document.getElementById(name).focus();
                 return false;
             } else {

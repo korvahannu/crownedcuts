@@ -10,12 +10,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LoginController
 {
-    @GetMapping(value = { "/login", "/kirjaudusisaan" })
+    @GetMapping(value = {"/login", "/kirjaudusisaan"})
     public ModelAndView getLoginPage()
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
+        if (!(auth instanceof AnonymousAuthenticationToken))
+        {
             return new ModelAndView("forward:/index");
         }
 

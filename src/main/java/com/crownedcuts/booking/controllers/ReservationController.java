@@ -53,7 +53,7 @@ public class ReservationController
 
         var barber = barberHairdresserService.getBarber(payload.barberId()).orElseThrow();
         var timeDetails = new TimeDetails(payload.year(), payload.month(), payload.day(), payload.hour());
-        var user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (reservationService.reserveTime(barber, user, timeDetails, payload.hairLength(), payload.services()))
         {

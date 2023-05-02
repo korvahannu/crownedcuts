@@ -26,19 +26,12 @@ import java.util.logging.Logger;
 @TestPropertySource(locations = "classpath:test.reservationservicetests.properties")
 class ReservationServiceTests
 {
+    private static final Logger logger = Logger.getLogger(ReservationServiceTests.class.getName());
+    private static String databaseFilepath;
     private final ReservationService reservationService;
     private final BarberHairdresserService barberHairdresserService;
     private final UserService userService;
     private final FreeTimesService freeTimesService;
-    private static final Logger logger = Logger.getLogger(ReservationServiceTests.class.getName());
-
-    private static String databaseFilepath;
-
-    @Value("${databaseFilepath}")
-    public void setNameStatic(String databaseFilepath)
-    {
-        ReservationServiceTests.databaseFilepath = databaseFilepath;
-    }
 
     @Autowired
     public ReservationServiceTests(ReservationService reservationService,
@@ -50,6 +43,25 @@ class ReservationServiceTests
         this.barberHairdresserService = barberHairdresserService;
         this.userService = userService;
         this.freeTimesService = freeTimesService;
+    }
+
+    @AfterAll
+    static void cleanup()
+    {
+        try
+        {
+            Files.delete(Paths.get(databaseFilepath));
+        }
+        catch (IOException ex)
+        {
+            logger.warning(ex.getMessage());
+        }
+    }
+
+    @Value("${databaseFilepath}")
+    public void setNameStatic(String databaseFilepath)
+    {
+        ReservationServiceTests.databaseFilepath = databaseFilepath;
     }
 
     @Test
@@ -127,20 +139,9 @@ class ReservationServiceTests
     @Test
     void weekendTimeShouldThrow()
     {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> freeTimesService.getAllFreeTimesOnDay(2023, 4, 8));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> freeTimesService.getAllFreeTimesOnDay(2023, 4, 9));
-    }
-
-    @AfterAll
-    static void cleanup()
-    {
-        try
-        {
-            Files.delete(Paths.get(databaseFilepath));
-        }
-        catch (IOException ex)
-        {
-            logger.warning(ex.getMessage());
-        }
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> freeTimesService.getAllFreeTimesOnDay(2023, 4, 8));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> freeTimesService.getAllFreeTimesOnDay(2023, 4, 9));
     }
 }

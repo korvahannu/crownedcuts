@@ -6,24 +6,24 @@
 }
 
 .navbar a {
-  float: left;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
 }
 
 .navbar a:hover {
-  background-color: white;
-  color: black;
+    background-color: white;
+    color: black;
 }
 
 .navbar a.active {
-  background-color: var(--yellow);
-  color: white;
+    background-color: var(--yellow);
+    color: white;
 }
 
 .navbar-right {
-  float: right;
+    float: right;
 }

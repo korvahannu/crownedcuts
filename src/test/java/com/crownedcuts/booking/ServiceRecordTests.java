@@ -4,7 +4,8 @@ import com.crownedcuts.booking.records.Service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class ServiceRecordTests {
+class ServiceRecordTests
+{
     @Test
     void canCreateServiceRecord()
     {
