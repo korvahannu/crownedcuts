@@ -6,32 +6,33 @@
     <title>Crowned Cuts</title>
     <link href="css/header.css" rel="stylesheet">
     <link href="css/index.css" rel="stylesheet">
+    <link href="css/forms.css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <div id="index-wrapper">
-    <!-- Ajanvarausosion linkkinappi -->
     <div class="leftside">
-        <section class="ajanvaraus">
-            <div class="big-square-button-container">
-                <a class="big-square-button" href="/newreservation" id="button-service-type-haidresser">
-                    <span th:text="#{h.newReservation}">VARAA UUSI AIKA</span></a>
-            </div>
-        </section>
+        <div class="big-square-button-container">
+            <a class="big-square-button" href="/newreservation">
+                <span th:text="#{h.newReservation}">VARAA UUSI AIKA</span></a>
+        </div>
     </div>
-    <!--  Varausten katsomisten osio -->
     <div class="rightside">
-        <section class="tulevatvaraukset-right">
+        <div>
             <h1 th:text="#{h.upcomingReservations}">Tulevat varaukset</h1>
-            <tr th:each="upcomingreservation : ${upcomingreservationslist}">
-                <td th:text="${upcomingreservation}"></td>
-            </tr>
-            <div class="allreservations-button">
-                <a class="allreservations-navigation-button" href="/allreservations" id="show-all-reservations">
-                    <span th:text="#{b.showAllReservations}">
-                Näytä kaikki varaamani ajat</span></a>
-            </div>
-        </section>
+            <ol>
+                <li th:each="upcomingreservation : ${upcomingreservationslist}">
+                    <span th:text="${upcomingreservation}"></span>
+                </li>
+            </ol>
+            <a class="allreservations-navigation-button" href="/allreservations">
+                <div class="allreservations-button">
+
+                        <span th:text="#{b.showAllReservations}">
+                    Näytä kaikki varaamani ajat</span>
+                </div>
+            </a>
+        </div>
     </div>
 </div>
 </body>

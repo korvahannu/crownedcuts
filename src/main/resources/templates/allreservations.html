@@ -11,24 +11,26 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <div id="reservations-wrapper">
     <div class="leftside">
-        <section class="upcomingreservations">
-            <h2 th:text="#{h.upcomingReservations}">Tulevat ajat</h2>
-            <tr th:each="upcomingreservation : ${upcomingreservationslist}">
-                <td th:text="${upcomingreservation}"></td>
-            </tr>
+        <h2 th:text="#{h.upcomingReservations}">Tulevat ajat</h2>
+        <ul>
+            <li th:each="upcomingreservation : ${upcomingreservationslist}">
+                <span th:text="${upcomingreservation}"></span>
+            </li>
+        </ul>
+        <a class="big-square-button" href="/index" id="button-go-back">
             <div class="big-square-button-container">
-                <a class="big-square-button" href="/index" id="button-go-back">
-                    <span th:text="#{b.back}">Takaisin</span></a>
+
+                    <span th:text="#{b.back}">Takaisin</span>
             </div>
-        </section>
+        </a>
     </div>
     <div class="rightside">
-        <section class="earlierreservations">
-            <h2 th:text="#{h.earlierReservations}">Menneet ajat</h2>
-            <tr th:each="earlierreservation : ${earlierreservationslist}">
-                <td th:text="${earlierreservation}"></td>
-            </tr>
-        </section>
+        <h2 th:text="#{h.earlierReservations}">Menneet ajat</h2>
+        <ul>
+            <li th:each="earlierreservation : ${earlierreservationslist}">
+                <span th:text="${earlierreservation}"></span>
+            </li>
+        </ul>
     </div>
 </div>
 </body>

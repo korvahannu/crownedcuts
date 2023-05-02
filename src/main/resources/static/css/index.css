@@ -11,20 +11,49 @@ h1 {
 }
 
 .leftside {
-    width: 50%;
-    height: 100px;
-    float: left;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-grow: 1;
+    align-items: center;
 }
 
 .rightside {
-    margin-left: 50%;
-    height: 100px;
+    flex-grow: 1;
+    padding-right: 2rem;
+}
+
+ol {
+    margin: 0;
+    padding: 0;
+    padding-left: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+ol li {
+    font-size: 1.2rem;
 }
 
 .big-square-button {
-    width: 200px;
+    width: 300px;
     height: 200px;
-    font-size: 1.1rem;
+    text-align: left;
+    padding: 3rem;
+    margin-right: 1rem;
+    border: 1px solid var(--blacker-black);
+    border-radius: 4px;
+    box-shadow: none;
+    background-color: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.big-square-button:hover {
+    background-color: var(--gray);
+}
+
+.allreservations-button {
+    width: 100%;
     text-align: left;
     padding: 1rem;
     margin-right: 1rem;
@@ -33,25 +62,21 @@ h1 {
     box-shadow: none;
     background-color: white;
     cursor: pointer;
+    text-decoration: none;
 }
 
-.big-square-button:hover {
-    background-color: var(--dark-yellow);
-}
-
-.allreservations-button {
-    cursor: pointer;
-    z-index: 10;
-    border: 1px solid var(--blue);
-    color: var(--blacker-black);
+.allreservations-button:hover {
+    background-color: var(--gray);
 }
 
 #index-wrapper {
     border-radius: 8px;
-    z-index: -2;
-    max-width: 800px;
+    max-width: 1024px;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
     padding: 2rem;
+    min-height: 400px;
+    display: flex;
+    width: 100%;
 }
