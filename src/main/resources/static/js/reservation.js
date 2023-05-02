@@ -169,7 +169,7 @@
             if (!response.ok) {
                 throw new Error();
             }
-            window.location.href = "/ajanvarausonnistui";
+            window.location.href = "/reservationsuccessful";
         })
             .catch(() => {
                 window.alert(translations[locale].reservationFailed);

@@ -34,19 +34,13 @@ public class ReservationController
         this.freeTimesService = freeTimesService;
     }
 
-    @GetMapping("/ajanvaraus")
+    @GetMapping(value = {"/ajanvaraus", "/newreservation"})
     public ModelAndView onGet()
     {
-        return new ModelAndView("ajanvaraus");
+        return new ModelAndView("newreservation");
     }
 
-    @GetMapping("/newreservation")
-    public ModelAndView onGetEn()
-    {
-        return new ModelAndView("ajanvaraus");
-    }
-
-    @PostMapping("/ajanvaraus")
+    @PostMapping(value = {"/ajanvaraus", "/newreservation" })
     public ResponseEntity<Object> sendReservation(@RequestBody ReservationPayload payload)
     {
         payload = payload.barberId() > 0 ? payload : getPayloadWithRandomBarber(payload);
@@ -65,10 +59,10 @@ public class ReservationController
         }
     }
 
-    @GetMapping("/ajanvarausonnistui")
+    @GetMapping(value = { "/ajanvarausonnistui", "/reservationsuccessful"})
     public ModelAndView onGetSuccess()
     {
-        return new ModelAndView("ajanvarausonnistui");
+        return new ModelAndView("reservationsuccessful");
     }
 
     private ReservationPayload getPayloadWithRandomBarber(ReservationPayload payload)
