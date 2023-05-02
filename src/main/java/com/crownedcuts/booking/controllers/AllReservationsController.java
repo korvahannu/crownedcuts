@@ -18,14 +18,14 @@ import org.springframework.stereotype.Controller;
 
 
 @Controller
-public class AllreservationsController {
+public class AllReservationsController {
 
     private static final String VIEW_NAME = "allreservations";
 
     private final UserService userService;
 
     @Autowired
-    public AllreservationsController(UserService userService) {
+    public AllReservationsController(UserService userService) {
         this.userService = userService;
     }
     
