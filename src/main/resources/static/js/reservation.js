@@ -553,26 +553,29 @@
         if (!relevantAvailableTimes.today || relevantAvailableTimes.today.length < 1) {
             to.appendChild(createNoTimesParagraph());
         }
-
-        relevantAvailableTimes.today.forEach(a => {
-            to.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
-        })
+        else {
+            relevantAvailableTimes.today.forEach(a => {
+                to.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
+            })
+        }
 
         if (!relevantAvailableTimes.tomorrow || relevantAvailableTimes.tomorrow.length < 1) {
             tom.appendChild(createNoTimesParagraph());
         }
-
-        relevantAvailableTimes.tomorrow.forEach(a => {
-            tom.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
-        })
+        else {
+            relevantAvailableTimes.tomorrow.forEach(a => {
+                tom.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
+            })
+        }
 
         if (!relevantAvailableTimes.theDayAfter || relevantAvailableTimes.theDayAfter.length < 1) {
             da.appendChild(createNoTimesParagraph());
         }
-
-        relevantAvailableTimes.theDayAfter.forEach(a => {
-            da.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
-        })
+        else {
+            relevantAvailableTimes.theDayAfter.forEach(a => {
+                da.appendChild(createTimeButton(a.year, a.month, a.day, a.hour, barberId));
+            })
+        }
     }
 
     function createServiceListing(value, name, price) {

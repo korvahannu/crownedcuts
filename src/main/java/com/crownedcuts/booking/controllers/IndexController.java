@@ -3,15 +3,12 @@ package com.crownedcuts.booking.controllers;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.crownedcuts.booking.records.Reservation;
-import com.crownedcuts.booking.records.TimeDetails;
 import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.services.UserService;
 
