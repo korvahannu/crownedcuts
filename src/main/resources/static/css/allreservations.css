@@ -7,28 +7,27 @@ html {
     background-color: var(--gray);
 }
 
-h2 {
-    text-decoration: underline;
+#content-divider {
+    display: flex;
+    width: 100%;
+    margin-bottom: 2rem;
 }
 
-.leftside {
+#content-divider div {
     flex-grow: 1;
+    padding-right: 4rem;
 }
 
-.rightside {
-    flex-grow: 1;
-}
-
-ol {
-    margin: 0;
+#content-divider ul {
     padding: 0;
 }
 
-ul li {
-    margin: 0;
-    padding: 0;
+#content-divider li {
     font-size: 1.2rem;
+    border-bottom: 1px solid black;
+    padding-top: 1.5rem;
     list-style: none;
+    margin: 0;
 }
 
 #reservations-wrapper {
@@ -37,23 +36,4 @@ ul li {
     margin-right: auto;
     background-color: white;
     padding: 2rem;
-    display: flex;
-}
-
-.big-square-button-container {
-    width: 200px;
-    height: 50px;
-    font-size: 1.1rem;
-    text-align: left;
-    padding: 1rem;
-    margin-right: 1rem;
-    border: 1px solid var(--blacker-black);
-    border-radius: 4px;
-    box-shadow: none;
-    background-color: white;
-    cursor: pointer;
-}
-
-.big-square-button-container:hover {
-    background-color: var(--gray);
 }

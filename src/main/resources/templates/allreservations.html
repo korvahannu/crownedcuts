@@ -6,32 +6,40 @@
     <title>Crowned Cuts</title>
     <link href="css/navbar.css" rel="stylesheet">
     <link href="css/allreservations.css" rel="stylesheet">
+    <link href="css/forms.css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <div id="reservations-wrapper">
-    <div class="leftside">
-        <h2 th:text="#{h.upcomingReservations}">Tulevat ajat</h2>
-        <ul>
-            <li th:each="upcomingreservation : ${upcomingreservationslist}">
-                <span th:text="${upcomingreservation}"></span>
-            </li>
-        </ul>
-        <a class="big-square-button" href="/index" id="button-go-back">
-            <div class="big-square-button-container">
-
-                    <span th:text="#{b.back}">Takaisin</span>
-            </div>
-        </a>
+    <div id="content-divider">
+        <div>
+            <h2 th:text="#{h.upcomingReservations}">Tulevat ajat</h2>
+            <ul>
+                <li th:each="upcomingreservation : ${upcomingreservationslist}">
+                    <span th:text="${upcomingreservation}"></span>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2 th:text="#{h.earlierReservations}">Menneet ajat</h2>
+            <ul>
+                <li th:each="earlierreservation : ${earlierreservationslist}">
+                    <span th:text="${earlierreservation}"></span>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="rightside">
-        <h2 th:text="#{h.earlierReservations}">Menneet ajat</h2>
-        <ul>
-            <li th:each="earlierreservation : ${earlierreservationslist}">
-                <span th:text="${earlierreservation}"></span>
-            </li>
-        </ul>
-    </div>
+    <button type="button" id="back-button">
+        <span th:text="#{b.back}">Takaisin</span>
+    </button>
 </div>
 </body>
+<script>
+    document
+        .getElementById('back-button')
+        .addEventListener('click', event => {
+            event.preventDefault();
+            window.location.href = '/';
+        })
+</script>
 </html>
