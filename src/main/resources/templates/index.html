@@ -19,7 +19,7 @@
     </div>
     <div class="rightside">
         <div>
-            <h1 th:text="#{h.upcomingReservations}">Tulevat varaukset</h1>
+            <h2 th:text="#{h.upcomingReservations}">Tulevat varaukset</h2>
             <ol>
                 <li th:each="upcomingreservation : ${upcomingreservationslist}">
                     <span th:text="${upcomingreservation}"></span>
