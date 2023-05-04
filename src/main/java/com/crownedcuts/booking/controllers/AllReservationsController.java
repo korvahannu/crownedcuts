@@ -49,7 +49,7 @@ public class AllReservationsController
                     timeDetails.day(),
                     timeDetails.hour(),
                     0);
-            String date = timeDetails.day() + "." + timeDetails.month() + "." + timeDetails.year() + " klo " + timeDetails.hour();
+            String date = timeDetails.day() + "." + timeDetails.month() + "." + timeDetails.year() + " " + timeDetails.hour() + ":00-" + (timeDetails.hour() + 1) + ":00";
 
 
             if (now.isBefore(localDateTime))
