@@ -70,7 +70,7 @@ html, body {
     transform: translate(0, -15%);
 }
 
-@media only screen and (max-width: 564px) {
+@media only screen and (max-width: 660px) {
     .navbar {
         margin-bottom: 0;
     }
