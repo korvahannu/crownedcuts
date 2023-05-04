@@ -17,6 +17,7 @@ import java.util.List;
 public class AllReservationsController
 {
     private final UserService userService;
+    private static final int RESERVATION_COUNT_CAP = 4;
 
     @Autowired
     public AllReservationsController(UserService userService)
@@ -34,6 +35,8 @@ public class AllReservationsController
 
         List<String> earlierReservations = new ArrayList<>();
         List<String> upcomingReservations = new ArrayList<>();
+        List<String> earlierReservationsAll = new ArrayList<>();
+        List<String> upcomingReservationsAll = new ArrayList<>();
 
         userService.getReservations(username)
                 .stream()
@@ -43,16 +46,30 @@ public class AllReservationsController
                     var timeDetails = r.reservationInformation();
                     if (LocalDateTime.now().isBefore(timeDetails.toLocalDateTime()))
                     {
-                        upcomingReservations.add(timeDetails.toString());
+                        if(upcomingReservations.size() < RESERVATION_COUNT_CAP)
+                        {
+                            upcomingReservations.add(timeDetails.toString());
+                        }
+                        upcomingReservationsAll.add(timeDetails.toString());
                     }
                     else
                     {
-                        earlierReservations.add(timeDetails.toString());
+                        if(earlierReservations.size() < RESERVATION_COUNT_CAP)
+                        {
+                            earlierReservations.add(timeDetails.toString());
+                        }
+                        earlierReservationsAll.add(timeDetails.toString());
                     }
                 });
 
+        int cappedEarlierReservationsCount = earlierReservationsAll.size() - RESERVATION_COUNT_CAP;
+        int cappedUpcomingReservationCount = upcomingReservationsAll.size() - RESERVATION_COUNT_CAP;
+
         mvc.addObject("earlierReservations", earlierReservations);
         mvc.addObject("upcomingReservations", upcomingReservations);
+
+        mvc.addObject("cappedEarlierReservationsCount", cappedEarlierReservationsCount);
+        mvc.addObject("cappedUpcomingReservationCount", cappedUpcomingReservationCount);
 
         return mvc;
     }

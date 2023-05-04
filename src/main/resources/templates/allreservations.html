@@ -19,9 +19,13 @@
                 <li th:each="upcomingReservation : ${upcomingReservations}">
                     <span th:text="${upcomingReservation}"></span>
                 </li>
+
             </ul>
             <div class="no-upcoming-times" th:if="${#lists.isEmpty(upcomingReservations)}">
                 <i th:text="#{t.noUpcomingTimes}">Sinulla ei ole tulevia aikoja</i>
+            </div>
+            <div class="capped-times" th:if="${cappedUpcomingReservationCount} > 0">
+                +<span th:text="${cappedUpcomingReservationCount}"></span> <span th:text="#{t.evenNewerTimes}">aikaa kauempana tulevaisuudessa</span>
             </div>
         </div>
         <div>
@@ -31,6 +35,9 @@
                     <span th:text="${earlierReservation}"></span>
                 </li>
             </ul>
+            <div class="capped-times" th:if="${cappedEarlierReservationsCount} > 0">
+                +<span th:text="${cappedEarlierReservationsCount}"></span> <span th:text="#{t.evenOlderTimes}">vielä vanhempaa aikaa</span>
+            </div>
             <div class="no-upcoming-times" th:if="${#lists.isEmpty(earlierReservations)}">
                 <i th:text="#{t.noPastTimes}">Sinulla ei ole menneitä aikoja</i>
             </div>
