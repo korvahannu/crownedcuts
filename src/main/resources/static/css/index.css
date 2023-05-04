@@ -15,7 +15,7 @@ h1 {
     justify-content: center;
     align-content: center;
     flex-grow: 1;
-    align-items: center;
+    padding-top: 8rem;
 }
 
 .rightside {
@@ -27,47 +27,13 @@ ol {
     margin: 0;
     padding: 0;
     padding-left: 1.3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 ol li {
     font-size: 1.2rem;
     border-bottom: 1px solid black;
-}
-
-.big-square-button {
-    width: 300px;
-    height: 200px;
-    text-align: left;
-    padding: 3rem;
-    margin-right: 1rem;
-    border: 1px solid var(--blacker-black);
-    border-radius: 4px;
-    box-shadow: none;
-    background-color: white;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.big-square-button:hover {
-    background-color: var(--gray);
-}
-
-.allreservations-button {
-    width: 100%;
-    text-align: left;
-    padding: 1rem;
-    margin-right: 1rem;
-    border: 1px solid var(--blacker-black);
-    border-radius: 4px;
-    box-shadow: none;
-    background-color: white;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.allreservations-button:hover {
-    background-color: var(--gray);
+    padding-top: 1.5rem;
 }
 
 #index-wrapper {
@@ -76,7 +42,12 @@ ol li {
     margin-right: auto;
     background-color: white;
     padding: 2rem;
-    min-height: 400px;
     display: flex;
     width: 100%;
+    padding-bottom: 4rem;
+}
+
+#new-reservation-button {
+    width: 70%;
+    height: 70px;
 }

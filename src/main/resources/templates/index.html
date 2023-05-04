@@ -12,10 +12,9 @@
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <div id="index-wrapper">
     <div class="leftside">
-        <div class="big-square-button-container">
-            <a class="big-square-button" href="/newreservation">
-                <span th:text="#{h.newReservation}">VARAA UUSI AIKA</span></a>
-        </div>
+        <button type="button" id="new-reservation-button">
+            &#9200; <span th:text="#{h.newReservation}">VARAA UUSI AIKA</span></a>
+        </button>
     </div>
     <div class="rightside">
         <div>
@@ -25,15 +24,25 @@
                     <span th:text="${upcomingreservation}"></span>
                 </li>
             </ol>
-            <a class="allreservations-navigation-button" href="/allreservations">
-                <div class="allreservations-button">
+            <button type="button" class="button-dimmed" id="all-reservations-button">
 
-                        <span th:text="#{b.showAllReservations}">
-                    Näytä kaikki varaamani ajat</span>
-                </div>
-            </a>
+                &#128197; <span th:text="#{b.showAllReservations}">
+                Näytä kaikki varaamani ajat</span>
+            </button>
         </div>
     </div>
 </div>
 </body>
+<script>
+    document.getElementById('new-reservation-button')
+        .addEventListener('click', event => {
+            event.preventDefault();
+            window.location.href = '/newreservation';
+        });
+    document.getElementById('all-reservations-button')
+        .addEventListener('click', event => {
+            event.preventDefault();
+            window.location.href = '/allreservations';
+        });
+</script>
 </html>
