@@ -96,9 +96,9 @@ h2 {
 }
 
 .big-square-button {
-    width: 200px;
-    height: 200px;
-    font-size: 1.1rem;
+    width: 225px;
+    height: 225px;
+    font-size: 1.2rem;
     text-align: left;
     padding: 1rem;
     margin-right: 1rem;
@@ -219,7 +219,7 @@ h2 {
     z-index: 10;
     background-color: white;
     border: 1px solid var(--blue);
-    color: var(--blacker-black);
+    color: var(--blue);
 }
 
 #abort-reservation:hover {
@@ -321,9 +321,9 @@ h2 {
 
 @media only screen and (max-width: 864px) {
     .big-square-button {
-        width: 150px;
-        height: 150px;
-        font-size: 0.9rem;
+        width: 180px;
+        height: 180px;
+        font-size: 1.1rem;
     }
 
     #service-list {
@@ -355,7 +355,7 @@ h2 {
     }
 }
 
-@media only screen and (max-width: 564px) {
+@media only screen and (max-width: 660px) {
     #reservation-wrapper {
         padding: 1rem;
         left: 0;

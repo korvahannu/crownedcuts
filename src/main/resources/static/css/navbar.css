@@ -57,21 +57,60 @@ html, body {
     background: transparent;
 }
 
-.navbar ul li:nth-child(2) {
-
-}
-
 #logo {
     flex-grow: 1;
 }
 
 #logo-img {
-    width: 400px;
-    transform: translate(0, -15%);
+    width: 275px;
 }
+
+.show-mobile {
+    display: none !important;
+}
+
+#mobile-menu {
+    flex-direction: column;
+    display: none;
+}
+
+#mobile-menu {
+    height: 111px;
+}
+
+#mobile-menu li:hover {
+    background-color: var(--lighter-blue);
+}
+
+#mobile-menu li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#mobile-menu li a {
+    margin: 0;
+    padding: 0;
+    height: 4rem;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+}
+
 
 @media only screen and (max-width: 660px) {
     .navbar {
         margin-bottom: 0;
+    }
+    .hide-mobile {
+        display: none !important;
+    }
+    .show-mobile {
+        display: block !important;
+        padding-top: 1rem !important;
     }
 }
