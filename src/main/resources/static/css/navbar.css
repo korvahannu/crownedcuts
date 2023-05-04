@@ -106,9 +106,11 @@ html, body {
     .navbar {
         margin-bottom: 0;
     }
+
     .hide-mobile {
         display: none !important;
     }
+
     .show-mobile {
         display: block !important;
         padding-top: 1rem !important;

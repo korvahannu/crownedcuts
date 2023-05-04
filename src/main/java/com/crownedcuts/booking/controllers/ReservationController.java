@@ -40,7 +40,7 @@ public class ReservationController
         return new ModelAndView("newreservation");
     }
 
-    @PostMapping(value = {"/ajanvaraus", "/newreservation" })
+    @PostMapping(value = {"/ajanvaraus", "/newreservation"})
     public ResponseEntity<Object> sendReservation(@RequestBody ReservationPayload payload)
     {
         payload = payload.barberId() > 0 ? payload : getPayloadWithRandomBarber(payload);
@@ -59,7 +59,7 @@ public class ReservationController
         }
     }
 
-    @GetMapping(value = { "/ajanvarausonnistui", "/reservationsuccessful"})
+    @GetMapping(value = {"/ajanvarausonnistui", "/reservationsuccessful"})
     public ModelAndView onGetSuccess()
     {
         return new ModelAndView("reservationsuccessful");

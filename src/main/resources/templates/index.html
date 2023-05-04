@@ -13,7 +13,7 @@
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <div id="index-wrapper">
     <div class="leftside">
-        <button type="button" id="new-reservation-button">
+        <button id="new-reservation-button" type="button">
             &#9200; <span th:text="#{h.newReservation}">VARAA UUSI AIKA</span></a>
         </button>
     </div>
@@ -21,14 +21,14 @@
         <div>
             <h2 th:text="#{h.upcomingReservations}">Tulevat varaukset</h2>
             <ol>
-                <li th:each="upcomingreservation : ${upcomingreservationslist}">
-                    <span th:text="${upcomingreservation}"></span>
+                <li th:each="upcomingReservation : ${upcomingReservations}">
+                    <span th:text="${upcomingReservation}"></span>
                 </li>
             </ol>
-            <div id="no-upcoming-times" th:if="${#lists.isEmpty(upcomingreservationslist)}">
+            <div id="no-upcoming-times" th:if="${#lists.isEmpty(upcomingReservations)}">
                 <i th:text="#{t.noUpcomingTimes}">Sinulla ei ole tulevia aikoja</i>
             </div>
-            <button type="button" class="button-dimmed" id="all-reservations-button">
+            <button class="button-dimmed" id="all-reservations-button" type="button">
 
                 &#128197; <span th:text="#{b.showAllReservations}">
                 Näytä kaikki varaamani ajat</span>
