@@ -61,6 +61,10 @@ public class IndexController
                 upcomingreservations.add(date);
             }
         }
+        upcomingreservations = upcomingreservations
+                .stream()
+                .limit(4)
+                .toList();
 
         mav.addObject("upcomingreservationslist", upcomingreservations);
 

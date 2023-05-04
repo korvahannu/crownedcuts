@@ -51,6 +51,15 @@ ol li {
     height: 70px;
 }
 
+#no-upcoming-times {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+    border-left: 1px dashed var(--darker-gray);
+    height: 8rem;
+    padding-left: 1rem;
+}
+
 @media only screen and (max-width: 660px) {
     #index-wrapper {
         flex-direction: column;
