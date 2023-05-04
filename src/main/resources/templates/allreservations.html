@@ -20,6 +20,9 @@
                     <span th:text="${upcomingreservation}"></span>
                 </li>
             </ul>
+            <div id="no-upcoming-times" th:if="${#lists.isEmpty(upcomingreservationslist)}">
+                <i th:text="#{t.noUpcomingTimes}">Sinulla ei ole tulevia aikoja</i>
+            </div>
         </div>
         <div>
             <h2 th:text="#{h.earlierReservations}">Menneet ajat</h2>
@@ -28,6 +31,9 @@
                     <span th:text="${earlierreservation}"></span>
                 </li>
             </ul>
+            <div id="no-upcoming-times" th:if="${#lists.isEmpty(earlierreservationslist)}">
+                <i th:text="#{t.noPastTimes}">Sinulla ei ole menneitä aikoja</i>
+            </div>
         </div>
     </div>
     <button type="button" id="back-button">

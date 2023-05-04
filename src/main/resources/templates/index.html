@@ -28,7 +28,7 @@
             <div id="no-upcoming-times" th:if="${#lists.isEmpty(upcomingreservationslist)}">
                 <i th:text="#{t.noUpcomingTimes}">Sinulla ei ole tulevia aikoja</i>
             </div>
-            <button th:if="${not #lists.isEmpty(upcomingreservationslist)}" type="button" class="button-dimmed" id="all-reservations-button">
+            <button type="button" class="button-dimmed" id="all-reservations-button">
 
                 &#128197; <span th:text="#{b.showAllReservations}">
                 Näytä kaikki varaamani ajat</span>
