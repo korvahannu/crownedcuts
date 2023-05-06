@@ -60,7 +60,7 @@ public class UserInformationController
      * Helper function that retrieves user information again and updates the authentication.
      * Used when updating user information at database level
      */
-    private void reloadSecurityContext()
+    void reloadSecurityContext()
     {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var username = ((UserDetails) authentication.getPrincipal()).username();

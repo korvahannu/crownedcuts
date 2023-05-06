@@ -67,4 +67,16 @@ public interface UserService
                                   String lastname,
                                   String phonenumber,
                                   String dateOfBirth);
+
+    /**
+     * Updates user's password.
+     * @param username      Username is used to find the correct user to update. Username can not be updated
+     * @param oldpassword   User's old password
+     * @param newpassword   User's new password to set for the user
+     * @return true is update was succesful, otherwise false 
+     */
+    boolean updateUserPassword(String username,
+                               String oldpassword,
+                               String newpassword);
+
 }

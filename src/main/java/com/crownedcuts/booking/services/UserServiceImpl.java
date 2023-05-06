@@ -259,4 +259,27 @@ public class UserServiceImpl implements UserService
 
         return true;
     }
+
+    public boolean updateUserPassword(String username, String oldpassword, String newpassword) {
+        String query = "UPDATE users SET password = ? WHERE username = ? AND password = ?";
+
+        try (var statement = repository.getPreparedStatement(query))
+        {
+            statement.setString(1, newpassword);
+            statement.setString(2, username);
+            statement.setString(3, oldpassword);
+            statement.executeUpdate();
+
+            if (statement.getUpdateCount() != 1)
+            {
+                logger.log(Level.SEVERE, "Possible destructive query processed: {0}", statement);
+            }
+        }
+        catch (SQLException ex)
+        {
+            logger.warning("Failed to update user information.");
+            return false;
+        }
+        return true;
+    }
 }
