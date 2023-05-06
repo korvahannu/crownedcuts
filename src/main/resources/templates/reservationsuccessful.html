@@ -5,22 +5,22 @@
     <title th:text="#{t.reservationSuccessful}">Ajanvaraus onnistui!</title>
     <link href="css/reservation.css" rel="stylesheet">
     <link href="css/pageindicator.css" rel="stylesheet">
-    <link href="css/header.css" rel="stylesheet">
+    <link href="css/navbar.css" rel="stylesheet">
     <meta content="initial-scale=1" name="viewport">
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <div id="reservation-wrapper">
     <h1 th:text="#{h.reservation}">Ajanvaraus</h1>
     <section class="slider-wrapper">
         <div id="page-indicator">
             <div id="page-indicator-line"></div>
             <ul id="page-indicator-list">
-                <li class="page-indicator-selected page-indicator-selected-current">1</li>
-                <li class="page-indicator-selected page-indicator-selected-current">2</li>
-                <li class="page-indicator-selected page-indicator-selected-current">3</li>
-                <li class="page-indicator-selected page-indicator-selected-current">4</li>
-                <li class="page-indicator-selected page-indicator-selected-current">5</li>
+                <li class="page-indicator-selected"></li>
+                <li class="page-indicator-selected"></li>
+                <li class="page-indicator-selected"></li>
+                <li class="page-indicator-selected"></li>
+                <li class="page-indicator-selected"></li>
                 <li class="page-indicator-selected page-indicator-selected-current">6</li>
             </ul>
         </div>
@@ -37,7 +37,8 @@
                 <p style="margin-bottom: 3rem;" th:text="#{p.contactIfProblems}">Ongelmatilanteissa ota yhteyttä
                     asiakaspalveluun
                     asiakaspalvelu@crownedcuts.fi tai +3580441224012</p>
-                <button class="reservation-navigation-button slide-arrow" id="return-to-frontpage-button" th:text="#{b.moveToFrontPage}"
+                <button class="reservation-navigation-button slide-arrow" id="return-to-frontpage-button"
+                        th:text="#{b.moveToFrontPage}"
                         type="button">
                     Siirry etusivulle
                 </button>

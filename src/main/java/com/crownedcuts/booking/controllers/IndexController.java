@@ -1,6 +1,5 @@
 package com.crownedcuts.booking.controllers;
 
-import com.crownedcuts.booking.records.Reservation;
 import com.crownedcuts.booking.records.UserDetails;
 import com.crownedcuts.booking.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class IndexController
@@ -42,27 +39,19 @@ public class IndexController
             mav.addObject("userDetails", "anonymous user");
         }
 
-        List<Reservation> allreservations = userService.getReservations(username);
-        List<String> upcomingreservations = new ArrayList<>();
+        var allreservations = userService.getReservations(username)
+                .stream()
+                .sorted((o1, o2) -> o2.reservationInformation().compareTo(o1.reservationInformation()))
+                .toList();
 
-        for (int i = 0; i < allreservations.size(); i++)
-        {
-            LocalDateTime now = LocalDateTime.now();
-            var timeDetails = allreservations.get(i).reservationInformation();
-            var localDateTime = LocalDateTime.of(timeDetails.year(),
-                    timeDetails.month(),
-                    timeDetails.day(),
-                    timeDetails.hour(),
-                    0);
-            String date = timeDetails.day() + "." + timeDetails.month() + "." + timeDetails.year() + " " + timeDetails.hour() + ":00";
+        var upcomingReservations = allreservations
+                .stream()
+                .filter(r -> LocalDateTime.now().isBefore(r.reservationInformation().toLocalDateTime()))
+                .limit(4)
+                .map(r -> r.reservationInformation().toString())
+                .toList();
 
-            if (now.isBefore(localDateTime))
-            {
-                upcomingreservations.add(date);
-            }
-        }
-
-        mav.addObject("upcomingreservationslist", upcomingreservations);
+        mav.addObject("upcomingReservations", upcomingReservations);
 
         return mav;
     }

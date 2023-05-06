@@ -25,7 +25,7 @@
         "fi": {
             reservationFailed: "Ajanvaraus epäonnistui sisäisen virheen vuoksi.",
             hairdresser: "Kampaaja",
-            barber: "Barber",
+            barber: "Parturi",
             shortHair: "Lyhyet hiukset",
             mediumHair: "Keskipitkät hiukset",
             longHair: "Pitkät hiukset",

@@ -15,7 +15,7 @@ h1 {
     justify-content: center;
     align-content: center;
     flex-grow: 1;
-    align-items: center;
+    padding-top: 8rem;
 }
 
 .rightside {
@@ -27,56 +27,62 @@ ol {
     margin: 0;
     padding: 0;
     padding-left: 1.3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 ol li {
     font-size: 1.2rem;
-}
-
-.big-square-button {
-    width: 300px;
-    height: 200px;
-    text-align: left;
-    padding: 3rem;
-    margin-right: 1rem;
-    border: 1px solid var(--blacker-black);
-    border-radius: 4px;
-    box-shadow: none;
-    background-color: white;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.big-square-button:hover {
-    background-color: var(--gray);
-}
-
-.allreservations-button {
-    width: 100%;
-    text-align: left;
-    padding: 1rem;
-    margin-right: 1rem;
-    border: 1px solid var(--blacker-black);
-    border-radius: 4px;
-    box-shadow: none;
-    background-color: white;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.allreservations-button:hover {
-    background-color: var(--gray);
+    border-bottom: 1px solid black;
+    padding-top: 1.5rem;
 }
 
 #index-wrapper {
-    border-radius: 8px;
     max-width: 1024px;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
     padding: 2rem;
-    min-height: 400px;
     display: flex;
-    width: 100%;
+    padding-bottom: 4rem;
+}
+
+#new-reservation-button {
+    width: 70%;
+    height: 70px;
+}
+
+#no-upcoming-times {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+    border-left: 1px dashed var(--darker-gray);
+    height: 8rem;
+    padding-left: 1rem;
+}
+
+@media only screen and (max-width: 660px) {
+    #index-wrapper {
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .leftside {
+        padding-top: 0;
+    }
+
+    #new-reservation-button {
+        width: 100%;
+        height: 80px;
+        max-width: 100vh;
+    }
+
+    ol li {
+        margin-top: 0;
+        padding-top: 2rem;
+    }
+
+    h2 {
+        margin-bottom: 0;
+        margin-top: 3rem;
+    }
 }

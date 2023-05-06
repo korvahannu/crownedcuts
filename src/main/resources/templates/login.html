@@ -2,6 +2,7 @@
 <html lang="fi" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <title th:text="#{header.login}">Kirjaudu sisään</title>
+    <meta content="initial-scale=1" name="viewport">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
@@ -113,17 +114,22 @@
             background-color: var(--simple-highlight);
         }
 
-        #information-wrapper {
+        #content-wrapper {
+            margin-top: 3rem;
             border-radius: 8px;
             z-index: -2;
-            max-width: 1024px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 512px;
             background-color: white;
             padding: 2rem;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         @media only screen and (max-width: 410px) {
+            #content-wrapper {
+                margin: 0;
+            }
+
             button {
                 max-width: 100%;
                 width: 100%;
@@ -132,9 +138,8 @@
     </style>
 </head>
 <body>
-<div id="information-wrapper">
-    <h1>Crowned Cuts</h1>
-    <h2 th:text="#{header.login}"></h2>
+<div id="content-wrapper">
+    <h1 th:text="#{header.login}"></h1>
     <form method="post" th:action="@{/login}">
         <div class="successMessage" th:if="${param.logout}" th:text="#{message.youHaveBeenLoggedOut}">
             Sinut on kirjattu ulos.

@@ -22,12 +22,16 @@ label {
 button {
     font-size: 1.2rem;
     padding: 1rem;
-    max-width: 256px;
+    max-width: 280px;
     min-width: 164px;
     border-radius: 4px;
     border: none;
     background-color: var(--blue);
     color: var(--gray);
+}
+
+button span {
+    margin-left: 0.5rem;
 }
 
 button:hover {
@@ -48,7 +52,6 @@ form {
 
 
 #information-wrapper {
-    border-radius: 8px;
     z-index: -2;
     max-width: 1024px;
     margin-left: auto;
@@ -135,7 +138,7 @@ form {
     background-color: var(--simple-highlight);
 }
 
-@media only screen and (max-width: 410px) {
+@media only screen and (max-width: 660px) {
     button {
         max-width: 100%;
         width: 100%;

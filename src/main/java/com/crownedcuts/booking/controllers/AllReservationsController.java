@@ -1,4 +1,13 @@
 package com.crownedcuts.booking.controllers;
+
+import com.crownedcuts.booking.records.UserDetails;
+import com.crownedcuts.booking.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
+
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -18,11 +27,10 @@ import org.springframework.stereotype.Controller;
 
 
 @Controller
-public class AllReservationsController {
-
-    private static final String VIEW_NAME = "allreservations";
-
+public class AllReservationsController
+{
     private final UserService userService;
+    private static final int RESERVATION_COUNT_CAP = 4;
 
     @Autowired
     public AllReservationsController(UserService userService) {
@@ -32,31 +40,48 @@ public class AllReservationsController {
     @GetMapping(value = {"/allreservations", "/kaikkiajanvaraukset"})
     public ModelAndView onGet()
     {
-        var mvc = new ModelAndView(VIEW_NAME);
+        var mvc = new ModelAndView("allreservations");
 
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var username = ((UserDetails) authentication.getPrincipal()).username();
 
-        List<Reservation> allreservations = userService.getReservations(username);
-        List<String> earlierreservations = new ArrayList<>();
-        List<String> upcomingreservations = new ArrayList<>();
+        List<String> earlierReservations = new ArrayList<>();
+        List<String> upcomingReservations = new ArrayList<>();
+        List<String> earlierReservationsAll = new ArrayList<>();
+        List<String> upcomingReservationsAll = new ArrayList<>();
 
-        for(int i = 0; i < allreservations.size(); i++) {
-            LocalDateTime now = LocalDateTime.now();
-            var timeDetails = allreservations.get(i).reservationInformation();
-            var localDateTime = LocalDateTime.of(timeDetails.year(), timeDetails.month(), timeDetails.day(), timeDetails.hour(), 0);
-            String date = timeDetails.day() + "." + timeDetails.month() + "." + timeDetails.year() + " " + timeDetails.hour() + ":00";
+        userService.getReservations(username)
+                .stream()
+                .sorted((o1, o2) -> o2.reservationInformation().compareTo(o1.reservationInformation()))
+                .forEach(r ->
+                {
+                    var timeDetails = r.reservationInformation();
+                    if (LocalDateTime.now().isBefore(timeDetails.toLocalDateTime()))
+                    {
+                        if(upcomingReservations.size() < RESERVATION_COUNT_CAP)
+                        {
+                            upcomingReservations.add(timeDetails.toString());
+                        }
+                        upcomingReservationsAll.add(timeDetails.toString());
+                    }
+                    else
+                    {
+                        if(earlierReservations.size() < RESERVATION_COUNT_CAP)
+                        {
+                            earlierReservations.add(timeDetails.toString());
+                        }
+                        earlierReservationsAll.add(timeDetails.toString());
+                    }
+                });
 
+        int cappedEarlierReservationsCount = earlierReservationsAll.size() - RESERVATION_COUNT_CAP;
+        int cappedUpcomingReservationCount = upcomingReservationsAll.size() - RESERVATION_COUNT_CAP;
 
-            if(now.isBefore(localDateTime)) {
-                upcomingreservations.add(date);
-            } else {
-                earlierreservations.add(date);
-            }
-        }
+        mvc.addObject("earlierReservations", earlierReservations);
+        mvc.addObject("upcomingReservations", upcomingReservations);
 
-        mvc.addObject("earlierreservationslist", earlierreservations);
-        mvc.addObject("upcomingreservationslist", upcomingreservations);
+        mvc.addObject("cappedEarlierReservationsCount", cappedEarlierReservationsCount);
+        mvc.addObject("cappedUpcomingReservationCount", cappedUpcomingReservationCount);
 
         return mvc;
     }

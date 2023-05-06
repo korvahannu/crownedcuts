@@ -4,10 +4,11 @@
     <title>Omat tiedot</title>
     <meta content="initial-scale=1" name="viewport">
     <link href="css/forms.css" rel="stylesheet">
-    <link href="css/header.css" rel="stylesheet">
+    <link href="css/navbar.css" rel="stylesheet">
+    <meta content="initial-scale=1" name="viewport">
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <div id="information-wrapper">
     <h1 th:text="#{h.ownInformation}">Omat tiedot</h1>
     <form id="form" method="post">
@@ -46,7 +47,8 @@
         <div class="form-field">
             <label for="dateOfBirth" th:text="#{label.dateOfBirth}">Syntymäaika</label>
             <input id="dateOfBirth" name="dateOfBirth"
-                   placeholder="pp.kk.vvvv" th:field="${userDetails.dateOfBirth}" th:placeholder="#{placeholder.dateOfBirth}" type="text"/>
+                   placeholder="pp.kk.vvvv" th:field="${userDetails.dateOfBirth}"
+                   th:placeholder="#{placeholder.dateOfBirth}" type="text"/>
             <div class="errorMarked">!</div>
         </div>
         <div class="form-field">

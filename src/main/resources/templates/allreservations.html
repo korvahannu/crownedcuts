@@ -4,34 +4,56 @@
 
 <head>
     <title>Crowned Cuts</title>
-    <link href="css/header.css" rel="stylesheet">
+    <link href="css/navbar.css" rel="stylesheet">
     <link href="css/allreservations.css" rel="stylesheet">
+    <link href="css/forms.css" rel="stylesheet">
+    <meta content="initial-scale=1" name="viewport">
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <div id="reservations-wrapper">
-    <div class="leftside">
-        <h2 th:text="#{h.upcomingReservations}">Tulevat ajat</h2>
-        <ul>
-            <li th:each="upcomingreservation : ${upcomingreservationslist}">
-                <span th:text="${upcomingreservation}"></span>
-            </li>
-        </ul>
-        <a class="big-square-button" href="/index" id="button-go-back">
-            <div class="big-square-button-container">
+    <div id="content-divider">
+        <div>
+            <h2 th:text="#{h.upcomingReservations}">Tulevat ajat</h2>
+            <ul>
+                <li th:each="upcomingReservation : ${upcomingReservations}">
+                    <span th:text="${upcomingReservation}"></span>
+                </li>
 
-                    <span th:text="#{b.back}">Takaisin</span>
+            </ul>
+            <div class="no-upcoming-times" th:if="${#lists.isEmpty(upcomingReservations)}">
+                <i th:text="#{t.noUpcomingTimes}">Sinulla ei ole tulevia aikoja</i>
             </div>
-        </a>
+            <div class="capped-times" th:if="${cappedUpcomingReservationCount} > 0">
+                +<span th:text="${cappedUpcomingReservationCount}"></span> <span th:text="#{t.evenNewerTimes}">aikaa kauempana tulevaisuudessa</span>
+            </div>
+        </div>
+        <div>
+            <h2 th:text="#{h.earlierReservations}">Menneet ajat</h2>
+            <ul>
+                <li th:each="earlierReservation : ${earlierReservations}">
+                    <span th:text="${earlierReservation}"></span>
+                </li>
+            </ul>
+            <div class="capped-times" th:if="${cappedEarlierReservationsCount} > 0">
+                +<span th:text="${cappedEarlierReservationsCount}"></span> <span th:text="#{t.evenOlderTimes}">vielä vanhempaa aikaa</span>
+            </div>
+            <div class="no-upcoming-times" th:if="${#lists.isEmpty(earlierReservations)}">
+                <i th:text="#{t.noPastTimes}">Sinulla ei ole menneitä aikoja</i>
+            </div>
+        </div>
     </div>
-    <div class="rightside">
-        <h2 th:text="#{h.earlierReservations}">Menneet ajat</h2>
-        <ul>
-            <li th:each="earlierreservation : ${earlierreservationslist}">
-                <span th:text="${earlierreservation}"></span>
-            </li>
-        </ul>
-    </div>
+    <button id="back-button" type="button">
+        <span th:text="#{b.back}">Takaisin</span>
+    </button>
 </div>
 </body>
+<script>
+    document
+        .getElementById('back-button')
+        .addEventListener('click', event => {
+            event.preventDefault();
+            window.location.href = '/';
+        })
+</script>
 </html>
