@@ -75,7 +75,7 @@ html, body {
 }
 
 #mobile-menu {
-    height: 111px;
+    height: 166px;
 }
 
 #mobile-menu li:hover {
@@ -102,7 +102,7 @@ html, body {
 }
 
 
-@media only screen and (max-width: 660px) {
+@media only screen and (max-width: 758px) {
     .navbar {
         margin-bottom: 0;
     }

@@ -6,6 +6,8 @@ html {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     background-color: var(--gray);
+    background-image: url('../img/stripes-light.png');
+    background-repeat: repeat;
 }
 
 h1 {
@@ -70,6 +72,7 @@ h2 {
     margin-right: auto;
     background-color: white;
     padding: 2rem 2rem 4rem;
+    border: 1px solid var(--lightest-blue);
 }
 
 .slides-container {
@@ -317,6 +320,18 @@ h2 {
 .no-available-times-text {
     font-style: italic;
     text-align: center;
+}
+
+.nav-reservations {
+    background-color: var(--gray) !important;
+}
+
+.nav-reservations:hover {
+    background-color: var(--darker-gray) !important;
+}
+
+.nav-reservations a {
+    color: var(--blacker-black) !important;
 }
 
 @media only screen and (max-width: 864px) {
