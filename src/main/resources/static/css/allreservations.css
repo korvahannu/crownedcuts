@@ -1,7 +1,12 @@
+.fullWidth {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #content-divider {
     display: flex;
-    width: 100%;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
 #content-divider div {
@@ -40,6 +45,18 @@
 
 .capped-times {
     font-style: italic;
+}
+
+.nav-reservations {
+    background-color: var(--gray) !important;
+}
+
+.nav-reservations:hover {
+    background-color: var(--darker-gray) !important;
+}
+
+.nav-reservations a {
+    color: var(--blacker-black) !important;
 }
 
 @media only screen and (max-width: 660px) {

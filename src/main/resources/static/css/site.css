@@ -6,6 +6,8 @@ html {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     background-color: var(--gray);
+    background-image: url('../img/stripes-light.png');
+    background-repeat: repeat;
 }
 
 h1 {
@@ -25,6 +27,24 @@ ol li {
     padding-top: 1.5rem;
 }
 
+footer {
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    display: flex;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border: 1px dotted var(--lightest-blue);
+    margin-top: 1rem;
+    color: var(--black);
+    justify-content: space-between;
+}
+
+footer a {
+    color: var(--black);
+}
+
 .fullWidth {
     width: 100%;
 }
@@ -36,6 +56,7 @@ ol li {
     background-color: white;
     display: flex;
     padding: 2rem 2rem 4rem;
+    border: 1px solid var(--lightest-blue);
 }
 
 @media only screen and (max-width: 660px) {
@@ -52,5 +73,11 @@ ol li {
     h2 {
         margin-bottom: 0;
         margin-top: 3rem;
+    }
+
+    footer {
+        flex-direction: column;
+        text-align: center;
+        font-size: 1.2rem;
     }
 }

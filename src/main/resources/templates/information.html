@@ -2,6 +2,7 @@
 <html lang="fi" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title th:text="#{t.information}">Omat tiedot</title>
+    <link href="css/information.css" rel="stylesheet">
     <object th:include="/fragments/head :: head" th:remove="tag"></object>
     <link href="css/site.css" rel="stylesheet">
 </head>
@@ -66,6 +67,8 @@
     </div>
     </form>
 </div>
+<footer th:replace="~{fragments/footer :: footer}">
+</footer>
 </body>
 <script src="js/validators.js"></script>
 <script>

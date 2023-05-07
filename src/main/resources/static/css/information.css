@@ -1,0 +1,11 @@
+.nav-information {
+    background-color: var(--gray) !important;
+}
+
+.nav-information:hover {
+    background-color: var(--darker-gray) !important;
+}
+
+.nav-information a {
+    color: var(--blacker-black) !important;
+}

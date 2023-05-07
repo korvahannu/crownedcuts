@@ -10,8 +10,10 @@
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div id="wrapper">
+<div id="wrapper" style="flex-direction: column">
+    <h1 th:text="#{t.allReservations}"></h1>
     <div class="fullWidth">
+        <p style="font-size: 1.2rem" th:text="#{p.toChangeTime}"></p>
         <div id="content-divider">
             <div>
                 <h2 th:text="#{h.upcomingReservations}">Tulevat ajat</h2>
@@ -48,6 +50,8 @@
         </button>
     </div>
 </div>
+<footer th:replace="~{fragments/footer :: footer}">
+</footer>
 </body>
 <script>
     document

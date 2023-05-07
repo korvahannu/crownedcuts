@@ -18,7 +18,7 @@
     </div>
 </div>
 <div id="reservation-wrapper">
-    <h1 th:text="#{h.reservation}">Ajanvaraus</h1>
+    <h1 th:text="#{header.newReservation}">Uusi ajanvaraus</h1>
     <section class="slider-wrapper">
         <div id="page-indicator">
             <div id="page-indicator-line"></div>
@@ -158,6 +158,8 @@
         </div>
     </section>
 </div>
+<footer th:replace="~{fragments/footer :: footer}">
+</footer>
 </body>
 <script src="js/slideshow.js"></script>
 <script src="js/reservation.js">
