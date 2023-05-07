@@ -1,68 +1,69 @@
 <!DOCTYPE html>
 <html lang="fi" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Omat tiedot</title>
-    <meta content="initial-scale=1" name="viewport">
-    <link href="css/forms.css" rel="stylesheet">
-    <link href="css/navbar.css" rel="stylesheet">
-    <meta content="initial-scale=1" name="viewport">
+    <title th:text="#{t.information}">Omat tiedot</title>
+    <object th:include="/fragments/head :: head" th:remove="tag"></object>
+    <link href="css/site.css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div id="information-wrapper">
-    <h1 th:text="#{h.ownInformation}">Omat tiedot</h1>
-    <form id="form" method="post">
-        <div class="errorMessage" id="validationError" style="display: none" th:text="#{error.informationValidation}">
-            Virhe tietojen tallentamisessa! Tarkista merkityt kohdat.
-        </div>
-        <div class="errorMessage" id="paramFail" th:if="${updateFail}" th:text="#{message.updateFail}">
-        </div>
-        <div class="successMessage" id="paramSuccess" th:if="${updateSuccess}" th:text="#{message.updateSuccess}">
-        </div>
-        <div class="form-field">
-            <ul>
-                <li th:text="#{label.email}">
-                    Sähköposti
-                </li>
-                <li th:text="${userDetails.username}">
-                </li>
-            </ul>
-        </div>
-        <input id="username" name="username" th:field="${userDetails.username}" type="hidden"/>
-        <div class="form-field">
-            <label for="firstname" th:text="#{label.firstname}">Etunimi (pakollinen)*</label>
-            <input id="firstname" name="firstname" th:field="${userDetails.firstname}" type="text"/>
-            <div class="errorMarked">!</div>
-        </div>
-        <div class="form-field">
-            <label for="lastname" th:text="#{label.lastname}">Sukunimi (pakollinen)*</label>
-            <input id="lastname" name="lastname" th:field="${userDetails.lastname}" type="text"/>
-            <div class="errorMarked">!</div>
-        </div>
-        <div class="form-field">
-            <label for="phonenumber" th:text="#{label.phonenumber}">Puhelinnumero</label>
-            <input id="phonenumber" name="phonenumber" th:field="${userDetails.phonenumber}" type="text"/>
-            <div class="errorMarked">!</div>
-        </div>
-        <div class="form-field">
-            <label for="dateOfBirth" th:text="#{label.dateOfBirth}">Syntymäaika</label>
-            <input id="dateOfBirth" name="dateOfBirth"
-                   placeholder="pp.kk.vvvv" th:field="${userDetails.dateOfBirth}"
-                   th:placeholder="#{placeholder.dateOfBirth}" type="text"/>
-            <div class="errorMarked">!</div>
-        </div>
-        <div class="form-field">
-            <ul>
-                <li th:text="#{label.password}">Salasana</li>
-                <li><a href="#" th:text="#{link.changePassword}">Vaihda salasana</a></li>
-            </ul>
-        </div>
-        <div class="buttons">
-            <button class="button-dimmed" onclick="window.location.href='/'" th:text="#{b.back}" type="button">
-                Takaisin
-            </button>
-            <button id="submitButton" th:text="#{b.save}" type="button">Tallenna</button>
-        </div>
+<div id="wrapper">
+    <div class="fullWidth">
+        <h1 th:text="#{h.ownInformation}">Omat tiedot</h1>
+        <form id="form" method="post">
+            <div class="errorMessage" id="validationError" style="display: none"
+                 th:text="#{error.informationValidation}">
+                Virhe tietojen tallentamisessa! Tarkista merkityt kohdat.
+            </div>
+            <div class="errorMessage" id="paramFail" th:if="${updateFail}" th:text="#{message.updateFail}">
+            </div>
+            <div class="successMessage" id="paramSuccess" th:if="${updateSuccess}" th:text="#{message.updateSuccess}">
+            </div>
+            <div class="form-field">
+                <ul>
+                    <li th:text="#{label.email}">
+                        Sähköposti
+                    </li>
+                    <li th:text="${userDetails.username}">
+                    </li>
+                </ul>
+            </div>
+            <input id="username" name="username" th:field="${userDetails.username}" type="hidden"/>
+            <div class="form-field">
+                <label for="firstname" th:text="#{label.firstname}">Etunimi (pakollinen)*</label>
+                <input id="firstname" name="firstname" th:field="${userDetails.firstname}" type="text"/>
+                <div class="errorMarked">!</div>
+            </div>
+            <div class="form-field">
+                <label for="lastname" th:text="#{label.lastname}">Sukunimi (pakollinen)*</label>
+                <input id="lastname" name="lastname" th:field="${userDetails.lastname}" type="text"/>
+                <div class="errorMarked">!</div>
+            </div>
+            <div class="form-field">
+                <label for="phonenumber" th:text="#{label.phonenumber}">Puhelinnumero</label>
+                <input id="phonenumber" name="phonenumber" th:field="${userDetails.phonenumber}" type="text"/>
+                <div class="errorMarked">!</div>
+            </div>
+            <div class="form-field">
+                <label for="dateOfBirth" th:text="#{label.dateOfBirth}">Syntymäaika</label>
+                <input id="dateOfBirth" name="dateOfBirth"
+                       placeholder="pp.kk.vvvv" th:field="${userDetails.dateOfBirth}"
+                       th:placeholder="#{placeholder.dateOfBirth}" type="text"/>
+                <div class="errorMarked">!</div>
+            </div>
+            <div class="form-field">
+                <ul>
+                    <li th:text="#{label.password}">Salasana</li>
+                    <li><a href="#" th:text="#{link.changePassword}">Vaihda salasana</a></li>
+                </ul>
+            </div>
+            <div class="buttons">
+                <button class="button-dimmed" onclick="window.location.href='/'" th:text="#{b.back}" type="button">
+                    Takaisin
+                </button>
+                <button id="submitButton" th:text="#{b.save}" type="button">Tallenna</button>
+            </div>
+    </div>
     </form>
 </div>
 </body>
