@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="fi" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title th:text="#{t.reservationSuccessful}">Ajanvaraus onnistui!</title>
     <link href="css/reservation.css" rel="stylesheet">
-    <link href="css/navbar.css" rel="stylesheet">
-    <meta content="initial-scale=1" name="viewport">
+    <object th:include="/fragments/head :: head" th:remove="tag"></object>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>

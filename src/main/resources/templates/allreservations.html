@@ -3,11 +3,10 @@
       xmlns:th="https://www.thymeleaf.org">
 
 <head>
-    <title>Crowned Cuts</title>
-    <link href="css/navbar.css" rel="stylesheet">
+    <title th:text="#{t.allReservations}">Kaikki varaamasi ajat</title>
     <link href="css/allreservations.css" rel="stylesheet">
+    <object th:include="/fragments/head :: head" th:remove="tag"></object>
     <link href="css/site.css" rel="stylesheet">
-    <meta content="initial-scale=1" name="viewport">
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
