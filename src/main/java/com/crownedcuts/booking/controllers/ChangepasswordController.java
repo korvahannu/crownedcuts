@@ -1,5 +1,7 @@
 package com.crownedcuts.booking.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,19 +34,30 @@ public class ChangepasswordController {
 
     @PostMapping(value = { "/changepassword", "/vaihdasalasana" })
     public ModelAndView onChangePassword(@RequestParam String username,
-            @RequestParam String password) {
-        var result = userService.updateUserPassword(username, password);
-        reloadSecurityContext();
-
+            @RequestParam String oldpassword,
+            @RequestParam String newpassword) {
+        
         var mvc = new ModelAndView(VIEW_NAME);
-        if (result) {
-            mvc.addObject("updateSuccess", true);
+        Optional<UserDetails> userdetails = userService.getUser(username);
+
+        UserDetails details = userdetails.get();
+
+        if(userdetails.get().password().equals(oldpassword)) {
+            var result = userService.updateUserPassword(username, newpassword);
+            reloadSecurityContext();
+    
+            if (result) {
+                mvc.addObject("updateSuccess", true);
+            } else {
+                mvc.addObject("updateFail", true);
+            }
+            mvc.addObject(VIEW_UD_ATTRIBUTE_NAME,
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         } else {
             mvc.addObject("updateFail", true);
         }
-        mvc.addObject(VIEW_UD_ATTRIBUTE_NAME,
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return mvc;
+
     }
 
     /**
