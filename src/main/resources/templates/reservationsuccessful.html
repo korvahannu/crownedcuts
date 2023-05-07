@@ -8,7 +8,7 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <div id="reservation-wrapper">
-    <h1 th:text="#{h.reservation}">Ajanvaraus</h1>
+    <h1 th:text="#{t.reservationSuccessful}">Ajanvaraus</h1>
     <section class="slider-wrapper">
         <div id="page-indicator">
             <div id="page-indicator-line"></div>
@@ -43,6 +43,8 @@
         </div>
     </section>
 </div>
+<footer th:replace="~{fragments/footer :: footer}">
+</footer>
 <script>
     const button = document.getElementById('return-to-frontpage-button');
     button.addEventListener('click', function (event) {

@@ -14,14 +14,21 @@
 
 .leftside {
     display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-grow: 1;
-    padding-top: 8rem;
+    justify-items: center;
+    align-items: center;
+    flex: 50%;
+    padding-top: 2rem;
+    flex-direction: column;
+}
+
+.leftside p {
+    width: 90%;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
 }
 
 .rightside {
-    flex-grow: 1;
+    flex: 50%;
     padding-right: 2rem;
 }
 
@@ -37,6 +44,11 @@
     color: var(--blacker-black) !important;
 }
 
+#index-content-holder {
+    display: flex;
+    width: 100%;
+}
+
 @media only screen and (max-width: 660px) {
     .leftside {
         padding-top: 0;
@@ -46,5 +58,9 @@
         width: 100%;
         height: 80px;
         max-width: 100vh;
+    }
+
+    #index-content-holder {
+        flex-direction: column;
     }
 }
