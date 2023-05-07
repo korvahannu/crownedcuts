@@ -260,6 +260,7 @@ public class UserServiceImpl implements UserService
         return true;
     }
 
+    @Override
     public boolean updateUserPassword(String username, String oldpassword, String newpassword) {
         String query = "UPDATE users SET password = ? WHERE username = ? AND password = ?";
 
