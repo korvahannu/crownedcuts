@@ -260,14 +260,13 @@ public class UserServiceImpl implements UserService
         return true;
     }
 
-    public boolean updateUserPassword(String username, String oldpassword, String newpassword) {
-        String query = "UPDATE users SET password = ? WHERE username = ? AND password = ?";
+    public boolean updateUserPassword(String username, String password) {
+        String query = "UPDATE users SET password = ? WHERE username = ?";
 
         try (var statement = repository.getPreparedStatement(query))
         {
-            statement.setString(1, newpassword);
+            statement.setString(1, password);
             statement.setString(2, username);
-            statement.setString(3, oldpassword);
             statement.executeUpdate();
 
             if (statement.getUpdateCount() != 1)
