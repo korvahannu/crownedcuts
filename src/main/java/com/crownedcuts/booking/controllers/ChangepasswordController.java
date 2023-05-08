@@ -33,31 +33,38 @@ public class ChangepasswordController {
     }
 
     @PostMapping(value = { "/changepassword", "/vaihdasalasana" })
-    public ModelAndView onChangePassword(@RequestParam String username,
-            @RequestParam String oldpassword,
-            @RequestParam String newpassword) {
+    public ModelAndView onChangePassword(@RequestParam String oldpassword,
+                                         @RequestParam String newpassword) {
 
         var mvc = new ModelAndView(VIEW_NAME);
-        Optional<UserDetails> userdetails = userService.getUser(username);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        var username = ((UserDetails) authentication.getPrincipal()).username();
+        var userdetails = userService.getUser(username);
 
-        if (userdetails.get().password().equals(oldpassword)) {
-            var result = userService.updateUserPassword(username, newpassword);
-            reloadSecurityContext();
+        if (userdetails.isPresent()) {
 
-            if (result) {
-                mvc.addObject("updateSuccess", true);
+            var ud = userdetails.get();
+            var checkPassword = UserDetails.of(ud.username(), oldpassword, "", "");
+
+            if (userService.checkUserPassword(checkPassword)) {
+                var result = userService.updateUserPassword(username, newpassword);
+                reloadSecurityContext();
+
+                if (result) {
+                    mvc.addObject("updateSuccess", true);
+                } else {
+                    mvc.addObject("updateFail", true);
+                }
+                mvc.addObject(VIEW_UD_ATTRIBUTE_NAME,
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             } else {
                 mvc.addObject("updateFail", true);
             }
-            mvc.addObject(VIEW_UD_ATTRIBUTE_NAME,
-                    SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-
         } else {
             mvc.addObject("updateFail", true);
 
         }
         return mvc;
-
     }
 
     /**

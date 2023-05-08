@@ -265,7 +265,7 @@ public class UserServiceImpl implements UserService
 
         try (var statement = repository.getPreparedStatement(query))
         {
-            statement.setString(1, password);
+            statement.setString(1, passwordEncoder.encode(password));
             statement.setString(2, username);
             statement.executeUpdate();
 
