@@ -530,6 +530,8 @@
             btn.type = "button";
             btn.classList.add('available-time-button');
             btn.innerText = `${hour}:00`
+            btn.setAttribute('aria-label',
+                `${day}.${month}.${year} ${hour}:00`);
 
             const clearSelectedTime = () => {
                 let buttons = document.querySelectorAll('.available-time-button');
@@ -584,6 +586,7 @@
         div.classList.add('service-listing');
         div.role = 'button';
         div.tabIndex = 0;
+        div.setAttribute('aria-label', name + ' ' + price + '.00€');
 
         const span1 = document.createElement('span');
         span1.classList.add('service-title');

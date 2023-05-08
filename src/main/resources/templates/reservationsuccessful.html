@@ -53,7 +53,7 @@
     });
     const locale = "[[${#locale.toString()}]]";
     const pageIndicator = document.getElementById('page-indicator');
-    pageIndicator.setAttribute('aria-label', getAriaLabelText(6));
+    pageIndicator.setAttribute('aria-label', getAriaLabelText(6, 6));
     pageIndicator.focus();
     function getAriaLabelText(page, pageCount) {
         const loc = locale.substring(0, 2);
