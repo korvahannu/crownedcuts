@@ -10,7 +10,7 @@
 <div id="reservation-wrapper">
     <h1 th:text="#{t.reservationSuccessful}">Ajanvaraus</h1>
     <section class="slider-wrapper">
-        <div id="page-indicator">
+        <div id="page-indicator" tabindex="0">
             <div id="page-indicator-line"></div>
             <ul id="page-indicator-list">
                 <li class="page-indicator-selected"></li>
@@ -51,6 +51,19 @@
         event.preventDefault();
         window.location.href = "/";
     });
+    const locale = "[[${#locale.toString()}]]";
+    const pageIndicator = document.getElementById('page-indicator');
+    pageIndicator.setAttribute('aria-label', getAriaLabelText(6));
+    pageIndicator.focus();
+    function getAriaLabelText(page, pageCount) {
+        const loc = locale.substring(0, 2);
+
+        if(loc === 'en') {
+            return `You are on the reservation form page ${page}/${pageCount}`
+        } else {
+            return `Olet uuden ajanvarauksen lomakkeella sivulla ${page}/${pageCount}`
+        }
+    }
 </script>
 </body>
 </html>

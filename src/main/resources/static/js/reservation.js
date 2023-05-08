@@ -264,6 +264,10 @@
         window.scrollTo(0, 0);
         pageItems.shadow.style.display = hide ? 'none' : 'block';
         pageItems.messageBox.style.display = hide ? 'none' : 'block';
+        if(!hide) {
+            console.log("focus")
+            pageItems.cancelAbortButton.focus();
+        }
     }
 
     function onAbortButtonClick(event) {
@@ -579,7 +583,7 @@
         const div = document.createElement('div');
         div.classList.add('service-listing');
         div.role = 'button';
-        div.tabIndex = 1;
+        div.tabIndex = 0;
 
         const span1 = document.createElement('span');
         span1.classList.add('service-title');
