@@ -3,7 +3,7 @@
 <head>
     <title th:text="#{t.reservationSuccessful}">Ajanvaraus onnistui!</title>
     <link href="css/reservation.css" rel="stylesheet">
-    <object th:include="/fragments/head :: head" th:remove="tag"></object>
+    <object th:replace="~{fragments/head :: head}" th:remove="tag"></object>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
