@@ -55,15 +55,15 @@ public class ChangepasswordController {
                 } else {
                     mvc.addObject("updateFail", true);
                 }
-                mvc.addObject(VIEW_UD_ATTRIBUTE_NAME,
-                        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             } else {
                 mvc.addObject("updateFail", true);
             }
         } else {
             mvc.addObject("updateFail", true);
-
         }
+
+        mvc.addObject(VIEW_UD_ATTRIBUTE_NAME, SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
         return mvc;
     }
 
