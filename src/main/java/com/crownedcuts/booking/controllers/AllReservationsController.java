@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +15,15 @@ import java.util.List;
 @Controller
 public class AllReservationsController
 {
-    private final UserService userService;
     private static final int RESERVATION_COUNT_CAP = 4;
+    private final UserService userService;
 
     @Autowired
-    public AllReservationsController(UserService userService) {
+    public AllReservationsController(UserService userService)
+    {
         this.userService = userService;
     }
-    
+
     @GetMapping(value = {"/allreservations", "/kaikkiajanvaraukset"})
     public ModelAndView onGet()
     {
@@ -43,7 +45,7 @@ public class AllReservationsController
                     var timeDetails = r.reservationInformation();
                     if (LocalDateTime.now().isBefore(timeDetails.toLocalDateTime()))
                     {
-                        if(upcomingReservations.size() < RESERVATION_COUNT_CAP)
+                        if (upcomingReservations.size() < RESERVATION_COUNT_CAP)
                         {
                             upcomingReservations.add(timeDetails.toString());
                         }
@@ -51,7 +53,7 @@ public class AllReservationsController
                     }
                     else
                     {
-                        if(earlierReservations.size() < RESERVATION_COUNT_CAP)
+                        if (earlierReservations.size() < RESERVATION_COUNT_CAP)
                         {
                             earlierReservations.add(timeDetails.toString());
                         }
