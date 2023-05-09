@@ -70,9 +70,10 @@ public interface UserService
 
     /**
      * Updates user's password.
-     * @param username      Username is used to find the correct user to update. Username can not be updated
-     * @param password   User's password to be changed
-     * @return true is update was succesful, otherwise false 
+     *
+     * @param username Username is used to find the correct user to update. Username can not be updated
+     * @param password User's password to be changed
+     * @return true is update was succesful, otherwise false
      */
     boolean updateUserPassword(String username,
                                String password);

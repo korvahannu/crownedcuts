@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ErrorsController implements ErrorController
 {
-    private static final String PATH = "/error";
-
-    @RequestMapping(PATH)
+    @RequestMapping("/error")
     public String getErrorPath()
     {
         return "redirect:/index";

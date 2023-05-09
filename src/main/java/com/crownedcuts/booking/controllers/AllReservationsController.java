@@ -9,34 +9,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
-import com.crownedcuts.booking.services.UserService;
-import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
-import ch.qos.logback.core.model.Model;
-import com.crownedcuts.booking.records.Reservation;
-import com.crownedcuts.booking.records.TimeDetails;
-import com.crownedcuts.booking.records.UserDetails;
-import org.springframework.stereotype.Controller;
-
 
 @Controller
 public class AllReservationsController
 {
-    private final UserService userService;
     private static final int RESERVATION_COUNT_CAP = 4;
+    private final UserService userService;
 
     @Autowired
-    public AllReservationsController(UserService userService) {
+    public AllReservationsController(UserService userService)
+    {
         this.userService = userService;
     }
-    
+
     @GetMapping(value = {"/allreservations", "/kaikkiajanvaraukset"})
     public ModelAndView onGet()
     {
@@ -58,7 +45,7 @@ public class AllReservationsController
                     var timeDetails = r.reservationInformation();
                     if (LocalDateTime.now().isBefore(timeDetails.toLocalDateTime()))
                     {
-                        if(upcomingReservations.size() < RESERVATION_COUNT_CAP)
+                        if (upcomingReservations.size() < RESERVATION_COUNT_CAP)
                         {
                             upcomingReservations.add(timeDetails.toString());
                         }
@@ -66,7 +53,7 @@ public class AllReservationsController
                     }
                     else
                     {
-                        if(earlierReservations.size() < RESERVATION_COUNT_CAP)
+                        if (earlierReservations.size() < RESERVATION_COUNT_CAP)
                         {
                             earlierReservations.add(timeDetails.toString());
                         }

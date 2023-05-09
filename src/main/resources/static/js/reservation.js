@@ -264,7 +264,7 @@
         window.scrollTo(0, 0);
         pageItems.shadow.style.display = hide ? 'none' : 'block';
         pageItems.messageBox.style.display = hide ? 'none' : 'block';
-        if(!hide) {
+        if (!hide) {
             console.log("focus")
             pageItems.cancelAbortButton.focus();
         }

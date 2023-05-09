@@ -3,7 +3,7 @@
 <head>
     <title th:text="#{t.reservation}">Ajanvaraus</title>
     <link href="css/reservation.css" rel="stylesheet">
-    <object th:replace="~{fragments/head :: head}" th:remove="tag"></object>
+    <object th:remove="tag" th:replace="~{fragments/head :: head}"></object>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -174,7 +174,6 @@
     const pageIndicator = document.getElementById('page-indicator');
 
     pageIndicator.setAttribute('aria-label', getAriaLabelText(1, slides.slideState.slideCount + 2));
-    pageIndicator.focus();
 
     slides.onSlidePageChange.push(() => {
         pageIndicator.focus();
@@ -202,7 +201,7 @@
     function getAriaLabelText(page, pageCount) {
         const loc = locale.substring(0, 2);
 
-        if(loc === 'en') {
+        if (loc === 'en') {
             return `You are on the reservation form page ${page}/${pageCount}`
         } else {
             return `Olet uuden ajanvarauksen lomakkeella sivulla ${page}/${pageCount}`
