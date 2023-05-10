@@ -25,6 +25,21 @@ function dateOfBirthValidator(elementId) {
     return addErrorAndReturnFalse(el);
 }
 
+function matcherValidator(firstElementId, secondElementId) {
+    const firstElementInfo = getElementAndValue(firstElementId);
+    const secondElementInfo = getElementAndValue(secondElementId);
+
+    if (firstElementInfo.val === secondElementInfo.val) {
+        return true;
+    }
+
+    firstElementInfo.el.classList.add('error');
+    next(firstElementInfo.el).style.display = 'block';
+    secondElementInfo.el.classList.add('error');
+    next(secondElementInfo.el).style.display = 'block';
+    return false;
+}
+
 function getElementAndValue(elementId) {
     const el = document.getElementById(elementId);
     const val = el.value.toString();
