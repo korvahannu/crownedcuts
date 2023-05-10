@@ -3,13 +3,13 @@ package com.crownedcuts.booking.repositories;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.ResourceUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -96,9 +96,9 @@ public class SQLLiteRepository implements DbRepository
      */
     private void initializeDatabase() throws IOException, SQLException
     {
-        var file = ResourceUtils.getFile("classpath:" + initializeDatabaseSQLFilepath);
+        var file = new ClassPathResource(initializeDatabaseSQLFilepath).getInputStream();
 
-        try (var reader = new BufferedReader(new FileReader(file)))
+        try (var reader = new BufferedReader(new InputStreamReader(file)))
         {
             String line = getNextStatement(reader);
 
