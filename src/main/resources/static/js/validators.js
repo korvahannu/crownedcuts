@@ -40,6 +40,16 @@ function matcherValidator(firstElementId, secondElementId) {
     return false;
 }
 
+function passwordValidator(elementId) {
+    const { el, val } = getElementAndValue(elementId);
+
+    if(val.length >= 5) {
+        return true;
+    }
+
+    return addErrorAndReturnFalse(el);
+}
+
 function getElementAndValue(elementId) {
     const el = document.getElementById(elementId);
     const val = el.value.toString();
