@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class ChangepasswordController
+public class ChangePasswordController
 {
 
     private static final String VIEW_NAME = "changepassword";
@@ -20,7 +20,7 @@ public class ChangepasswordController
     private final UserService userService;
 
     @Autowired
-    public ChangepasswordController(UserService userService)
+    public ChangePasswordController(UserService userService)
     {
         this.userService = userService;
     }

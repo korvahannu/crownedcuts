@@ -28,7 +28,7 @@ public class BookingApplication
     @Bean
     public ServletWebServerFactory servletContainer()
     {
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
+        var tomcat = new TomcatServletWebServerFactory() {
             @Override
             protected void postProcessContext(Context context) {
                 var securityConstraint = new SecurityConstraint();
